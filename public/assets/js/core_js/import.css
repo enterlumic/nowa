@@ -1,0 +1,9 @@
+.fileuploader {
+    width: 160px;
+    height: 160px;
+    margin: 15px;
+}
+
+.fileuploader-theme-dropin{
+    text-align: center !important;
+}
