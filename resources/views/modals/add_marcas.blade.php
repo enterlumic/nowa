@@ -19,40 +19,6 @@
                             <label for="logo" class="form-label">Logo</label>
                             <input type="text" class="form-control" id="logo" name="logo" placeholder="Escribe Logo">
                         </div>
-                        <div class="col-sm-12">
-                            <label for="vCampo3_marcas" class="form-label">vTema3_marcas</label>
-                            <input type="text" class="form-control" id="vCampo3_marcas" name="vCampo3_marcas" placeholder="Escribe vTema3_marcas">
-                        </div>
-                        <div class="col-12">
-                            <label for="vCampo4_marcas" class="form-label">vTema4_marcas</label>
-                            <input type="text" class="form-control" id="vCampo4_marcas" name="vCampo4_marcas" placeholder="Escribe vTema4_marcas">
-                        </div>
-                        <div class="col-12">
-                            <label for="vCampo4_marcas" class="form-label">vTema5_marcas</label>
-                            <input type="text" class="form-control" id="vCampo5_marcas" name="vCampo5_marcas" placeholder="Escribe vTema5_marcas">
-                        </div>
-                        <div class="col-12">
-                            <label for="vCampo6_marcas" class="form-label">vTema6_marcas</label>
-                            <input type="text" class="form-control" id="vCampo6_marcas" name="vCampo6_marcas" placeholder="Escribe vTema6_marcas">
-                        </div>
-                        <div class="col-12">
-                            <label for="vCampo7_marcas" class="form-label">vTema7_marcas</label>
-                            <input type="text" class="form-control" id="vCampo7_marcas" name="vCampo7_marcas" placeholder="Escribe vTema7_marcas">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="vCampo8_marcas" class="form-label">vTema8_marcas</label>
-                            <select class="form-select" id="vCampo8_marcas" name="vCampo8_marcas">
-                                <option value="">Seleccione...</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="vCampo9_marcas" class="form-label">vTema9_marcas</label>
-                            <input type="text" class="form-control" id="vCampo9_marcas" name="vCampo9_marcas" placeholder="Escribe vCampo9_marcas">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="vCampo10_marcas" class="form-label">vTema10_marcas</label>
-                            <input type="text" class="form-control" id="vCampo10_marcas" name="vCampo10_marcas" placeholder="Escribe vCampo10_marcas">
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer m-t-10">
