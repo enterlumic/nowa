@@ -21,8 +21,6 @@
                         <div class=" d-flex align-items-center">
                             <h5 class="mb-0 flex-grow-1"></h5>
                             <div>
-                                <button id="truncate_sps_marcas" class="btn btn-danger">Truncate SPS</button>
-                                <button id="truncate_marcas" class="btn btn-danger">Truncate</button>
                                 <button id="refresh_marcas" class="btn btn-success">Actualizar</button>
                                 <button id="add_new_marcas" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUmarcas">Nuevo</button>
                                 <!-- <button id="add_new_marcas" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormIUmarcas" data-backdrop="static" data-keyboard="false">Nuevo</button> -->
@@ -44,8 +42,8 @@
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th class="Nombre"><input type="text" id="buscar_Nombre" placeholder="Buscar por Nombre"></th>
-                                                <th class="Logo"><input type="text" id="buscar_Logo" placeholder="Buscar por Logo"></th>
+                                                <th class="nombre"><input type="text" id="buscar_nombre" placeholder="Buscar por nombre"></th>
+                                                <th class="logo"><input type="text" id="buscar_logo" placeholder="Buscar por logo"></th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -62,7 +60,7 @@
                                     <ul class="list-group">
                                         <div ng-repeat='item in reddit.items' class="col-xl-3 col-md-3 col-sm-3 col-xs-3">
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                @{{item.Nombre }} <span class="badge bg-success">@{{item.id_marcas}}</span>
+                                                @{{item.nombre }} <span class="badge bg-success">@{{item.id_marcas}}</span>
                                             </li>
                                         </div>
                                     </ul>

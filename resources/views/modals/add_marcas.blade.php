@@ -9,15 +9,15 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-sm-12">
-                            <label for="Nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Escribe Nombre">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Escribe Nombre">
                         </div>
                         <div class="col-sm-12 d-none tipo-ya-existe">
                             <span class="badge bg-danger text-uppercase">Este registro ya existe</span>
                         </div>
                         <div class="col-sm-12">
-                            <label for="Logo" class="form-label">Logo</label>
-                            <input type="text" class="form-control" id="Logo" name="Logo" placeholder="Escribe Logo">
+                            <label for="logo" class="form-label">Logo</label>
+                            <input type="text" class="form-control" id="logo" name="logo" placeholder="Escribe Logo">
                         </div>
                         <div class="col-sm-12">
                             <label for="vCampo3_marcas" class="form-label">vTema3_marcas</label>

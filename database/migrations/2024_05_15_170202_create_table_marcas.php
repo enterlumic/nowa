@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::connection('mysql')->create('marcas', function (Blueprint $table) {
             $table->id();
-            $table->string('Nombre', 30)->nullable();
-            $table->string('Logo', 30)->nullable();
+            $table->string('nombre', 50)->nullable();
+            $table->string('logo', 90)->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->boolean('b_status')->index()->default(1);

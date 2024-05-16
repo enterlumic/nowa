@@ -70,8 +70,8 @@ class marcasController extends Controller
             return json_encode(array("data"=>"" ));
         }
 
-        if (   ( isset($request->buscar_Nombre) && !empty($request->buscar_Nombre) )
-            || ( isset($request->buscar_Logo) && !empty($request->buscar_Logo) )
+        if (   ( isset($request->buscar_nombre) && !empty($request->buscar_nombre) )
+            || ( isset($request->buscar_logo) && !empty($request->buscar_logo) )
         ){
             $buscar= 0;
         }else{
@@ -79,8 +79,8 @@ class marcasController extends Controller
         }
 
         $request->search= isset($request->search["value"]) ? $request->search["value"] : '';
-        $buscar_Nombre= isset($request->buscar_Nombre) ? $request->buscar_Nombre :'';
-        $buscar_Logo= isset($request->buscar_Logo) ? $request->buscar_Logo :'';
+        $buscar_nombre= isset($request->buscar_nombre) ? $request->buscar_nombre :'';
+        $buscar_logo= isset($request->buscar_logo) ? $request->buscar_logo :'';
         $request->start = isset($request->start) ? $request->start : intval(0);
         $request->length= isset( $request->length) ? $request->length : intval(10);
         $request->column= isset( $request->order[0]['column']) ? $request->order[0]['column'] : intval(0);
@@ -90,8 +90,8 @@ class marcasController extends Controller
         $sql= 'CALL sp_get_marcas(
                '.$buscar.'
             , "'.$request->search.'"
-            , "'.$buscar_Nombre.'"
-            , "'.$buscar_Logo.'"
+            , "'.$buscar_nombre.'"
+            , "'.$buscar_logo.'"
             ,  '.$request->start.'
             ,  '.$request->length.'
             ,  '.$request->column.'
@@ -131,8 +131,8 @@ class marcasController extends Controller
             return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla marcas"));
         }
 
-        $data=[ 'Nombre' => isset($request->Nombre)? $request->Nombre:"",
-                'Logo' => isset($request->Logo)? $request->Logo: "",
+        $data=[ 'nombre' => isset($request->nombre)? $request->nombre:"",
+                'logo' => isset($request->logo)? $request->logo: "",
         ];
 
         // Si ya existe solo se actualiza el registro
@@ -156,14 +156,14 @@ class marcasController extends Controller
     public function validar_existencia_marcas(Request $request)
     {
         if ( isset($request->id) && $request->id > 0){
-            $data= marcas::select('Nombre')
-            ->where('Nombre' ,'=', trim($request->Nombre))
+            $data= marcas::select('nombre')
+            ->where('nombre' ,'=', trim($request->nombre))
             ->where('id' ,'<>', $request->id)
             ->where('b_status' ,'>', 0)
             ->get();
         }else{
-            $data= marcas::select('Nombre')
-            ->where('Nombre' ,'=', trim($request->Nombre))
+            $data= marcas::select('nombre')
+            ->where('nombre' ,'=', trim($request->nombre))
             ->get();
         }
 
@@ -195,7 +195,7 @@ class marcasController extends Controller
            $line = $arr[$i];
 
             if (!empty($line)){
-                $data[]=  ['Nombre'=> trim($line)] ;
+                $data[]=  ['nombre'=> trim($line)] ;
             }
         }
 
@@ -213,16 +213,16 @@ class marcasController extends Controller
 
         $results = DB::table('marcas')
             ->Where('id', ' > ', 0)
-            ->OrWhere('Nombre', 'LIKE', '%' . $buscarPor . '%')
+            ->OrWhere('nombre', 'LIKE', '%' . $buscarPor . '%')
             ->select('id'
-                , DB::raw('CONCAT(id, " ", Nombre, " ", Logo ) as Nombre')
+                , DB::raw('CONCAT(id, " ", nombre, " ", logo ) as nombre')
             )
             ->limit(10)
             ->get();
 
         // Formatea los resultados para el selectpicker
         $options = $results->map(function ($item) {
-            return ['id' => $item->id, 'Nombre' =>Str::headline($item->Nombre) ];
+            return ['id' => $item->id, 'nombre' =>Str::headline($item->nombre) ];
         });
 
         return response()->json($options);
@@ -263,8 +263,8 @@ class marcasController extends Controller
 
             foreach ($sheetData as $key => $t) {
 
-                $data_insert[]=  array(  "Nombre"  =>  isset($t[0]) ? $t[0] : ''
-                                        ,"Logo"  =>  isset($t[1]) ? $t[1] : ''
+                $data_insert[]=  array(  "nombre"  =>  isset($t[0]) ? $t[0] : ''
+                                        ,"logo"  =>  isset($t[1]) ? $t[1] : ''
                 );
             }
 
@@ -322,8 +322,8 @@ class marcasController extends Controller
     */
     public function get_marcas_by_id(Request $request)
     {
-        $data= marcas::select('Nombre'
-                                    , 'Logo'
+        $data= marcas::select('nombre'
+                                    , 'logo'
         )->where('id', $request->id)->get();
 
         if ( $data->count() > 0 ){
@@ -344,8 +344,8 @@ class marcasController extends Controller
     public function get_cat_marcas(Request $request)
     {
         $data= marcas::select(  'id'
-                                    , 'Nombre'
-                                    , 'Logo'
+                                    , 'nombre'
+                                    , 'logo'
                                 )->where('b_status', 1)->get();
 
         if ( $data->count() > 0 ){
@@ -370,7 +370,7 @@ class marcasController extends Controller
         }
 
         $data= DB::table("marcas")
-        ->select("id", "Nombre", "Logo")
+        ->select("id", "nombre", "logo")
         ->where("marcas.b_status", ">", 0)
         ->limit(50)
         ->orderBy("marcas.id","desc")
@@ -382,8 +382,8 @@ class marcasController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    'id_marcas'=> $value->id
-                                , 'Nombre'=>$value->Nombre
-                                , 'Logo'=>$value->Logo
+                                , 'nombre'=>$value->nombre
+                                , 'logo'=>$value->logo
                 );
             }
 
@@ -411,8 +411,8 @@ class marcasController extends Controller
         }
 
         $data= marcas::select(  "id"
-                                    , "Nombre"
-                                    , "Logo"
+                                    , "nombre"
+                                    , "logo"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -420,8 +420,8 @@ class marcasController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    $value->id
-                                , $value->Nombre
-                                , $value->Logo
+                                , $value->nombre
+                                , $value->logo
                 );
             }
             return json_encode(array("b_status"=> true, "data" => $arr ));
@@ -445,8 +445,8 @@ class marcasController extends Controller
         }
 
         $data= marcas::select("id"
-                                    , "Nombre"
-                                    , "Logo"
+                                    , "nombre"
+                                    , "logo"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -454,8 +454,8 @@ class marcasController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr_data[]= array(   $value->id
-                                    , $value->Nombre
-                                    , $value->Logo
+                                    , $value->nombre
+                                    , $value->logo
                 );
             }
 

@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::connection('mysql')->getConnection()->statement('
             CREATE PROCEDURE sp_get_marcas(   b_filtro_like bool
                                                     , vc_string_filtro varchar(100)
-                                                    , buscar_Nombre varchar(100)
-                                                    , buscar_Logo varchar(100)
+                                                    , buscar_nombre varchar(100)
+                                                    , buscar_logo varchar(100)
                                                     , i_limit_init int
                                                     , i_limit_end int
                                                     , i_colum_order int
@@ -29,30 +29,30 @@ return new class extends Migration
 
                 SET vc_column_order=CASE 
                                     WHEN i_colum_order=0 THEN CONCAT(" ORDER BY id ",vc_order_direct)
-                                    WHEN i_colum_order=1 THEN CONCAT(" ORDER BY Nombre ",vc_order_direct)
-                                    WHEN i_colum_order=2 THEN CONCAT(" ORDER BY Logo ",vc_order_direct)
+                                    WHEN i_colum_order=1 THEN CONCAT(" ORDER BY nombre ",vc_order_direct)
+                                    WHEN i_colum_order=2 THEN CONCAT(" ORDER BY logo ",vc_order_direct)
                                     ELSE ""
                 END;
 
                 SET @_QUERY:=CONCAT("SELECT   id
-                                            , Nombre
-                                            , Logo
+                                            , nombre
+                                            , logo
                                         FROM marcas 
                                         WHERE marcas.b_status > 0 "
                 );
 
                 IF(b_filtro_like=true) THEN BEGIN
 
-                    SET @_QUERY:=CONCAT(@_QUERY, " AND (Nombre LIKE \'%",TRIM(vc_string_filtro),"%\'");
-                    SET @_QUERY:=CONCAT(@_QUERY, " OR  Logo LIKE \'%",TRIM(vc_string_filtro),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " AND (nombre LIKE \'%",TRIM(vc_string_filtro),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " OR  logo LIKE \'%",TRIM(vc_string_filtro),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " )");
 
                 END; END IF;
 
                 IF(b_filtro_like = false) THEN BEGIN
 
-                    SET @_QUERY:=CONCAT(@_QUERY, " AND (Nombre LIKE \'%",TRIM(buscar_Nombre),"%\'");
-                    SET @_QUERY:=CONCAT(@_QUERY, " AND  Logo LIKE \'%",TRIM(buscar_Logo),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " AND (nombre LIKE \'%",TRIM(buscar_nombre),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " AND  logo LIKE \'%",TRIM(buscar_logo),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " )");
 
                 END; END IF;

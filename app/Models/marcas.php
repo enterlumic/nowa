@@ -10,8 +10,8 @@ class marcas extends Model
     public $table = "marcas";
     // protected $connection = 'other_bd'; // Descomentar esta linea y agregar la bd que se requiere...
     protected $fillable =   [     'id'
-                                , 'Nombre'
-                                , 'Logo'
+                                , 'nombre'
+                                , 'logo'
                                 , 'b_status'
                             ];
 

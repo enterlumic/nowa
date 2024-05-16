@@ -8,7 +8,6 @@ let marcas = {
         marcas.fn_datatable_marcas(rango_fecha='');
         marcas.fn_scroll_marcas();
         marcas.fn_importar_excel_marcas();
-        marcas.fn_truncatemarcas();
 
         // Funciones para eventos
         marcas.fn_modalShowmarcas();
@@ -36,8 +35,6 @@ let marcas = {
         // set_import_marcas
 
         // Truncate table útil para hacer pruebas
-        // truncate_marcas
-        // truncate_sps_marcas
 
         // Trar una lista por si se ocupa como un catalogo util para llenar un combo
         // get_cat_marcas
@@ -71,8 +68,8 @@ let marcas = {
                 "url": "get_marcas_datatable",
                 "type": "GET",
                 "data": function(d) {
-                    d.buscar_Nombre = $('#buscar_Nombre').val();
-                    d.buscar_Logo = $('#buscar_Logo').val();
+                    d.buscar_nombre = $('#buscar_nombre').val();
+                    d.buscar_logo = $('#buscar_logo').val();
                     // Añade aquí más datos de búsqueda si es necesario
                 },
                 "headers": {
@@ -149,8 +146,8 @@ let marcas = {
 
             "columns": [
                 { "data": "id" , visible: true},
-                { "data": "Nombre", class: "Nombre"},
-                { "data": "Logo", class: "Logo" },
+                { "data": "nombre", class: "nombre"},
+                { "data": "logo", class: "logo" },
             ],
 
             "columnDefs": [
@@ -174,20 +171,20 @@ let marcas = {
         });
 
         // Evento de clic en las filas de la tabla
-        $('#get_marcas_datatable tbody').on('click', 'tr .Nombre', function () {
+        $('#get_marcas_datatable tbody').on('click', 'tr .nombre', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            marcas.fn_copyToClipboardmarcas(data.Nombre);
+            marcas.fn_copyToClipboardmarcas(data.nombre);
         });
 
-        $('#get_marcas_datatable tbody').on('click', 'tr .Logo', function () {
+        $('#get_marcas_datatable tbody').on('click', 'tr .logo', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            marcas.fn_copyToClipboardmarcas(data.Logo);
+            marcas.fn_copyToClipboardmarcas(data.logo);
         });
 
         // FIN Evento de clic en las filas de la tabla
@@ -329,13 +326,13 @@ let marcas = {
                 });
             }
             , rules: {
-              Nombre: {
+              nombre: {
                 required: true
               }
             }
             , messages: {
-                Nombre: {
-                    minlength: "El Nombre es requerido"
+                nombre: {
+                    minlength: "El nombre es requerido"
                 }
               }
         });
@@ -386,13 +383,13 @@ let marcas = {
                 });
             }
             , rules: {
-              Nombre: {
+              nombre: {
                 required: true
               }
             }
             , messages: {
-                Nombre: {
-                    minlength: "Mensaje personalizado Nombre"
+                nombre: {
+                    minlength: "Mensaje personalizado nombre"
                 }
               }
         });
@@ -400,7 +397,7 @@ let marcas = {
 
     fn_modalShowmarcas: function () {
         $('#modalFormIUmarcas').on('shown.bs.modal', function (e) {
-            $('#Nombre', e.target).focus();
+            $('#nombre', e.target).focus();
         });
 
         $('#modalImportFormmarcas').on('shown.bs.modal', function (e) {
@@ -461,39 +458,7 @@ let marcas = {
 
         });
     },
-
-    fn_truncatemarcas: function () {
-        $(document).on("click", "#truncate_marcas", function () {
-            $.ajax({
-                url:"truncate_marcas",
-                cache: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                success: function(response)
-                {
-                    if ($("#get_marcas_datatable").length){
-                        $('#get_marcas_datatable').DataTable().ajax.reload();
-                    }
-                }
-            });
-        });
-
-        $(document).on("click", "#truncate_sps_marcas", function () {
-            $.ajax({
-                url:"truncate_sps_marcas",
-                cache: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                success: function(response)
-                {
-                    if ($("#get_marcas_datatable").length){
-                        $('#get_marcas_datatable').DataTable().ajax.reload();
-                    }
-                }
-            });
-        });
-    },
-
+    
     fn_importar_excel_marcas: function() {
 
         // si no existe el elemento terminar...
@@ -682,7 +647,7 @@ let marcas = {
                         // #id_cat_marcas' 
 
                         if ($("#id_cat_marcas").length){
-                            $("#id_cat_marcas").append("<option value="+j['id']+"> "+j['Nombre']+" </option>");
+                            $("#id_cat_marcas").append("<option value="+j['id']+"> "+j['nombre']+" </option>");
                         }
                     });
                 }
@@ -693,7 +658,7 @@ let marcas = {
 
     fn_set_validar_existencia_marcas: function(){
 
-        $( "#Nombre" ).keyup(function( event ) {
+        $( "#nombre" ).keyup(function( event ) {
 
             var id=0;
             // Si se esta editando return
@@ -701,18 +666,18 @@ let marcas = {
                 id= $("#modalFormIUmarcas #id").val();
             }
 
-            let Nombre= this.value;
+            let nombre= this.value;
 
-            if(Nombre ==""){
+            if(nombre ==""){
                 $("#modalFormIUmarcas .btn-action-form").attr("disabled",false);
-                $("#Nombre").removeClass("border-danger").removeClass("text-danger");
+                $("#nombre").removeClass("border-danger").removeClass("text-danger");
                 $(".tipo-ya-existe").addClass("d-none");
                 return;
             }
 
             $.ajax({
                 url: "validar_existencia_marcas",
-                data: { Nombre: Nombre, id: id},
+                data: { nombre: nombre, id: id},
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type: 'GET',
                 contentType: "application/json",
@@ -722,11 +687,11 @@ let marcas = {
 
                     if (json['b_status']) {
                         $("#modalFormIUmarcas .btn-action-form").attr("disabled",true);
-                        $("#Nombre").addClass("border-danger").addClass("text-danger");
+                        $("#nombre").addClass("border-danger").addClass("text-danger");
                         $(".tipo-ya-existe").removeClass("d-none");
                     } else {
                         $("#modalFormIUmarcas .btn-action-form").attr("disabled",false);
-                        $("#Nombre").removeClass("border-danger").removeClass("text-danger");
+                        $("#nombre").removeClass("border-danger").removeClass("text-danger");
                         $(".tipo-ya-existe").addClass("d-none");
                     }
                 },

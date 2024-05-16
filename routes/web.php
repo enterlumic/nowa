@@ -44,6 +44,19 @@ require __DIR__.'/auth.php';
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 use App\Http\Controllers\marcasController;
 Route::get('marcas', [marcasController::class, 'index'])->middleware('auth') ;
 Route::post('set_marcas', [marcasController::class, 'set_marcas']);
