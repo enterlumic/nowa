@@ -53,22 +53,6 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane" id="tab-scroll" role="tabpanel">
-                        <div ng-app='app-scroll-marcas' ng-controller='ControllerScroll'>
-                            <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
-                                <div class="row">
-                                    <ul class="list-group">
-                                        <div ng-repeat='item in reddit.items' class="col-xl-3 col-md-3 col-sm-3 col-xs-3">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                @{{item.nombre }} <span class="badge bg-success">@{{item.id_marcas}}</span>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div ng-show='reddit.busy'>Cargando...</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
