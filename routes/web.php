@@ -47,3 +47,22 @@ Route::get('get_marcas_diez', [marcasController::class, 'get_marcas_diez']);
 Route::get('descargar_plantilla_marcas', [marcasController::class, 'descargar_plantilla_marcas']);
 Route::get('validar_existencia_marcas', [marcasController::class, 'validar_existencia_marcas']);
 
+
+use App\Http\Controllers\ClienteConektaController;
+Route::get('cliente_conekta', [ClienteConektaController::class, 'index'])->middleware('auth') ;
+Route::post('set_cliente_conekta', [ClienteConektaController::class, 'set_cliente_conekta']);
+Route::post('set_import_cliente_conekta', [ClienteConektaController::class, 'set_import_cliente_conekta']);
+Route::post('get_cliente_conekta_by_id', [ClienteConektaController::class, 'get_cliente_conekta_by_id']);
+Route::post('delete_cliente_conekta', [ClienteConektaController::class, 'delete_cliente_conekta']);
+Route::post('undo_delete_cliente_conekta', [ClienteConektaController::class, 'undo_delete_cliente_conekta']);
+Route::get('get_cliente_conekta_datatable', [ClienteConektaController::class, 'get_cliente_conekta_datatable']);
+Route::post('truncate_cliente_conekta', [ClienteConektaController::class, 'truncate_cliente_conekta']);
+Route::post('truncate_sps_cliente_conekta', [ClienteConektaController::class, 'truncate_sps_cliente_conekta']);
+Route::post('form_importar_cliente_conekta', [ClienteConektaController::class, 'form_importar_cliente_conekta']);
+Route::get('export_excel_cliente_conekta', [ClienteConektaController::class, 'export_excel_cliente_conekta']);
+Route::post('get_cat_cliente_conekta', [ClienteConektaController::class, 'get_cat_cliente_conekta']);
+Route::post('get_cliente_conekta_by_list', [ClienteConektaController::class, 'get_cliente_conekta_by_list']);
+Route::get('get_cliente_conekta_diez', [ClienteConektaController::class, 'get_cliente_conekta_diez']);
+Route::get('descargar_plantilla_cliente_conekta', [ClienteConektaController::class, 'descargar_plantilla_cliente_conekta']);
+Route::get('validar_existencia_cliente_conekta', [ClienteConektaController::class, 'validar_existencia_cliente_conekta']);
+
