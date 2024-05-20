@@ -1,3 +1,9 @@
+@php
+    // Esta funcion no se ocupa solo lo ocupo como atajo
+    // en sublime con F12 puedes llegar a esta vista
+
+    function import_cliente_conekta(){}
+@endphp
 <div id="modalImportFormclienteConekta" class="modal fade" tabindex="-1" aria-labelledby="modalImportFormclienteConektaLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">

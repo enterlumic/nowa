@@ -12,8 +12,8 @@ class ConektaService
 {
     public function __construct()
     {
-        Conekta::setApiKey(env('key_JUZKEHsiTxsXZLYPSaMxkQA'));
-        Conekta::setApiVersion(env('key_nxSOPQNfh4jUCLVngpQ9s7r'));
+        Conekta::setApiKey(env('CONEKTA_PRIVATE_KEY'));
+        Conekta::setApiVersion(env('CONEKTA_API_VERSION'));
     }
 
     public function createCustomer($customerData)

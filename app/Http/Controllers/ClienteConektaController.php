@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\Services\ConektaService;
 use Illuminate\Support\Facades\Storage;
 use App\Models\clienteConekta;
+use App\Services\ConektaService;
 use App\Lib\LibCore;
 use Session;
 
@@ -39,7 +39,6 @@ class ClienteConektaController extends Controller
     |
     */
     public function __construct(ConektaService $conektaService){
-    // public function __construct(){
         $this->LibCore = new LibCore();
         $this->conektaService = $conektaService;
     }
@@ -75,9 +74,10 @@ class ClienteConektaController extends Controller
         }
 
         if (   ( isset($request->buscar_name) && !empty($request->buscar_name) )
-            || ( isset($request->buscar_email) && !empty($request->buscar_email) )
-            || ( isset($request->buscar_phone) && !empty($request->buscar_phone) )
-            || ( isset($request->buscar_token_id) && !empty($request->buscar_token_id) )
+            || ( isset($request->buscar_number) && !empty($request->buscar_number) )
+            || ( isset($request->buscar_cvc) && !empty($request->buscar_cvc) )
+            || ( isset($request->buscar_exp_month) && !empty($request->buscar_exp_month) )
+            || ( isset($request->buscar_exp_year) && !empty($request->buscar_exp_year) )
         ){
             $buscar= 0;
         }else{
@@ -86,9 +86,10 @@ class ClienteConektaController extends Controller
 
         $request->search= isset($request->search["value"]) ? $request->search["value"] : '';
         $buscar_name= isset($request->buscar_name) ? $request->buscar_name :'';
-        $buscar_email= isset($request->buscar_email) ? $request->buscar_email :'';
-        $buscar_phone= isset($request->buscar_phone) ? $request->buscar_phone :'';
-        $buscar_token_id= isset($request->buscar_token_id) ? $request->buscar_token_id :'';
+        $buscar_number= isset($request->buscar_number) ? $request->buscar_number :'';
+        $buscar_cvc= isset($request->buscar_cvc) ? $request->buscar_cvc :'';
+        $buscar_exp_month= isset($request->buscar_exp_month) ? $request->buscar_exp_month :'';
+        $buscar_exp_year= isset($request->buscar_exp_year) ? $request->buscar_exp_year :'';
         $request->start = isset($request->start) ? $request->start : intval(0);
         $request->length= isset( $request->length) ? $request->length : intval(10);
         $request->column= isset( $request->order[0]['column']) ? $request->order[0]['column'] : intval(0);
@@ -99,9 +100,10 @@ class ClienteConektaController extends Controller
                '.$buscar.'
             , "'.$request->search.'"
             , "'.$buscar_name.'"
-            , "'.$buscar_email.'"
-            , "'.$buscar_phone.'"
-            , "'.$buscar_token_id.'"
+            , "'.$buscar_number.'"
+            , "'.$buscar_cvc.'"
+            , "'.$buscar_exp_month.'"
+            , "'.$buscar_exp_year.'"
             ,  '.$request->start.'
             ,  '.$request->length.'
             ,  '.$request->column.'
@@ -131,11 +133,10 @@ class ClienteConektaController extends Controller
     */
     public function set_cliente_conekta(Request $request)
     {
-
         $customerData = [
-            'name'  => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
+            'name'  => Auth::user()->name,
+            'email' => Auth::user()->email,
+            'phone' => "8187074784",
             'payment_sources' => [
                 [
                     'type' => 'card',
@@ -143,7 +144,6 @@ class ClienteConektaController extends Controller
                 ]
             ]
         ];
-        dd($customerData);
 
         try {
             $customer = $this->conektaService->createCustomer($customerData);
@@ -151,8 +151,6 @@ class ClienteConektaController extends Controller
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
-
 
         if(!\Schema::hasTable('cliente_conekta')){
             Notification::route('mail', ['odin0464@gmail.com'])->notify(
@@ -165,9 +163,10 @@ class ClienteConektaController extends Controller
         }
 
         $data=[ 'name' => isset($request->name)? $request->name:"",
-                'email' => isset($request->email)? $request->email: "",
-                'phone' => isset($request->phone)? $request->phone: "",
-                'token_id' => isset($request->token_id)? $request->token_id: "",
+                'number' => isset($request->number)? $request->number: "",
+                'cvc' => isset($request->cvc)? $request->cvc: "",
+                'exp_month' => isset($request->exp_month)? $request->exp_month: "",
+                'exp_year' => isset($request->exp_year)? $request->exp_year: "",
         ];
 
         // Si ya existe solo se actualiza el registro
@@ -250,7 +249,7 @@ class ClienteConektaController extends Controller
             ->Where('id', ' > ', 0)
             ->OrWhere('name', 'LIKE', '%' . $buscarPor . '%')
             ->select('id'
-                , DB::raw('CONCAT(id, " ", name, " ", email ) as name')
+                , DB::raw('CONCAT(id, " ", name, " ", number ) as name')
             )
             ->limit(10)
             ->get();
@@ -299,9 +298,10 @@ class ClienteConektaController extends Controller
             foreach ($sheetData as $key => $t) {
 
                 $data_insert[]=  array(  "name"  =>  isset($t[0]) ? $t[0] : ''
-                                        ,"email"  =>  isset($t[1]) ? $t[1] : ''
-                                        ,"phone"  =>  isset($t[2]) ? $t[2] : ''
-                                        ,"token_id"  =>  isset($t[3]) ? $t[3] : ''
+                                        ,"number"  =>  isset($t[1]) ? $t[1] : ''
+                                        ,"cvc"  =>  isset($t[2]) ? $t[2] : ''
+                                        ,"exp_month"  =>  isset($t[3]) ? $t[3] : ''
+                                        ,"exp_year"  =>  isset($t[4]) ? $t[4] : ''
                 );
             }
 
@@ -329,9 +329,10 @@ class ClienteConektaController extends Controller
             $nombre_archivo= 'plantilla_cliente_conekta.xlsx';
 
             $title[]= [  "Name"
-                        ,"Email"
-                        ,"Phone"
-                        ,"Token_Id"
+                        ,"Number"
+                        ,"Cvc"
+                        ,"Exp_Month"
+                        ,"Exp_Year"
                     ];
 
             $arr_data= $title;
@@ -362,9 +363,10 @@ class ClienteConektaController extends Controller
     public function get_cliente_conekta_by_id(Request $request)
     {
         $data= clienteConekta::select('name'
-                                    , 'email'
-                                    , 'phone'
-                                    , 'token_id'
+                                    , 'number'
+                                    , 'cvc'
+                                    , 'exp_month'
+                                    , 'exp_year'
         )->where('id', $request->id)->get();
 
         if ( $data->count() > 0 ){
@@ -386,9 +388,9 @@ class ClienteConektaController extends Controller
     {
         $data= clienteConekta::select(  'id'
                                     , 'name'
-                                    , 'email'
-                                    , 'phone'
-                                    , 'token_id'
+                                    , 'number'
+                                    , 'cvc'
+                                    , 'exp_month'
                                 )->where('b_status', 1)->get();
 
         if ( $data->count() > 0 ){
@@ -413,7 +415,7 @@ class ClienteConektaController extends Controller
         }
 
         $data= DB::table("cliente_conekta")
-        ->select("id", "name", "email")
+        ->select("id", "name", "number")
         ->where("cliente_conekta.b_status", ">", 0)
         ->limit(50)
         ->orderBy("cliente_conekta.id","desc")
@@ -426,7 +428,7 @@ class ClienteConektaController extends Controller
             foreach ($data as $key => $value) {
                 $arr[]= array(    'id_cliente_conekta'=> $value->id
                                 , 'name'=>$value->name
-                                , 'email'=>$value->email
+                                , 'number'=>$value->number
                 );
             }
 
@@ -455,9 +457,10 @@ class ClienteConektaController extends Controller
 
         $data= clienteConekta::select(  "id"
                                     , "name"
-                                    , "email"
-                                    , "phone"
-                                    , "token_id"
+                                    , "number"
+                                    , "cvc"
+                                    , "exp_month"
+                                    , "exp_year"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -466,9 +469,10 @@ class ClienteConektaController extends Controller
             foreach ($data as $key => $value) {
                 $arr[]= array(    $value->id
                                 , $value->name
-                                , $value->email
-                                , $value->phone
-                                , $value->token_id
+                                , $value->number
+                                , $value->cvc
+                                , $value->exp_month
+                                , $value->exp_year
                 );
             }
             return json_encode(array("b_status"=> true, "data" => $arr ));
@@ -493,9 +497,10 @@ class ClienteConektaController extends Controller
 
         $data= clienteConekta::select("id"
                                     , "name"
-                                    , "email"
-                                    , "phone"
-                                    , "token_id"
+                                    , "number"
+                                    , "cvc"
+                                    , "exp_month"
+                                    , "exp_year"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -504,9 +509,10 @@ class ClienteConektaController extends Controller
             foreach ($data as $key => $value) {
                 $arr_data[]= array(   $value->id
                                     , $value->name
-                                    , $value->email
-                                    , $value->phone
-                                    , $value->token_id
+                                    , $value->number
+                                    , $value->cvc
+                                    , $value->exp_month
+                                    , $value->exp_year
                 );
             }
 
@@ -514,9 +520,10 @@ class ClienteConektaController extends Controller
 
             $title[]= [  "id"
                         ,"Name"
-                        ,"Email"
-                        ,"Phone"
-                        ,"Token_Id"
+                        ,"Number"
+                        ,"Cvc"
+                        ,"Exp_Month"
+                        ,"Exp_Year"
                     ];
 
             $arr_data= array_merge($title, $arr_data);

@@ -25,7 +25,6 @@
                                 <button id="truncate_cliente_conekta" class="btn btn-danger">Truncate</button>
                                 <button id="refresh_cliente_conekta" class="btn btn-success">Actualizar</button>
                                 <button id="add_new_cliente_conekta" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUclienteConekta">Nuevo</button>
-                                <!-- <button id="add_new_cliente_conekta" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormIUclienteConekta" data-backdrop="static" data-keyboard="false">Nuevo</button> -->
                                 <button id="import_cliente_conekta" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormclienteConekta">Importar</button>
                             </div>
                         </div>
@@ -37,9 +36,10 @@
                                             <tr>
                                                 <th style="width: 5%">id</th>
                                                 <th >Name</th>
-                                                <th >Email</th>
-                                                <th >Phone</th>
-                                                <th >Token_Id</th>
+                                                <th >Number</th>
+                                                <th >Cvc</th>
+                                                <th >Exp_Month</th>
+                                                <th >Exp_Year</th>
                                                 <th style="width: 9%">Acción</th>
                                             </tr>
                                         </thead>
@@ -47,9 +47,10 @@
                                             <tr>
                                                 <th></th>
                                                 <th class="name"><input type="text" id="buscar_name" placeholder="Buscar por name"></th>
-                                                <th class="email"><input type="text" id="buscar_email" placeholder="Buscar por email"></th>
-                                                <th class="phone"><input type="text" id="buscar_phone" placeholder="Buscar por phone"></th>
-                                                <th class="token_id"><input type="text" id="buscar_token_id" placeholder="Buscar por token_id"></th>
+                                                <th class="number"><input type="text" id="buscar_number" placeholder="Buscar por number"></th>
+                                                <th class="cvc"><input type="text" id="buscar_cvc" placeholder="Buscar por cvc"></th>
+                                                <th class="exp_month"><input type="text" id="buscar_exp_month" placeholder="Buscar por exp_month"></th>
+                                                <th class="exp_year"><input type="text" id="buscar_exp_year" placeholder="Buscar por exp_year"></th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -59,6 +60,22 @@
                         </div>
 
                     </div>
+                    <div class="tab-pane" id="tab-scroll" role="tabpanel">
+                        <div ng-app='app-scroll-cliente_conekta' ng-controller='ControllerScroll'>
+                            <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
+                                <div class="row">
+                                    <ul class="list-group">
+                                        <div ng-repeat='item in reddit.items' class="col-xl-3 col-md-3 col-sm-3 col-xs-3">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                @{{item.name }} <span class="badge bg-success">@{{item.id_cliente_conekta}}</span>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </div>
+                                <div ng-show='reddit.busy'>Cargando...</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,9 +84,11 @@
     <div class="div-modals">
 
         {{-- Modal para Agregar o modificar un nuevo registro  --}}
+        {{-- add_cliente_conekta  // en sublime F12 te lleva al .blade --}}
         @include('modals.add_cliente_conekta')
 
         {{-- Modal para descargar platilla, importar desde un excel, o pegar una lista de registro en text area  --}}
+        {{-- import_cliente_conekta --}}
         @include('modals.import_cliente_conekta')
 
     </div>
@@ -78,3 +97,4 @@
 
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
 <script src="assets/js/core_js/cliente_conekta.js?{{ rand() }}"></script>
+{{-- fn_conekta --}}

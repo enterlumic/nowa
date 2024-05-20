@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::connection('mysql')->create('cliente_conekta', function (Blueprint $table) {
             $table->id();
             $table->string('name', 30)->nullable();
-            $table->string('email', 30)->nullable();
-            $table->string('phone', 30)->nullable();
-            $table->string('token_id', 30)->nullable();
+            $table->string('number', 30)->nullable();
+            $table->string('cvc', 30)->nullable();
+            $table->string('exp_month', 30)->nullable();
+            $table->string('exp_year', 30)->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->boolean('b_status')->index()->default(1);

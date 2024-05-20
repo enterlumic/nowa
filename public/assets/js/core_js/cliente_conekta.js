@@ -1,10 +1,11 @@
+Conekta.setPublicKey('tu_llave_publica'); // Reemplaza con tu llave pública
+
 let clienteConekta = {
 
     init: function () {
 
-        Conekta.setPublicKey('key_JUZKEHsiTxsXZLYPSaMxkQA');
-
         // Funciones principales
+        clienteConekta.fn_conekta();
         clienteConekta.fn_set_cliente_conekta();
         clienteConekta.fn_set_import_cliente_conekta();
         clienteConekta.fn_datatable_cliente_conekta(rango_fecha='');
@@ -74,9 +75,10 @@ let clienteConekta = {
                 "type": "GET",
                 "data": function(d) {
                     d.buscar_name = $('#buscar_name').val();
-                    d.buscar_email = $('#buscar_email').val();
-                    d.buscar_phone = $('#buscar_phone').val();
-                    d.buscar_token_id = $('#buscar_token_id').val();
+                    d.buscar_number = $('#buscar_number').val();
+                    d.buscar_cvc = $('#buscar_cvc').val();
+                    d.buscar_exp_month = $('#buscar_exp_month').val();
+                    d.buscar_exp_year = $('#buscar_exp_year').val();
                     // Añade aquí más datos de búsqueda si es necesario
                 },
                 "headers": {
@@ -154,9 +156,10 @@ let clienteConekta = {
             "columns": [
                 { "data": "id" , visible: true},
                 { "data": "name", class: "name"},
-                { "data": "email", class: "email" },
-                { "data": "phone", class: "phone" },
-                { "data": "token_id", class: "token_id" },
+                { "data": "number", class: "number" },
+                { "data": "cvc", class: "cvc" },
+                { "data": "exp_month", class: "exp_month" },
+                { "data": "exp_year", class: "exp_year" },
             ],
 
             "columnDefs": [
@@ -188,29 +191,38 @@ let clienteConekta = {
             clienteConekta.fn_copyToClipboardclienteConekta(data.name);
         });
 
-        $('#get_cliente_conekta_datatable tbody').on('click', 'tr .email', function () {
+        $('#get_cliente_conekta_datatable tbody').on('click', 'tr .number', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            clienteConekta.fn_copyToClipboardclienteConekta(data.email);
+            clienteConekta.fn_copyToClipboardclienteConekta(data.number);
         });
 
-        $('#get_cliente_conekta_datatable tbody').on('click', 'tr .phone', function () {
+        $('#get_cliente_conekta_datatable tbody').on('click', 'tr .cvc', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            clienteConekta.fn_copyToClipboardclienteConekta(data.phone);
+            clienteConekta.fn_copyToClipboardclienteConekta(data.cvc);
         });
 
-        $('#get_cliente_conekta_datatable tbody').on('click', 'tr .token_id', function () {
+        $('#get_cliente_conekta_datatable tbody').on('click', 'tr .exp_month', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            clienteConekta.fn_copyToClipboardclienteConekta(data.token_id);
+            clienteConekta.fn_copyToClipboardclienteConekta(data.exp_month);
         });
+
+        $('#get_cliente_conekta_datatable tbody').on('click', 'tr .exp_year', function () {
+            // Obtener los datos de la fila en la que se hizo clic
+            let data = table.row(this).data();
+
+            // Copiar el valor del email al portapapeles
+            clienteConekta.fn_copyToClipboardclienteConekta(data.exp_year);
+        });
+
         // FIN Evento de clic en las filas de la tabla
         //////////////////////////////////////////////////////////////////////
 
@@ -306,60 +318,110 @@ let clienteConekta = {
         document.body.removeChild(tempInput);
     },
 
+    fn_conekta: function() {
+
+        Conekta.setPublicKey('key_JUZKEHsiTxsXZLYPSaMxkQA');
+
+        var conektaSuccessResponseHandler = function(token) {
+            var $form = $("#form_cliente_conekta");
+            $form.append($('<input type="text" name="conektaTokenId" />').val(token.id));
+            $form.get(0).submit();
+        };
+
+        var conektaErrorResponseHandler = function(response) {
+            var $form = $("#form_cliente_conekta");
+            $form.find(".card-errors").text(response.message_to_purchaser);
+            $form.find("button").prop("disabled", false);
+        };
+
+        // $(function() {
+        //   $("#form_cliente_conekta").submit(function(event) {
+        //     var $form = $(this);
+        //     // Previene hacer submit más de una vez
+        //     $form.find("button").prop("disabled", true);
+        //     console.log("1", 1);
+        //     Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
+        //     return false;
+        //   });
+        // });     
+    },
+
     fn_set_cliente_conekta: function () {
+
         $("#form_cliente_conekta").validate({
             submitHandler: function (form) {
                 let get_form = document.getElementById("form_cliente_conekta");
-                let postData = new FormData(get_form);
+                let element_by_id = 'form_cliente_conekta';
+                let message = 'Cargando...';
+                let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
 
-                let element_by_id= 'form_cliente_conekta';
-                let message=  'Cargando...' ;
-                let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
+                // Inicia la generación del token de Conekta
+                Conekta.Token.create(get_form, clienteConekta.conektaSuccessResponseHandler, clienteConekta.conektaErrorResponseHandler);
 
-                $.ajax({
-                    url: "set_cliente_conekta",
-                    data: postData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type: 'POST',
-                    success: function (response) {
-
-                        $loading.waitMe('hide');
-
-                        let json ='';
-                        try {
-                            json = JSON.parse(response);
-                        } catch (e) {
-                            alert(response);
-                            return;
-                        }
-
-                        if (json["b_status"]) {
-                            $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_cliente_conekta").reset();
-                            $('#modalFormIUclienteConekta').modal('hide');
-                        } else {
-                            alert(json);
-                        }
-                    },
-                    error: function (response) {
-                        $loading.waitMe('hide');
-                    }
-                });
-            }
-            , rules: {
-              name: {
-                required: true
-              }
-            }
-            , messages: {
+                return false; // Previene el envío automático del formulario
+            },
+            rules: {
                 name: {
-                    minlength: "El name es requerido"
+                    required: true
                 }
-              }
+            },
+            messages: {
+                  name: {
+                      minlength: "El name es requerido"
+                  }
+            }
         });
+
+    },
+
+    conektaSuccessResponseHandler: function (token) {
+        let get_form = document.getElementById("form_cliente_conekta");
+        // Añadir el token al formulario
+        $(get_form).append($('<input type="hidden" name="token_id" />').val(token.id));
+        // Ahora enviar el formulario al backend
+        let postData = new FormData(get_form);
+        let element_by_id = 'form_cliente_conekta';
+        let message = 'Cargando...';
+        let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
+
+        $.ajax({
+            url: "set_cliente_conekta",
+            data: postData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            success: function (response) {
+                $loading.waitMe('hide');
+                let json = '';
+                try {
+                    json = JSON.parse(response);
+                } catch (e) {
+                    alert(response);
+                    return;
+                }
+                if (json["b_status"]) {
+                    $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
+                    document.getElementById("form_cliente_conekta").reset();
+                    $('#modalFormIUclienteConekta').modal('hide');
+                } else {
+                    alert(json);
+                }
+            },
+            error: function (response) {
+                $loading.waitMe('hide');
+            }
+        });
+    },
+
+    conektaErrorResponseHandler: function (response) {
+        let get_form = document.getElementById("form_cliente_conekta");
+        $(get_form).find(".card-errors").text(response.message_to_purchaser);
+        $(get_form).find("button").prop("disabled", false);
+        let element_by_id = 'form_cliente_conekta';
+        let $loading = LibreriaGeneral.f_cargando(element_by_id, 'Cargando...');
+        $loading.waitMe('hide');
     },
 
     fn_set_import_cliente_conekta: function () {

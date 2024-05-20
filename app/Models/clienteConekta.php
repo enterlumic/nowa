@@ -11,9 +11,10 @@ class clienteConekta extends Model
     // protected $connection = 'other_bd'; // Descomentar esta linea y agregar la bd que se requiere...
     protected $fillable =   [     'id'
                                 , 'name'
-                                , 'email'
-                                , 'phone'
-                                , 'token_id'
+                                , 'number'
+                                , 'cvc'
+                                , 'exp_month'
+                                , 'exp_year'
                                 , 'b_status'
                             ];
 
