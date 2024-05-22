@@ -21,11 +21,8 @@
                         <div class=" d-flex align-items-center">
                             <h5 class="mb-0 flex-grow-1"></h5>
                             <div>
-                                <button id="truncate_sps_cliente_conekta" class="btn btn-danger">Truncate SPS</button>
-                                <button id="truncate_cliente_conekta" class="btn btn-danger">Truncate</button>
                                 <button id="refresh_cliente_conekta" class="btn btn-success">Actualizar</button>
                                 <button id="add_new_cliente_conekta" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUclienteConekta">Nuevo</button>
-                                <button id="import_cliente_conekta" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormclienteConekta">Importar</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -60,22 +57,6 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane" id="tab-scroll" role="tabpanel">
-                        <div ng-app='app-scroll-cliente_conekta' ng-controller='ControllerScroll'>
-                            <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
-                                <div class="row">
-                                    <ul class="list-group">
-                                        <div ng-repeat='item in reddit.items' class="col-xl-3 col-md-3 col-sm-3 col-xs-3">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                @{{item.name }} <span class="badge bg-success">@{{item.id_cliente_conekta}}</span>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div ng-show='reddit.busy'>Cargando...</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -86,10 +67,6 @@
         {{-- Modal para Agregar o modificar un nuevo registro  --}}
         {{-- add_cliente_conekta  // en sublime F12 te lleva al .blade --}}
         @include('modals.add_cliente_conekta')
-
-        {{-- Modal para descargar platilla, importar desde un excel, o pegar una lista de registro en text area  --}}
-        {{-- import_cliente_conekta --}}
-        @include('modals.import_cliente_conekta')
 
     </div>
     <!-- .div-modals -->

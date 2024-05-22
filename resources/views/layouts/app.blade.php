@@ -29,6 +29,8 @@
         <link rel="stylesheet" href="assets/libs/@simonwep/pickr/themes/nano.min.css">
         <!-- Choices Css -->
         <link rel="stylesheet" href="assets/libs/choices.js/public/assets/styles/choices.min.css">
+    
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

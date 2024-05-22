@@ -1,4 +1,3 @@
-Conekta.setPublicKey('tu_llave_publica'); // Reemplaza con tu llave pública
 
 let clienteConekta = {
 
@@ -7,11 +6,8 @@ let clienteConekta = {
         // Funciones principales
         clienteConekta.fn_conekta();
         clienteConekta.fn_set_cliente_conekta();
-        clienteConekta.fn_set_import_cliente_conekta();
         clienteConekta.fn_datatable_cliente_conekta(rango_fecha='');
-        clienteConekta.fn_scroll_cliente_conekta();
         clienteConekta.fn_importar_excel_cliente_conekta();
-        clienteConekta.fn_truncatecliente_conekta();
 
         // Funciones para eventos
         clienteConekta.fn_modalShowclienteConekta();
@@ -36,11 +32,9 @@ let clienteConekta = {
         // set_cliente_conekta 
 
         // Importar registros
-        // set_import_cliente_conekta
 
         // Truncate table útil para hacer pruebas
         // truncate_cliente_conekta
-        // truncate_sps_cliente_conekta
 
         // Trar una lista por si se ocupa como un catalogo util para llenar un combo
         // get_cat_cliente_conekta
@@ -260,53 +254,6 @@ let clienteConekta = {
         clienteConekta.fn_delete_cliente_conekta();
     },
 
-    fn_scroll_cliente_conekta: function() {
-
-        let AppScroll = angular.module('app-scroll-cliente_conekta', ['infinite-scroll']);
-        AppScroll.controller('ControllerScroll', function($scope, Reddit) {
-            $scope.reddit = new Reddit();
-        });
-
-        AppScroll.factory('Reddit', function($http) {
-            let Reddit = function() {
-                this.items = [];
-                this.busy = false;
-                this.after = '';
-            };
-
-            Reddit.prototype.nextPage = function() {
-
-                let id_cliente_conekta= $("#id_cliente_conekta").val();
-                if (id_cliente_conekta == 0) {
-                    return;
-                }
-
-                if (this.busy) {
-                    return;
-                }
-                this.busy = true;
-
-                let url = "get_cliente_conekta_diez?id_cliente_conekta=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN="+$('meta[name="csrf-token"]').attr('content');
-                $http.jsonp(url).success(function(data) {
-                    let items = data;
-                    if (Array.isArray(items)) {
-                        for (let i = 0; i < items.length; i++) {
-                            this.items.push(items[i]);
-                        }
-                        this.after = this.items[this.items.length - 1].id_cliente_conekta;
-                        this.busy = false;
-                    } else {
-                        $("#id_cliente_conekta").val(0);
-                        this.busy = false;
-                    }
-                }.bind(this)).error(function(data, status, headers, config) {
-
-                });
-            };
-            return Reddit;
-        });
-    },
-
     fn_copyToClipboardclienteConekta: function(text) {
         // Crear un elemento temporal de input
         var tempInput = document.createElement("input");
@@ -424,63 +371,6 @@ let clienteConekta = {
         $loading.waitMe('hide');
     },
 
-    fn_set_import_cliente_conekta: function () {
-        $("#form_import_cliente_conekta").validate({
-            submitHandler: function (form) {
-                let get_form = document.getElementById("form_import_cliente_conekta");
-                let postData = new FormData(get_form);
-
-                let element_by_id= 'form_import_cliente_conekta';
-                let message=  'Cargando...' ;
-                let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
-
-                $.ajax({
-                    url: "set_import_cliente_conekta",
-                    data: postData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type: 'POST',
-                    success: function (response) {
-                        
-                        $loading.waitMe('hide');
-
-                        let json ='';
-                        try {
-                            json = JSON.parse(response);
-                        } catch (e) {
-                            alert(response);
-                            return;
-                        }
-
-                        if (json["b_status"]) {
-                            $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_import_cliente_conekta").reset();
-                            $('#modalImportFormclienteConekta').modal('hide');
-                        } else {
-                            alert(json);
-                        }
-                    },
-                    error: function (response) {
-                        $loading.waitMe('hide');
-                        alert(response);
-                    }
-                });
-            }
-            , rules: {
-              name: {
-                required: true
-              }
-            }
-            , messages: {
-                name: {
-                    minlength: "Mensaje personalizado name"
-                }
-              }
-        });
-    },
-
     fn_modalShowclienteConekta: function () {
         $('#modalFormIUclienteConekta').on('shown.bs.modal', function (e) {
             $('#name', e.target).focus();
@@ -522,9 +412,6 @@ let clienteConekta = {
                 document.getElementById("form_cliente_conekta").reset();
             }
 
-            if ($("#form_import_cliente_conekta").length){
-                document.getElementById("form_import_cliente_conekta").reset();
-            }
         });
     },
 
@@ -542,38 +429,6 @@ let clienteConekta = {
                 $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
             }
 
-        });
-    },
-
-    fn_truncatecliente_conekta: function () {
-        $(document).on("click", "#truncate_cliente_conekta", function () {
-            $.ajax({
-                url:"truncate_cliente_conekta",
-                cache: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                success: function(response)
-                {
-                    if ($("#get_cliente_conekta_datatable").length){
-                        $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-                    }
-                }
-            });
-        });
-
-        $(document).on("click", "#truncate_sps_cliente_conekta", function () {
-            $.ajax({
-                url:"truncate_sps_cliente_conekta",
-                cache: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                success: function(response)
-                {
-                    if ($("#get_cliente_conekta_datatable").length){
-                        $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-                    }
-                }
-            });
         });
     },
 

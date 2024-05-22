@@ -54,6 +54,11 @@ class ClienteConektaController extends Controller
     */
     public function index()
     {
+        // Ocupo para fines de pruebas
+        // $customer= $this->conektaService->getCustomers();
+        // $customer = $this->conektaService->deleteCustomer('cus_2vyCpdLhhUZ3CJqPx');
+        // dd($customer);
+
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_cliente_conekta' , 'vc_info' => "index - cliente_conekta" ] );
         return view('cliente_conekta');
     }
@@ -146,7 +151,31 @@ class ClienteConektaController extends Controller
         ];
 
         try {
-            $customer = $this->conektaService->createCustomer($customerData);
+
+            // Guarda en bd el id de conekta
+            $data=[ 'id_conekta' => isset($customer->id)? $customer->id: "",
+                    'name' => isset($request->name)? $request->name:"",
+                    'number' => isset($request->number)? $request->number: "",
+                    'cvc' => isset($request->cvc)? $request->cvc: "",
+                    'exp_month' => isset($request->exp_month)? $request->exp_month: "",
+                    'exp_year' => isset($request->exp_year)? $request->exp_year: "",
+            ];
+
+            // Si ya existe solo se actualiza el registro
+            if (isset($request->id)){
+                DB::table('cliente_conekta')->where('id', $request->id)->update($data);
+                return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
+            }else{ // Nuevo registro
+
+                // ================================
+                // Crear un nuevo cliente CONKEKTA
+                // ================================
+                $customer = $this->conektaService->createCustomer($customerData);
+
+                DB::table('cliente_conekta')->insert($data);
+                return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
+            }
+
             return response()->json($customer);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -162,21 +191,51 @@ class ClienteConektaController extends Controller
             return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla clienteConekta"));
         }
 
-        $data=[ 'name' => isset($request->name)? $request->name:"",
-                'number' => isset($request->number)? $request->number: "",
-                'cvc' => isset($request->cvc)? $request->cvc: "",
-                'exp_month' => isset($request->exp_month)? $request->exp_month: "",
-                'exp_year' => isset($request->exp_year)? $request->exp_year: "",
+    }
+
+    public function createOrder()
+    {
+        $client = new Client();
+
+        $url = 'https://api.conekta.io/orders';
+        $headers = [
+            'Accept' => 'application/vnd.conekta-v2.1.0+json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer key_nxSOPQNfh4jUCLVngpQ9s7r',
         ];
 
-        // Si ya existe solo se actualiza el registro
-        if (isset($request->id)){
-            DB::table('cliente_conekta')->where('id', $request->id)->update($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
-        }else{ // Nuevo registro
-            DB::table('cliente_conekta')->insert($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
-        }
+        $body = [
+            'currency' => 'MXN',
+            'customer_info' => [
+                'customer_id' => 'cus_2vxdecMPUMnAwrJH4'
+            ],
+            'line_items' => [
+                [
+                    'name' => 'Vasija de Cerámica',
+                    'unit_price' => 20015,
+                    'quantity' => 1,
+                    'description' => 'Description',
+                    'sku' => 'SKU'
+                ]
+            ],
+            'charges' => [
+                [
+                    'payment_method' => [
+                        'type' => 'default',
+                        'monthly_installments' => 3
+                    ]
+                ]
+            ]
+        ];
+
+        $response = $client->post($url, [
+            'headers' => $headers,
+            'json' => $body,
+        ]);
+
+        $responseBody = json_decode($response->getBody(), true);
+
+        return response()->json($responseBody);
     }
 
     /*
@@ -208,39 +267,6 @@ class ClienteConektaController extends Controller
         }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Importar pensado para cat, simple
-    |--------------------------------------------------------------------------
-    |
-    */
-    public function set_import_cliente_conekta(Request $request)
-    {
-        if(!\Schema::hasTable('cliente_conekta')){
-            return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla Cat_tipificacion"));
-        }
-
-        $this->LibCore->setSkynet( ['vc_evento'=> 'set_import_cliente_conekta' , 'vc_info' => "set_import_cliente_conekta" ] );
-
-        $arr = explode("\r\n", trim( $request->vc_importar ));
-        $arr = array_reverse($arr);
-         
-        for ($i = 0; $i < count($arr); $i++) {
-           $line = $arr[$i];
-
-            if (!empty($line)){
-                $data[]=  ['name'=> trim($line)] ;
-            }
-        }
-
-        if (isset($data) && !empty($data)){
-            clienteConekta::truncate();
-            clienteConekta::insert($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Importado correctamente..."));
-        }
-            return json_encode(array("b_status"=> false, "vc_message" => "No se encontraron registros..."));
-    }
-
       public function getServerSidecliente_conekta(Request $request)
     {
         $buscarPor = $request->input('search', ''); 
@@ -260,96 +286,6 @@ class ClienteConektaController extends Controller
         });
 
         return response()->json($options);
-    } 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Importar en excel
-    |--------------------------------------------------------------------------
-    |
-    */
-    public function form_importar_cliente_conekta(Request $request)
-    {
-        $path = public_path('CargandoExcel');
-
-        if(!File::isDirectory($path)){
-            File::makeDirectory($path, 0777, true, true);
-        }
-
-        if (!empty($request->file('files'))){
-            $path = Storage::putFile( $path, $request->file('files') );
-        }
-
-        if (!empty($path)){
-            $this->LibCore->setSkynet(['vc_evento'=> 'uploadExcelSuccess' , 'vc_info' => "<b>Subiendo Excel ok </b> ". $path ] );
-
-            ////////////////////////////////////////
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-            $spreadsheet = $reader->load( Storage::path($path ) );
-            $d=$spreadsheet->getSheet(0)->toArray();
-            $sheetData = $spreadsheet->getActiveSheet()->toArray();
-
-            // DESCOMENTAR PARA OMITIR TITULO EN EXCEL
-            // $i=1;
-            // unset($sheetData[0]);
-
-            // $sheetData= array_reverse($sheetData);
-
-            foreach ($sheetData as $key => $t) {
-
-                $data_insert[]=  array(  "name"  =>  isset($t[0]) ? $t[0] : ''
-                                        ,"number"  =>  isset($t[1]) ? $t[1] : ''
-                                        ,"cvc"  =>  isset($t[2]) ? $t[2] : ''
-                                        ,"exp_month"  =>  isset($t[3]) ? $t[3] : ''
-                                        ,"exp_year"  =>  isset($t[4]) ? $t[4] : ''
-                );
-            }
-
-            foreach (array_chunk($data_insert,1000) as $temp)  
-            {
-                DB::table('cliente_conekta')->insert( $temp );
-            }
-
-            return json_encode(array("b_status"=> true, "data" => [ "vc_path" =>  Storage::url( $path )  ] ));
-        }
-
-        return json_encode(array("b_status"=> false, "data" => [ "vc_message" => 'No se adjunto algun archivo' ] ));
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Generar plantilla para descargar Excel
-    |--------------------------------------------------------------------------
-    | 
-    | @return id
-    |
-    */
-    public function descargar_plantilla_cliente_conekta(Request $request)
-    {
-            $nombre_archivo= 'plantilla_cliente_conekta.xlsx';
-
-            $title[]= [  "Name"
-                        ,"Number"
-                        ,"Cvc"
-                        ,"Exp_Month"
-                        ,"Exp_Year"
-                    ];
-
-            $arr_data= $title;
-
-            $this->LibCore->crear_archivos( $arr_data );
-
-            $process = new Process( [ 'python3', public_path("/")."generico.py" , $nombre_archivo  ] );
-
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            $output_data = $process->getOutput();
-
-            return Storage::download('public/'.$nombre_archivo);       
     }
 
     /*
@@ -402,150 +338,6 @@ class ClienteConektaController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Scroll diez en diez
-    |--------------------------------------------------------------------------
-    | 
-    | @return json
-    |
-    */
-    public function get_cliente_conekta_diez(Request $request)
-    {
-        if(!\Schema::hasTable('cliente_conekta')){
-            return json_encode(array("data"=>"" ));
-        }
-
-        $data= DB::table("cliente_conekta")
-        ->select("id", "name", "number")
-        ->where("cliente_conekta.b_status", ">", 0)
-        ->limit(50)
-        ->orderBy("cliente_conekta.id","desc")
-        ->get();
-
-        $total= $data->count();
-
-        if($total > 0){
-
-            foreach ($data as $key => $value) {
-                $arr[]= array(    'id_cliente_conekta'=> $value->id
-                                , 'name'=>$value->name
-                                , 'number'=>$value->number
-                );
-            }
-
-            return response()
-            ->json($arr)
-            ->withCallback($request->input('callback'));
-
-        }else{
-            return 1;
-        }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Registro especial como se requiere en js
-    |--------------------------------------------------------------------------
-    | 
-    | @return json
-    |
-    */
-    public function get_cliente_conekta_by_list(Request $request)
-    {
-        if(!\Schema::hasTable('cliente_conekta')){
-            return json_encode(array("data"=>"" ));
-        }
-
-        $data= clienteConekta::select(  "id"
-                                    , "name"
-                                    , "number"
-                                    , "cvc"
-                                    , "exp_month"
-                                    , "exp_year"
-        )->where('b_status', 1)->orderBy('id', 'desc')->get();
-        $total= $data->count();
-
-        if($total > 0){
-
-            foreach ($data as $key => $value) {
-                $arr[]= array(    $value->id
-                                , $value->name
-                                , $value->number
-                                , $value->cvc
-                                , $value->exp_month
-                                , $value->exp_year
-                );
-            }
-            return json_encode(array("b_status"=> true, "data" => $arr ));
-        }else{
-            return json_encode(array("b_status"=> false, "data" => 'Sin resultado' ));
-        }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Exportar Excel
-    |--------------------------------------------------------------------------
-    | 
-    | @return id
-    |
-    */
-    public function export_excel_cliente_conekta(Request $request){
-
-        if(!\Schema::hasTable('cliente_conekta')){
-            return json_encode(array("data"=>"" ));
-        }
-
-        $data= clienteConekta::select("id"
-                                    , "name"
-                                    , "number"
-                                    , "cvc"
-                                    , "exp_month"
-                                    , "exp_year"
-        )->where('b_status', 1)->orderBy('id', 'desc')->get();
-        $total= $data->count();
-
-        if($total > 0){
-
-            foreach ($data as $key => $value) {
-                $arr_data[]= array(   $value->id
-                                    , $value->name
-                                    , $value->number
-                                    , $value->cvc
-                                    , $value->exp_month
-                                    , $value->exp_year
-                );
-            }
-
-            $nombre_archivo= 'Reporte_de_cliente_conekta.xlsx';
-
-            $title[]= [  "id"
-                        ,"Name"
-                        ,"Number"
-                        ,"Cvc"
-                        ,"Exp_Month"
-                        ,"Exp_Year"
-                    ];
-
-            $arr_data= array_merge($title, $arr_data);
-
-            $this->LibCore->crear_archivos( $arr_data );
-
-            $process = new Process( [ 'python3', public_path("/")."generico.py" , $nombre_archivo  ] );
-
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            $output_data = $process->getOutput();
-
-            return $nombre_archivo;
-        }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Eliminar registro por id
     |--------------------------------------------------------------------------
     | 
@@ -555,6 +347,14 @@ class ClienteConektaController extends Controller
     public function delete_cliente_conekta(Request $request)
     {
         $id=$request->id;
+
+        $result = DB::table('cliente_conekta')
+            ->select('id_conekta')
+            ->where('id', $id)
+            ->first();
+
+        $customer = $this->conektaService->deleteCustomer($result->id_conekta);
+
         clienteConekta::where('id', $id)->update(['b_status' => 0]);
         return $id;
     }
@@ -572,19 +372,6 @@ class ClienteConektaController extends Controller
         $id=$request->id;
         clienteConekta::where('id', $id)->update(['b_status' => 1]);        
         return $id;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Truncar toda la tabla util para hacer pruebas
-    |--------------------------------------------------------------------------
-    | 
-    | @return id
-    |
-    */
-    public function truncate_cliente_conekta()
-    {
-        clienteConekta::where('b_status', 1)->update(['b_status' => 0]);        
     }
 
     /*
