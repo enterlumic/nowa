@@ -267,7 +267,7 @@ let clienteConekta = {
 
     fn_conekta: function() {
 
-        Conekta.setPublicKey('key_JUZKEHsiTxsXZLYPSaMxkQA');
+        Conekta.setPublicKey('key_A6zG1iqB2OQnq4jjLyAliR0');
 
         var conektaSuccessResponseHandler = function(token) {
             var $form = $("#form_cliente_conekta");
@@ -357,6 +357,7 @@ let clienteConekta = {
                 }
             },
             error: function (response) {
+                $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
                 $loading.waitMe('hide');
             }
         });

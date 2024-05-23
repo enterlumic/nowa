@@ -54,10 +54,6 @@ class ClienteConektaController extends Controller
     */
     public function index()
     {
-        // Ocupo para fines de pruebas
-        // $customer= $this->conektaService->getCustomers();
-        // $customer = $this->conektaService->deleteCustomer('cus_2vyCpdLhhUZ3CJqPx');
-        // dd($customer);
 
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_cliente_conekta' , 'vc_info' => "index - cliente_conekta" ] );
         return view('cliente_conekta');
@@ -139,7 +135,7 @@ class ClienteConektaController extends Controller
     public function set_cliente_conekta(Request $request)
     {
         $customerData = [
-            'name'  => Auth::user()->name,
+            'name'  => $request->name,
             'email' => Auth::user()->email,
             'phone' => "8187074784",
             'payment_sources' => [
@@ -150,10 +146,20 @@ class ClienteConektaController extends Controller
             ]
         ];
 
+        // ================================
+        // Crear un nuevo cliente CONKEKTA
+        // ================================
         try {
 
+            // Validar que no este actualizando el registro
+            if (!isset($request->id)){
+                $customer = $this->conektaService->createCustomer($customerData);
+            }
+
             // Guarda en bd el id de conekta
-            $data=[ 'id_conekta' => isset($customer->id)? $customer->id: "",
+            $data=[ 'user_id' => Auth::user()->id,
+                    'id_conekta' => isset($customer->id)? $customer->id: "",
+                    'payment_source_id' => isset($customer->default_payment_source_id)? $customer->default_payment_source_id: "",
                     'name' => isset($request->name)? $request->name:"",
                     'number' => isset($request->number)? $request->number: "",
                     'cvc' => isset($request->cvc)? $request->cvc: "",
@@ -163,79 +169,49 @@ class ClienteConektaController extends Controller
 
             // Si ya existe solo se actualiza el registro
             if (isset($request->id)){
+                unset($data['id_conekta'], $data['payment_source_id']);
                 DB::table('cliente_conekta')->where('id', $request->id)->update($data);
-                return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
             }else{ // Nuevo registro
-
-                // ================================
-                // Crear un nuevo cliente CONKEKTA
-                // ================================
-                $customer = $this->conektaService->createCustomer($customerData);
-
                 DB::table('cliente_conekta')->insert($data);
-                return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
             }
 
-            return response()->json($customer);
+            // Valido que hay podido crear un nuevo Cliente en conekta
+            if (isset($customer)){
+
+                // Después de crear el cliente, crea la orden
+                $orderData = [
+                    'line_items' => [
+                        [
+                            'name'        => 'Afinacion Mayor',
+                            'unit_price'  => 23000,
+                            'quantity'    => 1
+                        ]
+                    ],
+                    'currency'    => 'MXN',
+                    'customer_info' => [
+                        'customer_id' => $customer->id
+                    ],
+                    'charges' => [
+                        [
+                            'payment_method' => [
+                                'type' => 'card',
+                                'payment_source_id' => $customer->default_payment_source_id
+
+                            ]
+                        ]
+                    ]
+                ];
+
+                $order = $this->conektaService->createOrder($orderData);
+
+                // return response()->json($order);
+
+                return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));                
+            }
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        if(!\Schema::hasTable('cliente_conekta')){
-            Notification::route('mail', ['odin0464@gmail.com'])->notify(
-                new FnclienteConektaSendMail(
-                    'Notificación no existe tabla clienteConekta'
-                    , __DIR__ ." \ n"
-                )
-            );
-            return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla clienteConekta"));
-        }
-
-    }
-
-    public function createOrder()
-    {
-        $client = new Client();
-
-        $url = 'https://api.conekta.io/orders';
-        $headers = [
-            'Accept' => 'application/vnd.conekta-v2.1.0+json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer key_nxSOPQNfh4jUCLVngpQ9s7r',
-        ];
-
-        $body = [
-            'currency' => 'MXN',
-            'customer_info' => [
-                'customer_id' => 'cus_2vxdecMPUMnAwrJH4'
-            ],
-            'line_items' => [
-                [
-                    'name' => 'Vasija de Cerámica',
-                    'unit_price' => 20015,
-                    'quantity' => 1,
-                    'description' => 'Description',
-                    'sku' => 'SKU'
-                ]
-            ],
-            'charges' => [
-                [
-                    'payment_method' => [
-                        'type' => 'default',
-                        'monthly_installments' => 3
-                    ]
-                ]
-            ]
-        ];
-
-        $response = $client->post($url, [
-            'headers' => $headers,
-            'json' => $body,
-        ]);
-
-        $responseBody = json_decode($response->getBody(), true);
-
-        return response()->json($responseBody);
     }
 
     /*
@@ -353,9 +329,12 @@ class ClienteConektaController extends Controller
             ->where('id', $id)
             ->first();
 
-        $customer = $this->conektaService->deleteCustomer($result->id_conekta);
+        // Valido si tiene al menos un registro
+        if (!empty($result->id_conekta)){
+            $customer = $this->conektaService->deleteCustomer($result->id_conekta);
+        }
 
-        clienteConekta::where('id', $id)->update(['b_status' => 0]);
+        clienteConekta::where('id', $id)->delete();
         return $id;
     }
 

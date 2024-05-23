@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::connection('mysql')->create('cliente_conekta', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->comment('ID del usuario');
             $table->string('id_conekta', 26)->nullable()->comment('ID de Conekta');
+            $table->string('payment_source_id', 26)->nullable()->comment('Medio de pago');
             $table->string('name', 30)->nullable()->comment('Nombre del cliente');
             $table->string('number', 30)->nullable()->comment('Número de tarjeta');
             $table->string('cvc', 5)->nullable()->comment('Código de seguridad');

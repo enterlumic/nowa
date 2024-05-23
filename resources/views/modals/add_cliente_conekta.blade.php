@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-sm-12">
                             <label for="number" class="form-label">Number</label>
-                            <input type="text" class="form-control" value="4242424242424242" size="20" name="number" data-conekta="card[number]"/>
+                            <input type="text" class="form-control" value="5256783274081893" size="20" name="number" data-conekta="card[number]"/>
                         </div>
                         <div class="col-sm-12">
                             <label for="cvc" class="form-label">Cvc</label>

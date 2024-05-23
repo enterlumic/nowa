@@ -1,0 +1,45 @@
+{
+    "customers":
+    {
+        "0":
+        {
+            "livemode": false,
+            "name": "gustavo.",
+            "email": "gustavo.gnu87@gmail.com",
+            "phone": "8187074784",
+            "id": "cus_2vyKbyMME6t2mTt1H",
+            "object": "customer",
+            "created_at": 1716350263,
+            "corporate": false,
+            "custom_reference": "",
+            "default_payment_source_id": "src_2vyKbyMME6t2mTt1J",
+            "payment_sources":
+            {
+                "object": "list",
+                "has_more": false,
+                "total": 1,
+                "data":
+                {
+                    "0":
+                    {
+                        "id": "src_2vyKbyMME6t2mTt1J",
+                        "object": "payment_source",
+                        "type": "card",
+                        "created_at": 1716350263,
+                        "last4": "4242",
+                        "bin": "424242",
+                        "card_type": "credit",
+                        "exp_month": "08",
+                        "exp_year": "25",
+                        "brand": "visa",
+                        "name": "Gustavo Martinez",
+                        "parent_id": "cus_2vyKbyMME6t2mTt1H",
+                        "default": true,
+                        "payment_source_status": "active",
+                        "visible_on_checkout": false
+                    }
+                }
+            }
+        }
+    }
+}
