@@ -11,14 +11,12 @@
     </a>
 </li>
 
-
 <li class="slide">
-    <a href="servicios" class="side-menu__item">
-        <i class="material-icons side-menu__icon">build</i>
-        <span class="side-menu__label">Servicios</span>
+    <a href="promociones" class="side-menu__item">
+        <i class="material-icons side-menu__icon">local_offer</i>
+        <span class="side-menu__label">Promociones</span>
     </a>
 </li>
-
 
 <!-- Start::slide__category -->
 <li class="slide__category"><span class="category-name">Admin</span></li>

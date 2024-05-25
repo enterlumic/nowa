@@ -60,3 +60,22 @@ Route::post('get_cat_cliente_conekta', [ClienteConektaController::class, 'get_ca
 Route::get('validar_existencia_cliente_conekta', [ClienteConektaController::class, 'validar_existencia_cliente_conekta']);
 
 Route::delete('cliente_conekta/{customerId}', [ClienteConektaController::class, 'deleteCustomer']);
+
+use App\Http\Controllers\PromocionesController;
+Route::get('promociones', [PromocionesController::class, 'index'])->middleware('auth') ;
+Route::post('set_promociones', [PromocionesController::class, 'set_promociones']);
+Route::post('set_import_promociones', [PromocionesController::class, 'set_import_promociones']);
+Route::post('get_promociones_by_id', [PromocionesController::class, 'get_promociones_by_id']);
+Route::post('delete_promociones', [PromocionesController::class, 'delete_promociones']);
+Route::post('undo_delete_promociones', [PromocionesController::class, 'undo_delete_promociones']);
+Route::get('get_promociones_datatable', [PromocionesController::class, 'get_promociones_datatable']);
+Route::post('truncate_promociones', [PromocionesController::class, 'truncate_promociones']);
+Route::post('truncate_sps_promociones', [PromocionesController::class, 'truncate_sps_promociones']);
+Route::post('form_importar_promociones', [PromocionesController::class, 'form_importar_promociones']);
+Route::get('export_excel_promociones', [PromocionesController::class, 'export_excel_promociones']);
+Route::post('get_cat_promociones', [PromocionesController::class, 'get_cat_promociones']);
+Route::post('get_promociones_by_list', [PromocionesController::class, 'get_promociones_by_list']);
+Route::get('get_promociones_diez', [PromocionesController::class, 'get_promociones_diez']);
+Route::get('descargar_plantilla_promociones', [PromocionesController::class, 'descargar_plantilla_promociones']);
+Route::get('validar_existencia_promociones', [PromocionesController::class, 'validar_existencia_promociones']);
+

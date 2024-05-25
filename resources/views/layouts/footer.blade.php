@@ -471,6 +471,12 @@
 <script src="assets/js/core_js/bootstrap-select.js"></script>
 <link href="assets/js/core_js/bootstrap-select.css" rel="stylesheet" type="text/css" />
 
+<!-- Select2 Cdn -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Internal Select-2.js -->
+<script src="../assets/js/select2.js"></script>
+
 <!-- Required datatable js -->
 <script src="assets/js/core_js/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="assets/js/core_js/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
