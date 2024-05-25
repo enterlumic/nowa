@@ -16,49 +16,49 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-sm-12">
-                            <label for="vCampo1_promociones" class="form-label">vTema1_promociones</label>
-                            <input type="text" class="form-control" id="vCampo1_promociones" name="vCampo1_promociones" placeholder="Escribe vTema1_promociones">
+                            <label for="fotos" class="form-label">Fotos</label>
+                            <input type="text" class="form-control" id="fotos" name="fotos" placeholder="Escribe Fotos">
                         </div>
                         <div class="col-sm-12 d-none tipo-ya-existe">
                             <span class="badge bg-danger text-uppercase">Este registro ya existe</span>
                         </div>
                         <div class="col-sm-12">
-                            <label for="vCampo2_promociones" class="form-label">vTema2_promociones</label>
-                            <input type="text" class="form-control" id="vCampo2_promociones" name="vCampo2_promociones" placeholder="Escribe vTema2_promociones">
+                            <label for="titulo" class="form-label">Titulo</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Escribe Titulo">
                         </div>
                         <div class="col-sm-12">
-                            <label for="vCampo3_promociones" class="form-label">vTema3_promociones</label>
-                            <input type="text" class="form-control" id="vCampo3_promociones" name="vCampo3_promociones" placeholder="Escribe vTema3_promociones">
+                            <label for="descripcion" class="form-label">Descripcion</label>
+                            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Escribe Descripcion">
                         </div>
                         <div class="col-12">
-                            <label for="vCampo4_promociones" class="form-label">vTema4_promociones</label>
-                            <input type="text" class="form-control" id="vCampo4_promociones" name="vCampo4_promociones" placeholder="Escribe vTema4_promociones">
+                            <label for="precio" class="form-label">Precio</label>
+                            <input type="text" class="form-control" id="precio" name="precio" placeholder="Escribe Precio">
                         </div>
                         <div class="col-12">
-                            <label for="vCampo4_promociones" class="form-label">vTema5_promociones</label>
-                            <input type="text" class="form-control" id="vCampo5_promociones" name="vCampo5_promociones" placeholder="Escribe vTema5_promociones">
+                            <label for="precio" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" placeholder="Escribe Marca">
                         </div>
                         <div class="col-12">
-                            <label for="vCampo6_promociones" class="form-label">vTema6_promociones</label>
-                            <input type="text" class="form-control" id="vCampo6_promociones" name="vCampo6_promociones" placeholder="Escribe vTema6_promociones">
+                            <label for="review" class="form-label">Review</label>
+                            <input type="text" class="form-control" id="review" name="review" placeholder="Escribe Review">
                         </div>
                         <div class="col-12">
-                            <label for="vCampo7_promociones" class="form-label">vTema7_promociones</label>
-                            <input type="text" class="form-control" id="vCampo7_promociones" name="vCampo7_promociones" placeholder="Escribe vTema7_promociones">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="text" class="form-control" id="cantidad" name="cantidad" placeholder="Escribe Cantidad">
                         </div>
                         <div class="col-md-4">
-                            <label for="vCampo8_promociones" class="form-label">vTema8_promociones</label>
-                            <select class="form-select" id="vCampo8_promociones" name="vCampo8_promociones">
+                            <label for="color" class="form-label">Color</label>
+                            <select class="form-select" id="color" name="color">
                                 <option value="">Seleccione...</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label for="vCampo9_promociones" class="form-label">vTema9_promociones</label>
-                            <input type="text" class="form-control" id="vCampo9_promociones" name="vCampo9_promociones" placeholder="Escribe vCampo9_promociones">
+                            <label for="precio_anterior" class="form-label">Precio_Anterior</label>
+                            <input type="text" class="form-control" id="precio_anterior" name="precio_anterior" placeholder="Escribe precio_anterior">
                         </div>
                         <div class="col-md-3">
-                            <label for="vCampo10_promociones" class="form-label">vTema10_promociones</label>
-                            <input type="text" class="form-control" id="vCampo10_promociones" name="vCampo10_promociones" placeholder="Escribe vCampo10_promociones">
+                            <label for="target" class="form-label">Target</label>
+                            <input type="text" class="form-control" id="target" name="target" placeholder="Escribe target">
                         </div>
                     </div>
                 </div>

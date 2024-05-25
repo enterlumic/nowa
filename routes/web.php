@@ -61,6 +61,20 @@ Route::get('validar_existencia_cliente_conekta', [ClienteConektaController::clas
 
 Route::delete('cliente_conekta/{customerId}', [ClienteConektaController::class, 'deleteCustomer']);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 use App\Http\Controllers\PromocionesController;
 Route::get('promociones', [PromocionesController::class, 'index'])->middleware('auth') ;
 Route::post('set_promociones', [PromocionesController::class, 'set_promociones']);

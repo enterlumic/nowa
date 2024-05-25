@@ -70,16 +70,16 @@ class PromocionesController extends Controller
             return json_encode(array("data"=>"" ));
         }
 
-        if (   ( isset($request->buscar_vCampo1_promociones) && !empty($request->buscar_vCampo1_promociones) )
-            || ( isset($request->buscar_vCampo2_promociones) && !empty($request->buscar_vCampo2_promociones) )
-            || ( isset($request->buscar_vCampo3_promociones) && !empty($request->buscar_vCampo3_promociones) )
-            || ( isset($request->buscar_vCampo4_promociones) && !empty($request->buscar_vCampo4_promociones) )
-            || ( isset($request->buscar_vCampo5_promociones) && !empty($request->buscar_vCampo5_promociones) )
-            || ( isset($request->buscar_vCampo6_promociones) && !empty($request->buscar_vCampo6_promociones) )
-            || ( isset($request->buscar_vCampo7_promociones) && !empty($request->buscar_vCampo7_promociones) )
-            || ( isset($request->buscar_vCampo8_promociones) && !empty($request->buscar_vCampo8_promociones) )
-            || ( isset($request->buscar_vCampo9_promociones) && !empty($request->buscar_vCampo9_promociones) )
-            || ( isset($request->buscar_vCampo10_promociones) && !empty($request->buscar_vCampo10_promociones) )
+        if (   ( isset($request->buscar_fotos) && !empty($request->buscar_fotos) )
+            || ( isset($request->buscar_titulo) && !empty($request->buscar_titulo) )
+            || ( isset($request->buscar_descripcion) && !empty($request->buscar_descripcion) )
+            || ( isset($request->buscar_precio) && !empty($request->buscar_precio) )
+            || ( isset($request->buscar_marca) && !empty($request->buscar_marca) )
+            || ( isset($request->buscar_review) && !empty($request->buscar_review) )
+            || ( isset($request->buscar_cantidad) && !empty($request->buscar_cantidad) )
+            || ( isset($request->buscar_color) && !empty($request->buscar_color) )
+            || ( isset($request->buscar_precio_anterior) && !empty($request->buscar_precio_anterior) )
+            || ( isset($request->buscar_target) && !empty($request->buscar_target) )
         ){
             $buscar= 0;
         }else{
@@ -87,16 +87,16 @@ class PromocionesController extends Controller
         }
 
         $request->search= isset($request->search["value"]) ? $request->search["value"] : '';
-        $buscar_vCampo1_promociones= isset($request->buscar_vCampo1_promociones) ? $request->buscar_vCampo1_promociones :'';
-        $buscar_vCampo2_promociones= isset($request->buscar_vCampo2_promociones) ? $request->buscar_vCampo2_promociones :'';
-        $buscar_vCampo3_promociones= isset($request->buscar_vCampo3_promociones) ? $request->buscar_vCampo3_promociones :'';
-        $buscar_vCampo4_promociones= isset($request->buscar_vCampo4_promociones) ? $request->buscar_vCampo4_promociones :'';
-        $buscar_vCampo5_promociones= isset($request->buscar_vCampo5_promociones) ? $request->buscar_vCampo5_promociones :'';
-        $buscar_vCampo6_promociones= isset($request->buscar_vCampo6_promociones) ? $request->buscar_vCampo6_promociones :'';
-        $buscar_vCampo7_promociones= isset($request->buscar_vCampo7_promociones) ? $request->buscar_vCampo7_promociones :'';
-        $buscar_vCampo8_promociones= isset($request->buscar_vCampo8_promociones) ? $request->buscar_vCampo8_promociones :'';
-        $buscar_vCampo9_promociones= isset($request->buscar_vCampo9_promociones) ? $request->buscar_vCampo9_promociones :'';
-        $buscar_vCampo10_promociones= isset($request->buscar_vCampo10_promociones) ? $request->buscar_vCampo10_promociones :'';
+        $buscar_fotos= isset($request->buscar_fotos) ? $request->buscar_fotos :'';
+        $buscar_titulo= isset($request->buscar_titulo) ? $request->buscar_titulo :'';
+        $buscar_descripcion= isset($request->buscar_descripcion) ? $request->buscar_descripcion :'';
+        $buscar_precio= isset($request->buscar_precio) ? $request->buscar_precio :'';
+        $buscar_marca= isset($request->buscar_marca) ? $request->buscar_marca :'';
+        $buscar_review= isset($request->buscar_review) ? $request->buscar_review :'';
+        $buscar_cantidad= isset($request->buscar_cantidad) ? $request->buscar_cantidad :'';
+        $buscar_color= isset($request->buscar_color) ? $request->buscar_color :'';
+        $buscar_precio_anterior= isset($request->buscar_precio_anterior) ? $request->buscar_precio_anterior :'';
+        $buscar_target= isset($request->buscar_target) ? $request->buscar_target :'';
         $request->start = isset($request->start) ? $request->start : intval(0);
         $request->length= isset( $request->length) ? $request->length : intval(10);
         $request->column= isset( $request->order[0]['column']) ? $request->order[0]['column'] : intval(0);
@@ -106,16 +106,16 @@ class PromocionesController extends Controller
         $sql= 'CALL sp_get_promociones(
                '.$buscar.'
             , "'.$request->search.'"
-            , "'.$buscar_vCampo1_promociones.'"
-            , "'.$buscar_vCampo2_promociones.'"
-            , "'.$buscar_vCampo3_promociones.'"
-            , "'.$buscar_vCampo4_promociones.'"
-            , "'.$buscar_vCampo5_promociones.'"
-            , "'.$buscar_vCampo6_promociones.'"
-            , "'.$buscar_vCampo7_promociones.'"
-            , "'.$buscar_vCampo8_promociones.'"
-            , "'.$buscar_vCampo9_promociones.'"
-            , "'.$buscar_vCampo10_promociones.'"
+            , "'.$buscar_fotos.'"
+            , "'.$buscar_titulo.'"
+            , "'.$buscar_descripcion.'"
+            , "'.$buscar_precio.'"
+            , "'.$buscar_marca.'"
+            , "'.$buscar_review.'"
+            , "'.$buscar_cantidad.'"
+            , "'.$buscar_color.'"
+            , "'.$buscar_precio_anterior.'"
+            , "'.$buscar_target.'"
             ,  '.$request->start.'
             ,  '.$request->length.'
             ,  '.$request->column.'
@@ -155,38 +155,18 @@ class PromocionesController extends Controller
             return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla promociones"));
         }
 
-        $data=[ 'vCampo1_promociones' => isset($request->vCampo1_promociones)? $request->vCampo1_promociones:"",
-                'vCampo2_promociones' => isset($request->vCampo2_promociones)? $request->vCampo2_promociones: "",
-                'vCampo3_promociones' => isset($request->vCampo3_promociones)? $request->vCampo3_promociones: "",
-                'vCampo4_promociones' => isset($request->vCampo4_promociones)? $request->vCampo4_promociones: "",
-                'vCampo5_promociones' => isset($request->vCampo5_promociones)? $request->vCampo5_promociones: "",
-                'vCampo6_promociones' => isset($request->vCampo6_promociones)? $request->vCampo6_promociones: "",
-                'vCampo7_promociones' => isset($request->vCampo7_promociones)? $request->vCampo7_promociones: "",
-                'vCampo8_promociones' => isset($request->vCampo8_promociones)? $request->vCampo8_promociones: "",
-                'vCampo9_promociones' => isset($request->vCampo9_promociones)? $request->vCampo9_promociones: "",
-                'vCampo10_promociones' => isset($request->vCampo10_promociones)? $request->vCampo10_promociones: "",
-                'vCampo11_promociones' => isset($request->vCampo11_promociones)? $request->vCampo11_promociones: "",
-                'vCampo12_promociones' => isset($request->vCampo12_promociones)? $request->vCampo12_promociones: "",
-                'vCampo13_promociones' => isset($request->vCampo13_promociones)? $request->vCampo13_promociones: "",
-                'vCampo14_promociones' => isset($request->vCampo14_promociones)? $request->vCampo14_promociones: "",
-                'vCampo15_promociones' => isset($request->vCampo15_promociones)? $request->vCampo15_promociones: "",
-                'vCampo16_promociones' => isset($request->vCampo16_promociones)? $request->vCampo16_promociones: "",
-                'vCampo17_promociones' => isset($request->vCampo17_promociones)? $request->vCampo17_promociones: "",
-                'vCampo18_promociones' => isset($request->vCampo18_promociones)? $request->vCampo18_promociones: "",
-                'vCampo19_promociones' => isset($request->vCampo19_promociones)? $request->vCampo19_promociones: "",
-                'vCampo20_promociones' => isset($request->vCampo20_promociones)? $request->vCampo20_promociones: "",
-                'vCampo21_promociones' => isset($request->vCampo21_promociones)? $request->vCampo21_promociones: "",
-                'vCampo22_promociones' => isset($request->vCampo22_promociones)? $request->vCampo22_promociones: "",
-                'vCampo23_promociones' => isset($request->vCampo23_promociones)? $request->vCampo23_promociones: "",
-                'vCampo24_promociones' => isset($request->vCampo24_promociones)? $request->vCampo24_promociones: "",
-                'vCampo25_promociones' => isset($request->vCampo25_promociones)? $request->vCampo25_promociones: "",
-                'vCampo26_promociones' => isset($request->vCampo26_promociones)? $request->vCampo26_promociones: "",
-                'vCampo27_promociones' => isset($request->vCampo27_promociones)? $request->vCampo27_promociones: "",
-                'vCampo28_promociones' => isset($request->vCampo28_promociones)? $request->vCampo28_promociones: "",
-                'vCampo29_promociones' => isset($request->vCampo29_promociones)? $request->vCampo29_promociones: "",
-                'vCampo30_promociones' => isset($request->vCampo30_promociones)? $request->vCampo30_promociones: "",
+        $data=[ 'fotos' => isset($request->fotos)? $request->fotos:"",
+                'titulo' => isset($request->titulo)? $request->titulo: "",
+                'descripcion' => isset($request->descripcion)? $request->descripcion: "",
+                'precio' => $request->precio,
+                'marca' => isset($request->marca)? $request->marca: "",
+                'review' => isset($request->review)? $request->review: "",
+                'cantidad' => intval($request->cantidad),
+                'color' => isset($request->color)? $request->color: "",
+                'precio_anterior' => isset($request->precio_anterior)? $request->precio_anterior: "",
+                'target' => isset($request->target)? $request->target: "",
         ];
-
+        
         // Si ya existe solo se actualiza el registro
         if (isset($request->id)){
             DB::table('promociones')->where('id', $request->id)->update($data);
@@ -208,14 +188,14 @@ class PromocionesController extends Controller
     public function validar_existencia_promociones(Request $request)
     {
         if ( isset($request->id) && $request->id > 0){
-            $data= promociones::select('vCampo1_promociones')
-            ->where('vCampo1_promociones' ,'=', trim($request->vCampo1_promociones))
+            $data= promociones::select('fotos')
+            ->where('fotos' ,'=', trim($request->fotos))
             ->where('id' ,'<>', $request->id)
             ->where('b_status' ,'>', 0)
             ->get();
         }else{
-            $data= promociones::select('vCampo1_promociones')
-            ->where('vCampo1_promociones' ,'=', trim($request->vCampo1_promociones))
+            $data= promociones::select('fotos')
+            ->where('fotos' ,'=', trim($request->fotos))
             ->get();
         }
 
@@ -247,7 +227,7 @@ class PromocionesController extends Controller
            $line = $arr[$i];
 
             if (!empty($line)){
-                $data[]=  ['vCampo1_promociones'=> trim($line)] ;
+                $data[]=  ['fotos'=> trim($line)] ;
             }
         }
 
@@ -265,16 +245,16 @@ class PromocionesController extends Controller
 
         $results = DB::table('promociones')
             ->Where('id', ' > ', 0)
-            ->OrWhere('vCampo1_promociones', 'LIKE', '%' . $buscarPor . '%')
+            ->OrWhere('fotos', 'LIKE', '%' . $buscarPor . '%')
             ->select('id'
-                , DB::raw('CONCAT(id, " ", vCampo1_promociones, " ", vCampo2_promociones ) as vCampo1_promociones')
+                , DB::raw('CONCAT(id, " ", fotos, " ", titulo ) as fotos')
             )
             ->limit(10)
             ->get();
 
         // Formatea los resultados para el selectpicker
         $options = $results->map(function ($item) {
-            return ['id' => $item->id, 'vCampo1_promociones' =>Str::headline($item->vCampo1_promociones) ];
+            return ['id' => $item->id, 'fotos' =>Str::headline($item->fotos) ];
         });
 
         return response()->json($options);
@@ -315,18 +295,16 @@ class PromocionesController extends Controller
 
             foreach ($sheetData as $key => $t) {
 
-                $data_insert[]=  array(  "vCampo1_promociones"  =>  isset($t[0]) ? $t[0] : ''
-                                        ,"vCampo2_promociones"  =>  isset($t[1]) ? $t[1] : ''
-                                        ,"vCampo3_promociones"  =>  isset($t[2]) ? $t[2] : ''
-                                        ,"vCampo4_promociones"  =>  isset($t[3]) ? $t[3] : ''
-                                        ,"vCampo5_promociones"  =>  isset($t[4]) ? $t[4] : ''
-                                        ,"vCampo6_promociones"  =>  isset($t[5]) ? $t[5] : ''
-                                        ,"vCampo7_promociones"  =>  isset($t[6]) ? $t[6] : ''
-                                        ,"vCampo8_promociones"  =>  isset($t[7]) ? $t[7] : ''
-                                        ,"vCampo9_promociones"  =>  isset($t[8]) ? $t[8] : ''
-                                        ,"vCampo10_promociones"  =>  isset($t[9]) ? $t[9] : ''
-                                        ,"vCampo11_promociones"  =>  isset($t[10]) ? $t[10] : ''
-                                        ,"vCampo12_promociones"  =>  isset($t[11]) ? $t[11] : ''
+                $data_insert[]=  array(  "fotos"  =>  isset($t[0]) ? $t[0] : ''
+                                        ,"titulo"  =>  isset($t[1]) ? $t[1] : ''
+                                        ,"descripcion"  =>  isset($t[2]) ? $t[2] : ''
+                                        ,"precio"  =>  isset($t[3]) ? $t[3] : ''
+                                        ,"marca"  =>  isset($t[4]) ? $t[4] : ''
+                                        ,"review"  =>  isset($t[5]) ? $t[5] : ''
+                                        ,"cantidad"  =>  isset($t[6]) ? $t[6] : ''
+                                        ,"color"  =>  isset($t[7]) ? $t[7] : ''
+                                        ,"precio_anterior"  =>  isset($t[8]) ? $t[8] : ''
+                                        ,"target"  =>  isset($t[9]) ? $t[9] : ''
                 );
             }
 
@@ -353,36 +331,16 @@ class PromocionesController extends Controller
     {
             $nombre_archivo= 'plantilla_promociones.xlsx';
 
-            $title[]= [  "vTema1_promociones"
-                        ,"vTema2_promociones"
-                        ,"vTema3_promociones"
-                        ,"vTema4_promociones"
-                        ,"vTema5_promociones"
-                        ,"vTema6_promociones"
-                        ,"vTema7_promociones"
-                        ,"vTema8_promociones"
-                        ,"vTema9_promociones"
-                        ,"vTema10_promociones"
-                        ,"vTema11_promociones"
-                        ,"vTema12_promociones"
-                        ,"vTema13_promociones"
-                        ,"vTema14_promociones"
-                        ,"vTema15_promociones"
-                        ,"vTema16_promociones"
-                        ,"vTema17_promociones"
-                        ,"vTema18_promociones"
-                        ,"vTema19_promociones"
-                        ,"vTema20_promociones"
-                        ,"vTema21_promociones"
-                        ,"vTema22_promociones"
-                        ,"vTema23_promociones"
-                        ,"vTema24_promociones"
-                        ,"vTema25_promociones"
-                        ,"vTema26_promociones"
-                        ,"vTema27_promociones"
-                        ,"vTema28_promociones"
-                        ,"vTema29_promociones"
-                        ,"vTema30_promociones"
+            $title[]= [  "Fotos"
+                        ,"Titulo"
+                        ,"Descripcion"
+                        ,"Precio"
+                        ,"Marca"
+                        ,"Review"
+                        ,"Cantidad"
+                        ,"Color"
+                        ,"Precio_Anterior"
+                        ,"Target"
                     ];
 
             $arr_data= $title;
@@ -412,36 +370,16 @@ class PromocionesController extends Controller
     */
     public function get_promociones_by_id(Request $request)
     {
-        $data= promociones::select('vCampo1_promociones'
-                                    , 'vCampo2_promociones'
-                                    , 'vCampo3_promociones'
-                                    , 'vCampo4_promociones'
-                                    , 'vCampo5_promociones'
-                                    , 'vCampo6_promociones'
-                                    , 'vCampo7_promociones'
-                                    , 'vCampo8_promociones'
-                                    , 'vCampo9_promociones'
-                                    , 'vCampo10_promociones'
-                                    , 'vCampo11_promociones'
-                                    , 'vCampo12_promociones'
-                                    , 'vCampo13_promociones'
-                                    , 'vCampo14_promociones'
-                                    , 'vCampo15_promociones'
-                                    , 'vCampo16_promociones'
-                                    , 'vCampo17_promociones'
-                                    , 'vCampo18_promociones'
-                                    , 'vCampo19_promociones'
-                                    , 'vCampo20_promociones'
-                                    , 'vCampo21_promociones'
-                                    , 'vCampo22_promociones'
-                                    , 'vCampo23_promociones'
-                                    , 'vCampo24_promociones'
-                                    , 'vCampo25_promociones'
-                                    , 'vCampo26_promociones'
-                                    , 'vCampo27_promociones'
-                                    , 'vCampo28_promociones'
-                                    , 'vCampo29_promociones'
-                                    , 'vCampo30_promociones'
+        $data= promociones::select('fotos'
+                                    , 'titulo'
+                                    , 'descripcion'
+                                    , 'precio'
+                                    , 'marca'
+                                    , 'review'
+                                    , 'cantidad'
+                                    , 'color'
+                                    , 'precio_anterior'
+                                    , 'target'
         )->where('id', $request->id)->get();
 
         if ( $data->count() > 0 ){
@@ -462,10 +400,10 @@ class PromocionesController extends Controller
     public function get_cat_promociones(Request $request)
     {
         $data= promociones::select(  'id'
-                                    , 'vCampo1_promociones'
-                                    , 'vCampo2_promociones'
-                                    , 'vCampo3_promociones'
-                                    , 'vCampo4_promociones'
+                                    , 'fotos'
+                                    , 'titulo'
+                                    , 'descripcion'
+                                    , 'precio'
                                 )->where('b_status', 1)->get();
 
         if ( $data->count() > 0 ){
@@ -490,7 +428,15 @@ class PromocionesController extends Controller
         }
 
         $data= DB::table("promociones")
-        ->select("id", "vCampo1_promociones", "vCampo2_promociones")
+        ->select("id"
+            , "fotos"
+            , "titulo"
+            , "descripcion"
+            , "precio"
+            , "marca"
+            , "review"
+            , "cantidad"
+        )
         ->where("promociones.b_status", ">", 0)
         ->limit(50)
         ->orderBy("promociones.id","desc")
@@ -501,9 +447,14 @@ class PromocionesController extends Controller
         if($total > 0){
 
             foreach ($data as $key => $value) {
-                $arr[]= array(    'id_promociones'=> $value->id
-                                , 'vCampo1_promociones'=>$value->vCampo1_promociones
-                                , 'vCampo2_promociones'=>$value->vCampo2_promociones
+                $arr[]= array(    'id'=> $value->id
+                                , 'fotos'=>$value->fotos
+                                , 'titulo'=>$value->titulo
+                                , 'descripcion'=>$value->descripcion
+                                , 'precio'=>$value->precio
+                                , 'marca'=>$value->marca
+                                , 'review'=>$value->review
+                                , 'cantidad'=>$value->cantidad
                 );
             }
 
@@ -531,36 +482,16 @@ class PromocionesController extends Controller
         }
 
         $data= promociones::select(  "id"
-                                    , "vCampo1_promociones"
-                                    , "vCampo2_promociones"
-                                    , "vCampo3_promociones"
-                                    , "vCampo4_promociones"
-                                    , "vCampo5_promociones"
-                                    , "vCampo6_promociones"
-                                    , "vCampo7_promociones"
-                                    , "vCampo8_promociones"
-                                    , "vCampo9_promociones"
-                                    , "vCampo10_promociones"
-                                    , 'vCampo11_promociones'
-                                    , 'vCampo12_promociones'
-                                    , 'vCampo13_promociones'
-                                    , 'vCampo14_promociones'
-                                    , 'vCampo15_promociones'
-                                    , 'vCampo16_promociones'
-                                    , 'vCampo17_promociones'
-                                    , 'vCampo18_promociones'
-                                    , 'vCampo19_promociones'
-                                    , 'vCampo20_promociones'
-                                    , 'vCampo21_promociones'
-                                    , 'vCampo22_promociones'
-                                    , 'vCampo23_promociones'
-                                    , 'vCampo24_promociones'
-                                    , 'vCampo25_promociones'
-                                    , 'vCampo26_promociones'
-                                    , 'vCampo27_promociones'
-                                    , 'vCampo28_promociones'
-                                    , 'vCampo29_promociones'
-                                    , 'vCampo30_promociones'
+                                    , "fotos"
+                                    , "titulo"
+                                    , "descripcion"
+                                    , "precio"
+                                    , "marca"
+                                    , "review"
+                                    , "cantidad"
+                                    , "color"
+                                    , "precio_anterior"
+                                    , "target"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -568,36 +499,16 @@ class PromocionesController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    $value->id
-                                , $value->vCampo1_promociones
-                                , $value->vCampo2_promociones
-                                , $value->vCampo3_promociones
-                                , $value->vCampo4_promociones
-                                , $value->vCampo5_promociones
-                                , $value->vCampo6_promociones
-                                , $value->vCampo7_promociones
-                                , $value->vCampo8_promociones
-                                , $value->vCampo9_promociones
-                                , $value->vCampo10_promociones
-                                , $value->vCampo11_promociones
-                                , $value->vCampo12_promociones
-                                , $value->vCampo13_promociones
-                                , $value->vCampo14_promociones
-                                , $value->vCampo15_promociones
-                                , $value->vCampo16_promociones
-                                , $value->vCampo17_promociones
-                                , $value->vCampo18_promociones
-                                , $value->vCampo19_promociones
-                                , $value->vCampo20_promociones
-                                , $value->vCampo21_promociones
-                                , $value->vCampo22_promociones
-                                , $value->vCampo23_promociones
-                                , $value->vCampo24_promociones
-                                , $value->vCampo25_promociones
-                                , $value->vCampo26_promociones
-                                , $value->vCampo27_promociones
-                                , $value->vCampo28_promociones
-                                , $value->vCampo29_promociones
-                                , $value->vCampo30_promociones
+                                , $value->fotos
+                                , $value->titulo
+                                , $value->descripcion
+                                , $value->precio
+                                , $value->marca
+                                , $value->review
+                                , $value->cantidad
+                                , $value->color
+                                , $value->precio_anterior
+                                , $value->target
                 );
             }
             return json_encode(array("b_status"=> true, "data" => $arr ));
@@ -621,36 +532,16 @@ class PromocionesController extends Controller
         }
 
         $data= promociones::select("id"
-                                    , "vCampo1_promociones"
-                                    , "vCampo2_promociones"
-                                    , "vCampo3_promociones"
-                                    , "vCampo4_promociones"
-                                    , "vCampo5_promociones"
-                                    , "vCampo6_promociones"
-                                    , "vCampo7_promociones"
-                                    , "vCampo8_promociones"
-                                    , "vCampo9_promociones"
-                                    , "vCampo10_promociones"
-                                    , 'vCampo11_promociones'
-                                    , 'vCampo12_promociones'
-                                    , 'vCampo13_promociones'
-                                    , 'vCampo14_promociones'
-                                    , 'vCampo15_promociones'
-                                    , 'vCampo16_promociones'
-                                    , 'vCampo17_promociones'
-                                    , 'vCampo18_promociones'
-                                    , 'vCampo19_promociones'
-                                    , 'vCampo20_promociones'
-                                    , 'vCampo21_promociones'
-                                    , 'vCampo22_promociones'
-                                    , 'vCampo23_promociones'
-                                    , 'vCampo24_promociones'
-                                    , 'vCampo25_promociones'
-                                    , 'vCampo26_promociones'
-                                    , 'vCampo27_promociones'
-                                    , 'vCampo28_promociones'
-                                    , 'vCampo29_promociones'
-                                    , 'vCampo30_promociones'
+                                    , "fotos"
+                                    , "titulo"
+                                    , "descripcion"
+                                    , "precio"
+                                    , "marca"
+                                    , "review"
+                                    , "cantidad"
+                                    , "color"
+                                    , "precio_anterior"
+                                    , "target"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -658,72 +549,32 @@ class PromocionesController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr_data[]= array(   $value->id
-                                    , $value->vCampo1_promociones
-                                    , $value->vCampo2_promociones
-                                    , $value->vCampo3_promociones
-                                    , $value->vCampo4_promociones
-                                    , $value->vCampo5_promociones
-                                    , $value->vCampo6_promociones
-                                    , $value->vCampo7_promociones
-                                    , $value->vCampo8_promociones
-                                    , $value->vCampo9_promociones
-                                    , $value->vCampo10_promociones
-                                    , $value->vCampo11_promociones
-                                    , $value->vCampo12_promociones
-                                    , $value->vCampo13_promociones
-                                    , $value->vCampo14_promociones
-                                    , $value->vCampo15_promociones
-                                    , $value->vCampo16_promociones
-                                    , $value->vCampo17_promociones
-                                    , $value->vCampo18_promociones
-                                    , $value->vCampo19_promociones
-                                    , $value->vCampo20_promociones
-                                    , $value->vCampo21_promociones
-                                    , $value->vCampo22_promociones
-                                    , $value->vCampo23_promociones
-                                    , $value->vCampo24_promociones
-                                    , $value->vCampo25_promociones
-                                    , $value->vCampo26_promociones
-                                    , $value->vCampo27_promociones
-                                    , $value->vCampo28_promociones
-                                    , $value->vCampo29_promociones
-                                    , $value->vCampo30_promociones
+                                    , $value->fotos
+                                    , $value->titulo
+                                    , $value->descripcion
+                                    , $value->precio
+                                    , $value->marca
+                                    , $value->review
+                                    , $value->cantidad
+                                    , $value->color
+                                    , $value->precio_anterior
+                                    , $value->target
                 );
             }
 
             $nombre_archivo= 'Reporte_de_promociones.xlsx';
 
             $title[]= [  "id"
-                        ,"vTema1_promociones"
-                        ,"vTema2_promociones"
-                        ,"vTema3_promociones"
-                        ,"vTema4_promociones"
-                        ,"vTema5_promociones"
-                        ,"vTema6_promociones"
-                        ,"vTema7_promociones"
-                        ,"vTema8_promociones"
-                        ,"vTema9_promociones"
-                        ,"vTema10_promociones"
-                        ,"vTema11_promociones"
-                        ,"vTema12_promociones"
-                        ,"vTema13_promociones"
-                        ,"vTema14_promociones"
-                        ,"vTema15_promociones"
-                        ,"vTema16_promociones"
-                        ,"vTema17_promociones"
-                        ,"vTema18_promociones"
-                        ,"vTema19_promociones"
-                        ,"vTema20_promociones"
-                        ,"vTema21_promociones"
-                        ,"vTema22_promociones"
-                        ,"vTema23_promociones"
-                        ,"vTema24_promociones"
-                        ,"vTema25_promociones"
-                        ,"vTema26_promociones"
-                        ,"vTema27_promociones"
-                        ,"vTema28_promociones"
-                        ,"vTema29_promociones"
-                        ,"vTema30_promociones"
+                        ,"Fotos"
+                        ,"Titulo"
+                        ,"Descripcion"
+                        ,"Precio"
+                        ,"Marca"
+                        ,"Review"
+                        ,"Cantidad"
+                        ,"Color"
+                        ,"Precio_Anterior"
+                        ,"Target"
                     ];
 
             $arr_data= array_merge($title, $arr_data);

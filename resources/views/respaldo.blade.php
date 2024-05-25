@@ -11,10 +11,12 @@
         </div>
     </div>
     <!-- /breadcrumb -->
+
     <!-- row -->
     <div class="row">
         <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
             <div class="card">
+
 
                 <div class="card-header align-items-center d-flex">
                     <div class="flex-shrink-0">
@@ -41,8 +43,6 @@
                         <div class=" d-flex align-items-center">
                             <h5 class="mb-0 flex-grow-1"></h5>
                             <div>
-                                <button id="truncate_sps_promociones" class="btn btn-danger" onclick="promociones.fn_truncateSPSpromociones()">Truncate SPS</button>
-                                <button id="truncate_promociones" class="btn btn-danger" onclick="promociones.fn_truncatepromociones()">Truncate</button>
                                 <button id="refresh_promociones" class="btn btn-success" onclick="promociones.fn_actualizarTablapromociones()">Actualizar</button>
                                 <button id="add_new_promociones" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUpromociones">Nuevo</button>
                                 <button id="import_promociones" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormpromociones">Importar</button>
@@ -55,32 +55,30 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%">id</th>
-                                                <th >Fotos</th>
+                                                <th >Target</th>
                                                 <th >Titulo</th>
-                                                <th >Descripcion</th>
-                                                <th >Precio</th>
-                                                <th >Marca</th>
+                                                <th >Subtitulo</th>
                                                 <th >Review</th>
                                                 <th >Cantidad</th>
                                                 <th >Color</th>
+                                                <th >Precio</th>
                                                 <th >Precio_Anterior</th>
-                                                <th >Target</th>
+                                                <th >Imagen</th>
                                                 <th style="width: 9%">Acción</th>
                                             </tr>
                                         </thead>
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th class="fotos"><input type="text" id="buscar_fotos" placeholder="Buscar por fotos"></th>
+                                                <th class="target"><input type="text" id="buscar_target" placeholder="Buscar por target"></th>
                                                 <th class="titulo"><input type="text" id="buscar_titulo" placeholder="Buscar por titulo"></th>
-                                                <th class="descripcion"><input type="text" id="buscar_descripcion" placeholder="Buscar por descripcion"></th>
-                                                <th class="precio"><input type="text" id="buscar_precio" placeholder="Buscar por precio"></th>
-                                                <th class="marca"><input type="text" id="buscar_marca" placeholder="Buscar por marca"></th>
+{{--                                                 <th class="subtitulo"><input type="text" id="buscar_subtitulo" placeholder="Buscar por subtitulo"></th>
                                                 <th class="review"><input type="text" id="buscar_review" placeholder="Buscar por review"></th>
                                                 <th class="cantidad"><input type="text" id="buscar_cantidad" placeholder="Buscar por cantidad"></th>
                                                 <th class="color"><input type="text" id="buscar_color" placeholder="Buscar por color"></th>
-                                                <th class="precio_anterior"><input type="text" id="buscar_precio_anterior" placeholder="Buscar por precio_anterior"></th>
-                                                <th class="target"><input type="text" id="buscar_target" placeholder="Buscar por target"></th>
+ --}}                                                <th class="precio"><input type="text" id="buscar_precio" placeholder="Buscar por precio"></th>
+                                                {{-- <th class="precio_anterior"><input type="text" id="buscar_precio_anterior" placeholder="Buscar por precio_anterior"></th> --}}
+                                                <th class="imagen"><input type="text" id="buscar_imagen" placeholder="Buscar por imagen"></th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -88,10 +86,9 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
-
                     <div class="tab-pane" id="tab-scroll" role="tabpanel">
-
 
                         <div ng-app='app-scroll-promociones' ng-controller='ControllerScroll'>
                             <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
@@ -102,8 +99,8 @@
                                                 <div class="card-body h-100 product-grid6">
                                                     <div class="pro-img-box product-image">
                                                         <a href="detalle?id=@{{item.id}}">
-                                                            <img class="pic-1" ng-src="@{{item.fotos}}" alt="product-image">
-                                                            <img class="pic-2" ng-src="@{{item.fotos}}" alt="product-image-1">
+                                                            <img class="pic-1" ng-src="@{{item.imagen}}" alt="product-image">
+                                                            <img class="pic-2" ng-src="@{{item.imagen}}" alt="product-image-1">
                                                         </a>
                                                         <ul class="icons list-unstyled">
                                                             <li><a href="wish-list.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Add to Wishlist" class="primary-gradient me-2"><i class="fa fa-heart"></i></a></li>

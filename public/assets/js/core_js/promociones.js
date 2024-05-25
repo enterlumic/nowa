@@ -8,7 +8,6 @@ let promociones = {
         promociones.fn_datatable_promociones(rango_fecha='');
         promociones.fn_scroll_promociones();
         promociones.fn_importar_excel_promociones();
-        promociones.fn_truncatepromociones();
 
         // Funciones para eventos
         promociones.fn_modalShowpromociones();
@@ -71,16 +70,16 @@ let promociones = {
                 "url": "get_promociones_datatable",
                 "type": "GET",
                 "data": function(d) {
-                    d.buscar_vCampo1_promociones = $('#buscar_vCampo1_promociones').val();
-                    d.buscar_vCampo2_promociones = $('#buscar_vCampo2_promociones').val();
-                    d.buscar_vCampo3_promociones = $('#buscar_vCampo3_promociones').val();
-                    d.buscar_vCampo4_promociones = $('#buscar_vCampo4_promociones').val();
-                    d.buscar_vCampo5_promociones = $('#buscar_vCampo5_promociones').val();
-                    d.buscar_vCampo6_promociones = $('#buscar_vCampo6_promociones').val();
-                    d.buscar_vCampo7_promociones = $('#buscar_vCampo7_promociones').val();
-                    d.buscar_vCampo8_promociones = $('#buscar_vCampo8_promociones').val();
-                    d.buscar_vCampo9_promociones = $('#buscar_vCampo9_promociones').val();
-                    d.buscar_vCampo10_promociones = $('#buscar_vCampo10_promociones').val();
+                    d.buscar_fotos = $('#buscar_fotos').val();
+                    d.buscar_titulo = $('#buscar_titulo').val();
+                    d.buscar_descripcion = $('#buscar_descripcion').val();
+                    d.buscar_precio = $('#buscar_precio').val();
+                    d.buscar_marca = $('#buscar_marca').val();
+                    d.buscar_review = $('#buscar_review').val();
+                    d.buscar_cantidad = $('#buscar_cantidad').val();
+                    d.buscar_color = $('#buscar_color').val();
+                    d.buscar_precio_anterior = $('#buscar_precio_anterior').val();
+                    d.buscar_target = $('#buscar_target').val();
                     // Añade aquí más datos de búsqueda si es necesario
                 },
                 "headers": {
@@ -156,17 +155,17 @@ let promociones = {
             // "order": [[0, "asc"]],
 
             "columns": [
-                { "data": "id" , visible: true},
-                { "data": "vCampo1_promociones", class: "vCampo1_promociones"},
-                { "data": "vCampo2_promociones", class: "vCampo2_promociones" },
-                { "data": "vCampo3_promociones", class: "vCampo3_promociones" },
-                { "data": "vCampo4_promociones", class: "vCampo4_promociones" },
-                { "data": "vCampo5_promociones", class: "vCampo5_promociones" },
-                { "data": "vCampo6_promociones", class: "vCampo6_promociones" },
-                { "data": "vCampo7_promociones", class: "vCampo7_promociones" },
-                { "data": "vCampo8_promociones", class: "vCampo8_promociones" },
-                { "data": "vCampo9_promociones", class: "vCampo9_promociones" },
-                { "data": "vCampo10_promociones", class: "vCampo10_promociones" },
+                { "data": "id", visible: true},
+                { "data": "fotos", class: "fotos", visible: true },
+                { "data": "titulo", class: "titulo", visible: true },
+                { "data": "descripcion", class: "descripcion", visible: true },
+                { "data": "precio", class: "precio", visible: true },
+                { "data": "marca", class: "marca", visible: true },
+                { "data": "review", class: "review", visible: true },
+                { "data": "cantidad", class: "cantidad", visible: true },
+                { "data": "color", class: "color", visible: true },
+                { "data": "precio_anterior", class: "precio_anterior", visible: true },
+                { "data": "target", class: "target", visible: true },
             ],
 
             "columnDefs": [
@@ -190,84 +189,84 @@ let promociones = {
         });
 
         // Evento de clic en las filas de la tabla
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo1_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .fotos', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo1_promociones);
+            promociones.fn_copyToClipboardpromociones(data.fotos);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo2_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .titulo', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo2_promociones);
+            promociones.fn_copyToClipboardpromociones(data.titulo);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo3_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .descripcion', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo3_promociones);
+            promociones.fn_copyToClipboardpromociones(data.descripcion);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo4_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .precio', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo4_promociones);
+            promociones.fn_copyToClipboardpromociones(data.precio);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo5_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .marca', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo5_promociones);
+            promociones.fn_copyToClipboardpromociones(data.marca);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo6_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .review', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo6_promociones);
+            promociones.fn_copyToClipboardpromociones(data.review);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo7_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .cantidad', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo7_promociones);
+            promociones.fn_copyToClipboardpromociones(data.cantidad);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo8_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .color', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo8_promociones);
+            promociones.fn_copyToClipboardpromociones(data.color);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo9_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .precio_anterior', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo9_promociones);
+            promociones.fn_copyToClipboardpromociones(data.precio_anterior);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .vCampo10_promociones', function () {
+        $('#get_promociones_datatable tbody').on('click', 'tr .target', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.vCampo10_promociones);
+            promociones.fn_copyToClipboardpromociones(data.target);
         });
         // FIN Evento de clic en las filas de la tabla
         //////////////////////////////////////////////////////////////////////
@@ -408,13 +407,13 @@ let promociones = {
                 });
             }
             , rules: {
-              vCampo1_promociones: {
+              fotos: {
                 required: true
               }
             }
             , messages: {
-                vCampo1_promociones: {
-                    minlength: "El vCampo1_promociones es requerido"
+                fotos: {
+                    minlength: "El fotos es requerido"
                 }
               }
         });
@@ -465,13 +464,13 @@ let promociones = {
                 });
             }
             , rules: {
-              vCampo1_promociones: {
+              fotos: {
                 required: true
               }
             }
             , messages: {
-                vCampo1_promociones: {
-                    minlength: "Mensaje personalizado vCampo1_promociones"
+                fotos: {
+                    minlength: "Mensaje personalizado fotos"
                 }
               }
         });
@@ -479,7 +478,7 @@ let promociones = {
 
     fn_modalShowpromociones: function () {
         $('#modalFormIUpromociones').on('shown.bs.modal', function (e) {
-            $('#vCampo1_promociones', e.target).focus();
+            $('#fotos', e.target).focus();
         });
 
         $('#modalImportFormpromociones').on('shown.bs.modal', function (e) {
@@ -541,35 +540,33 @@ let promociones = {
         });
     },
 
-    fn_truncatepromociones: function () {
-        $(document).on("click", "#truncate_promociones", function () {
-            $.ajax({
-                url:"truncate_promociones",
-                cache: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                success: function(response)
-                {
-                    if ($("#get_promociones_datatable").length){
-                        $('#get_promociones_datatable').DataTable().ajax.reload();
-                    }
+    fn_truncateSPSpromociones: function () {
+        $.ajax({
+            url:"truncate_sps_promociones",
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            success: function(response)
+            {
+                if ($("#get_promociones_datatable").length){
+                    $('#get_promociones_datatable').DataTable().ajax.reload();
                 }
-            });
+            }
         });
+    },
 
-        $(document).on("click", "#truncate_sps_promociones", function () {
-            $.ajax({
-                url:"truncate_sps_promociones",
-                cache: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                success: function(response)
-                {
-                    if ($("#get_promociones_datatable").length){
-                        $('#get_promociones_datatable').DataTable().ajax.reload();
-                    }
+    fn_truncatepromociones: function () {
+        $.ajax({
+            url:"truncate_promociones",
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            success: function(response)
+            {
+                if ($("#get_promociones_datatable").length){
+                    $('#get_promociones_datatable').DataTable().ajax.reload();
                 }
-            });
+            }
         });
     },
 
@@ -761,7 +758,7 @@ let promociones = {
                         // #id_cat_promociones' 
 
                         if ($("#id_cat_promociones").length){
-                            $("#id_cat_promociones").append("<option value="+j['id']+"> "+j['vCampo1_promociones']+" </option>");
+                            $("#id_cat_promociones").append("<option value="+j['id']+"> "+j['fotos']+" </option>");
                         }
                     });
                 }
@@ -772,7 +769,7 @@ let promociones = {
 
     fn_set_validar_existencia_promociones: function(){
 
-        $( "#vCampo1_promociones" ).keyup(function( event ) {
+        $( "#fotos" ).keyup(function( event ) {
 
             var id=0;
             // Si se esta editando return
@@ -780,18 +777,18 @@ let promociones = {
                 id= $("#modalFormIUpromociones #id").val();
             }
 
-            let vCampo1_promociones= this.value;
+            let fotos= this.value;
 
-            if(vCampo1_promociones ==""){
+            if(fotos ==""){
                 $("#modalFormIUpromociones .btn-action-form").attr("disabled",false);
-                $("#vCampo1_promociones").removeClass("border-danger").removeClass("text-danger");
+                $("#fotos").removeClass("border-danger").removeClass("text-danger");
                 $(".tipo-ya-existe").addClass("d-none");
                 return;
             }
 
             $.ajax({
                 url: "validar_existencia_promociones",
-                data: { vCampo1_promociones: vCampo1_promociones, id: id},
+                data: { fotos: fotos, id: id},
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type: 'GET',
                 contentType: "application/json",
@@ -801,11 +798,11 @@ let promociones = {
 
                     if (json['b_status']) {
                         $("#modalFormIUpromociones .btn-action-form").attr("disabled",true);
-                        $("#vCampo1_promociones").addClass("border-danger").addClass("text-danger");
+                        $("#fotos").addClass("border-danger").addClass("text-danger");
                         $(".tipo-ya-existe").removeClass("d-none");
                     } else {
                         $("#modalFormIUpromociones .btn-action-form").attr("disabled",false);
-                        $("#vCampo1_promociones").removeClass("border-danger").removeClass("text-danger");
+                        $("#fotos").removeClass("border-danger").removeClass("text-danger");
                         $(".tipo-ya-existe").addClass("d-none");
                     }
                 },
