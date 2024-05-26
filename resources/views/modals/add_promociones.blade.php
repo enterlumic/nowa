@@ -17,7 +17,7 @@
                     <div class="row g-3">
                         <div class="col-sm-12">
                             <label for="fotos" class="form-label">Fotos</label>
-                            <input type="text" class="form-control" id="fotos" name="fotos" placeholder="Escribe Fotos">
+                            <textarea class="form-control" id="fotos" name="fotos" placeholder="Escribe Fotos"></textarea>
                         </div>
                         <div class="col-sm-12 d-none tipo-ya-existe">
                             <span class="badge bg-danger text-uppercase">Este registro ya existe</span>

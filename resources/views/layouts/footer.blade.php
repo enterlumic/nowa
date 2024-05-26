@@ -463,6 +463,7 @@
 <!-- Custom-Switcher JS -->
 <script src="assets/js/custom-switcher.min.js"></script>
 <!-- Custom JS -->
+<script src="assets/js/product-details.js"></script>
 <script src="assets/js/custom.js"></script>
 
 
