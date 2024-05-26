@@ -93,3 +93,21 @@ Route::get('get_promociones_diez', [PromocionesController::class, 'get_promocion
 Route::get('descargar_plantilla_promociones', [PromocionesController::class, 'descargar_plantilla_promociones']);
 Route::get('validar_existencia_promociones', [PromocionesController::class, 'validar_existencia_promociones']);
 
+use App\Http\Controllers\DetalleController;
+Route::get('detalle', [DetalleController::class, 'index'])->middleware('auth') ;
+Route::post('set_detalle', [DetalleController::class, 'set_detalle']);
+Route::post('set_import_detalle', [DetalleController::class, 'set_import_detalle']);
+Route::post('get_detalle_by_id', [DetalleController::class, 'get_detalle_by_id']);
+Route::post('delete_detalle', [DetalleController::class, 'delete_detalle']);
+Route::post('undo_delete_detalle', [DetalleController::class, 'undo_delete_detalle']);
+Route::get('get_detalle_datatable', [DetalleController::class, 'get_detalle_datatable']);
+Route::post('truncate_detalle', [DetalleController::class, 'truncate_detalle']);
+Route::post('truncate_sps_detalle', [DetalleController::class, 'truncate_sps_detalle']);
+Route::post('form_importar_detalle', [DetalleController::class, 'form_importar_detalle']);
+Route::get('export_excel_detalle', [DetalleController::class, 'export_excel_detalle']);
+Route::post('get_cat_detalle', [DetalleController::class, 'get_cat_detalle']);
+Route::post('get_detalle_by_list', [DetalleController::class, 'get_detalle_by_list']);
+Route::get('get_detalle_diez', [DetalleController::class, 'get_detalle_diez']);
+Route::get('descargar_plantilla_detalle', [DetalleController::class, 'descargar_plantilla_detalle']);
+Route::get('validar_existencia_detalle', [DetalleController::class, 'validar_existencia_detalle']);
+
