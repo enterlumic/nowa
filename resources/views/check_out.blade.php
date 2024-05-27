@@ -49,73 +49,78 @@
                                         <button type="button" class="btn btn-success m-1" id="continue-payment-trigger">Siguiente</button>
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade border-0 p-0" id="delivery-tab-pane" role="tabpanel" aria-labelledby="delivery-tab-pane" tabindex="0">
                                     <div class="p-4">
                                         <div class="">
                                             <h5 class="text-start mb-2">Pagos</h5>
                                             <p class="mb-4 text-muted tx-13 ms-0 text-start">Completa los detalles de tu tarjeta para finalizar tu compra de manera segura.</p>
+
+                                            <!-- Button to trigger modal -->
+                                            <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#addCardModal">
+                                                Agregar Nueva Tarjeta
+                                            </button>
                                         </div>
 
                                         <div class="mt-4">
                                             <h6>Tarjetas Guardadas:</h6>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-radio mb-3">
-                                                    <input type="radio" id="saved-card-1" name="saved-card" class="custom-control-input">
-                                                    <label class="custom-control-label" for="saved-card-1">XXXX - XXXX - XXXX - 7646</label>
-                                                </div>
-                                                <div class="custom-control custom-radio mb-3">
-                                                    <input type="radio" id="saved-card-2" name="saved-card" class="custom-control-input">
-                                                    <label class="custom-control-label" for="saved-card-2">XXXX - XXXX - XXXX - 9556</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="card-pay">
-                                            <ul class="tabs-menu nav">
-                                                <li class=""><a href="#tab20" class="active" data-bs-toggle="tab"><i class="fa fa-credit-card"></i> Agregar nueva tarjeta de crédito</a></li>
-                                            </ul>
-                                            <div class="tab-content">
-                                                <div class="tab-pane border-0 active show" id="tab20">
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="cardholder-name">Nombre del titular de la tarjeta</label>
-                                                        <input type="text" class="form-control" id="cardholder-name" placeholder="Nombre">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="card-number">Número de tarjeta</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="card-number" placeholder="Número de tarjeta" aria-label="Número de tarjeta" aria-describedby="button-addon2">
-                                                            <button class="btn btn-primary" type="button" id="button-addon22">
-                                                                <i class="fab fa-cc-visa"></i> &nbsp;
-                                                                <i class="fab fa-cc-amex"></i> &nbsp;
-                                                                <i class="fab fa-cc-mastercard"></i>
-                                                            </button>
+                                            <div id="mainContactList">
+                                                @foreach($savedCards as $card)
+                                                    <div class="main-contact-item seleccionar-medio-pago" data-card-id="{{ $card->id }}">
+                                                        <div class="main-img-user online"><img alt="avatar" src="../assets/images/faces/2.jpg"></div>
+                                                        <div class="main-contact-body">
+                                                            <h6>{{ $card->name }}</h6><span class="phone">********{{ substr($card->number, -4) }}</span>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-8">
-                                                            <div class="form-group">
-                                                                <label class="form-label" for="expiration-date">Fecha de expiración</label>
-                                                                <div class="input-group">
-                                                                    <input type="text" class="form-control" id="expiration-date" placeholder="MM/AA">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <div class="form-group">
-                                                                <label class="form-label" for="cvv">CVV <i class="fa fa-question-circle"></i></label>
-                                                                <input type="number" class="form-control" id="cvv" required="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
                                     <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-between">
                                         <button type="button" class="btn btn-light m-1" id="back-personal-trigger3">Anterior</button>
-                                        <button type="button" class="btn btn-success m-1" id="continue-finished-tab">Siguiente</button>
+                                        <button type="button" class="btn btn-success m-1" id="continue-finished-tab">Continuar pago</button>
                                     </div>
-                                </div>                                <div class="tab-pane fade border-0 p-0" id="finished-tab-pane" role="tabpanel" aria-labelledby="finished-tab-pane" tabindex="0">
+                                </div>
+
+                                <!-- Modal structure -->
+                                <div class="modal fade" id="addCardModal" tabindex="-1" aria-labelledby="addCardModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addCardModalLabel">Agregar Nueva Tarjeta</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="addCardForm">
+                                                    <div class="mb-3">
+                                                        <label for="cardName" class="form-label">Nombre del Titular</label>
+                                                        <input type="text" class="form-control" id="cardName" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="cardNumber" class="form-label">Número de Tarjeta</label>
+                                                        <input type="text" class="form-control" id="cardNumber" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="cardCVC" class="form-label">CVC</label>
+                                                        <input type="text" class="form-control" id="cardCVC" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="expMonth" class="form-label">Mes de Expiración</label>
+                                                        <input type="text" class="form-control" id="expMonth" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="expYear" class="form-label">Año de Expiración</label>
+                                                        <input type="text" class="form-control" id="expYear" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="tab-pane fade border-0 p-0" id="finished-tab-pane" role="tabpanel" aria-labelledby="finished-tab-pane" tabindex="0">
                                     <div class="text-center p-4">
                                         <div class="">
                                             <h5 class="text-center mb-4">¡Tu pedido ha sido confirmado!</h5>
@@ -161,3 +166,10 @@
 
 <!-- Internal Checkout JS -->
 <script src="assets/js/checkout.js"></script>
+
+<style type="text/css">
+.seleccionar-medio-pago.selected {
+    border: 2px solid blue;
+    background-color: #f0f8ff;
+}
+</style>

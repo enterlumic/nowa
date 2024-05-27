@@ -4,6 +4,7 @@ let checkOut = {
 
         // Funciones principales
         checkOut.fn_get();
+        checkOut.fn_agregar_css();
         checkOut.fn_set_check_out();
         checkOut.fn_set_import_check_out();
         checkOut.fn_datatable_check_out(rango_fecha='');
@@ -362,6 +363,60 @@ let checkOut = {
         tempInput.select();
         document.execCommand("copy");
         document.body.removeChild(tempInput);
+    },
+
+    fn_agregar_css: function(text) {
+        document.addEventListener('DOMContentLoaded', function () {
+            let selectedCardId = null;
+
+            // Agregar evento de clic a cada tarjeta
+            document.querySelectorAll('.seleccionar-medio-pago').forEach(function (element) {
+                element.addEventListener('click', function () {
+                    // Quitar la selección de todas las tarjetas
+                    document.querySelectorAll('.seleccionar-medio-pago').forEach(function (el) {
+                        el.classList.remove('selected');
+                    });
+
+                    // Agregar la clase 'selected' a la tarjeta seleccionada
+                    this.classList.add('selected');
+                    selectedCardId = this.getAttribute('data-card-id');
+                });
+            });
+
+            // Agregar evento de clic al botón de pago
+            document.getElementById('continue-finished-tab').addEventListener('click', function () {
+                    console.log("selectedCardId", selectedCardId);
+                if (selectedCardId) {
+                    // Aquí puedes agregar la lógica para procesar el pago con la tarjeta seleccionada
+                    console.log('Procesando pago con la tarjeta ID:', selectedCardId);
+
+                    // Ejemplo de llamada a un endpoint para procesar el pago
+                    fetch('process-payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ card_id: selectedCardId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Pago procesado con éxito');
+                        } else {
+                            alert('Error al procesar el pago');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al procesar el pago');
+                    });
+                } else {
+                    alert('Por favor, selecciona una tarjeta antes de proceder con el pago.');
+                }
+            });
+        });
+
     },
 
     fn_get: function () {

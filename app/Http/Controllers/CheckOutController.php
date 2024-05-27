@@ -5,6 +5,7 @@ use Throwable;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\Notifications\checkOutSendMail as FncheckOutSendMail;
+use App\Services\ConektaService;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -29,6 +30,7 @@ class CheckOutController extends Controller
     |
     */
     public $LibCore;
+    protected $conektaService;
 
     /*
     |--------------------------------------------------------------------------
@@ -36,8 +38,9 @@ class CheckOutController extends Controller
     |--------------------------------------------------------------------------
     |
     */
-    public function __construct(){
+    public function __construct(ConektaService $conektaService){
         $this->LibCore = new LibCore();
+        $this->conektaService = $conektaService;
     }
 
     /*
@@ -53,8 +56,10 @@ class CheckOutController extends Controller
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_check_out' , 'vc_info' => "index - check_out" ] );
 
+        $savedCards = DB::table('cliente_conekta')->where('user_id', Auth::user()->id)->get();
+
         // Pasar los datos a la vista
-        return view('check_out');
+        return view('check_out', compact('savedCards'));
     }
 
 
@@ -783,5 +788,67 @@ class CheckOutController extends Controller
     {
         // Eliminar el SP
         DB::unprepared('DROP PROCEDURE IF EXISTS `sp_get_check_out` ');
+    }
+
+    public function processPayment(Request $request)
+    {
+        // Validar la solicitud
+        $request->validate([
+            'card_id' => 'required|exists:cliente_conekta,id',
+        ]);
+
+        try {
+            // Obtener la tarjeta seleccionada utilizando el Query Builder
+            $card = DB::table('cliente_conekta')
+                        ->select('id', 'user_id', 'id_conekta', 'payment_source_id')
+                        ->where('id', $request->card_id)
+                        ->first();
+
+            if (!$card) {
+                return response()->json(['success' => false, 'message' => 'Tarjeta no encontrada.'], 404);
+            }
+
+            // Aquí deberías implementar la lógica para procesar el pago con la tarjeta seleccionada.
+            // Esta es solo una demostración simplificada.
+            // Llama a tu servicio de pago o lógica de negocio aquí.
+
+            // Simulación de éxito de pago
+            $paymentSuccess = true;
+
+            if ($paymentSuccess) {
+
+                // Después de crear el cliente, crea la orden
+                $orderData = [
+                    'line_items' => [
+                        [
+                            'name'        => 'Afinacion Mayor',
+                            'unit_price'  => 23000,
+                            'quantity'    => 1
+                        ]
+                    ],
+                    'currency'    => 'MXN',
+                    'customer_info' => [
+                        'customer_id' => $card->id_conekta
+                    ],
+                    'charges' => [
+                        [
+                            'payment_method' => [
+                                'type' => 'card',
+                                'payment_source_id' => $card->payment_source_id
+
+                            ]
+                        ]
+                    ]
+                ];
+
+                $order = $this->conektaService->createOrder($orderData);
+
+                return response()->json(['success' => true, 'message' => 'Pago procesado con éxito.']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Error al procesar el pago.'], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al procesar el pago.'], 500);
+        }
     }
 }

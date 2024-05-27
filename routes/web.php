@@ -130,4 +130,5 @@ Route::post('get_check_out_by_list', [CheckOutController::class, 'get_check_out_
 Route::get('get_check_out_diez', [CheckOutController::class, 'get_check_out_diez']);
 Route::get('descargar_plantilla_check_out', [CheckOutController::class, 'descargar_plantilla_check_out']);
 Route::get('validar_existencia_check_out', [CheckOutController::class, 'validar_existencia_check_out']);
+Route::post('process-payment', [CheckOutController::class, 'processPayment'])->name('process.payment');
 
