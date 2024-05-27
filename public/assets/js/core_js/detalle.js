@@ -475,7 +475,7 @@ let detalle = {
                                                 <h4 class="product-title mb-1">${data.titulo}</h4>
                                                 <h6 class="price">Precio: <span class="h3 ms-2">${data.precio}</span></h6>
                                                 <h5>Descripción</h5>
-                                                ${data.descripcion}
+                                                <pre class="styled-pre">${data.descripcion.trim()}</pre>
                                                 <div class="mt-4 btn-list">
                                                     <a href="javascript:void(0);" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"></i> Agregar al carrito</a>
                                                     <a href="check_out?id=${data.id}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"></i> Comprar ahora</a>

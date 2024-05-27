@@ -134,9 +134,25 @@
 <script src="assets/js/checkout.js?{{ rand() }}"></script>
 
 <style type="text/css">
-.seleccionar-medio-pago.selected {
-    border: 2px solid blue;
-    background-color: #f0f8ff;
-}
+    .seleccionar-medio-pago.selected {
+        border: 2px solid blue;
+        background-color: #f0f8ff;
+    }
+
+    pre {
+        background-color: #fff; /* Fondo blanco */
+        padding: 20px; /* Espaciado interno */
+        border-radius: 4px; /* Bordes ligeramente redondeados */
+        font-family: Arial, sans-serif; /* Fuente sans-serif */
+        font-size: 14px !important; /* Tamaño de fuente */
+        line-height: 1.6 !important; /* Altura de línea */
+        color: #fff !important; /* Color del texto */
+        white-space: pre-wrap; /* Ajustar el texto al ancho del contenedor */
+        border: 1px solid #ddd; /* Borde ligero */
+        margin: 20px 0; /* Espaciado superior e inferior */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    }
+
+
 </style>
 

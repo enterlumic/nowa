@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-sm-12">
                             <label for="descripcion" class="form-label">Descripcion</label>
-                            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Escribe Descripcion">
+                            <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Escribe descripcion"></textarea>
                         </div>
                         <div class="col-12">
                             <label for="precio" class="form-label">Precio</label>
