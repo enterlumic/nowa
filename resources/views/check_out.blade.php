@@ -57,9 +57,7 @@
                                             <p class="mb-4 text-muted tx-13 ms-0 text-start">Completa los detalles de tu tarjeta para finalizar tu compra de manera segura.</p>
 
                                             <!-- Button to trigger modal -->
-                                            <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#addCardModal">
-                                                Agregar Nueva Tarjeta
-                                            </button>
+                                            <button id="add_new_cliente_conekta" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUclienteConekta">Agregar Nueva Tarjeta</button>
                                         </div>
 
                                         <div class="mt-4">
@@ -83,42 +81,7 @@
                                 </div>
 
                                 <!-- Modal structure -->
-                                <div class="modal fade" id="addCardModal" tabindex="-1" aria-labelledby="addCardModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addCardModalLabel">Agregar Nueva Tarjeta</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form id="addCardForm">
-                                                    <div class="mb-3">
-                                                        <label for="cardName" class="form-label">Nombre del Titular</label>
-                                                        <input type="text" class="form-control" id="cardName" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="cardNumber" class="form-label">Número de Tarjeta</label>
-                                                        <input type="text" class="form-control" id="cardNumber" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="cardCVC" class="form-label">CVC</label>
-                                                        <input type="text" class="form-control" id="cardCVC" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="expMonth" class="form-label">Mes de Expiración</label>
-                                                        <input type="text" class="form-control" id="expMonth" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="expYear" class="form-label">Año de Expiración</label>
-                                                        <input type="text" class="form-control" id="expYear" required>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Guardar</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                @include('modals.add_cliente_conekta')
 
                                 <div class="tab-pane fade border-0 p-0" id="finished-tab-pane" role="tabpanel" aria-labelledby="finished-tab-pane" tabindex="0">
                                     <div class="text-center p-4">
@@ -159,13 +122,16 @@
     <!-- .div-modals -->
 </x-app-layout>
 
+<script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
+<script src="assets/js/core_js/cliente_conekta.js?{{ rand() }}"></script>
+
 <script src="assets/js/core_js/check_out.js?{{ rand() }}"></script>
 
 <!-- Handle-counter js -->
 <script src="assets/js/handlecounter.js"></script>
 
 <!-- Internal Checkout JS -->
-<script src="assets/js/checkout.js"></script>
+<script src="assets/js/checkout.js?{{ rand() }}"></script>
 
 <style type="text/css">
 .seleccionar-medio-pago.selected {
@@ -173,3 +139,4 @@
     background-color: #f0f8ff;
 }
 </style>
+

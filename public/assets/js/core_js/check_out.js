@@ -2,6 +2,21 @@ let checkOut = {
 
     init: function () {
 
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Obtener el valor del parámetro 'id'
+        const id = urlParams.get('id');            
+
+        // Crear el input hidden para id_producto
+        var inputIdProducto = document.createElement('input');
+        inputIdProducto.setAttribute('type', 'hidden');
+        inputIdProducto.setAttribute('name', 'id_producto');
+        inputIdProducto.setAttribute('value', id); // Asigna el valor de id_producto aquí
+
+        // Añadir el input hidden al contenedor
+        var hiddenInputsContainer = document.getElementById('form_cliente_conekta');
+        hiddenInputsContainer.appendChild(inputIdProducto);
+
         // Funciones principales
         checkOut.fn_get();
         checkOut.fn_agregar_css();
@@ -385,10 +400,12 @@ let checkOut = {
 
             // Agregar evento de clic al botón de pago
             document.getElementById('continue-finished-tab').addEventListener('click', function () {
-                    console.log("selectedCardId", selectedCardId);
                 if (selectedCardId) {
-                    // Aquí puedes agregar la lógica para procesar el pago con la tarjeta seleccionada
-                    console.log('Procesando pago con la tarjeta ID:', selectedCardId);
+                    // Mostrar mensaje de procesamiento
+
+                    var boton = document.getElementById("continue-finished-tab");
+                    boton.innerText = "Procesando pago...";
+                    boton.disabled = true;
 
                     // Ejemplo de llamada a un endpoint para procesar el pago
                     fetch('process-payment', {
@@ -401,8 +418,14 @@ let checkOut = {
                     })
                     .then(response => response.json())
                     .then(data => {
+                        // Remover mensaje de procesamiento
+                        document.getElementById("continue-finished-tab").innerText = "Continuar pago";
+                        boton.disabled = false;
+
+
                         if (data.success) {
-                            alert('Pago procesado con éxito');
+                            // alert('Pago procesado con éxito');
+                            document.getElementById("finished-tab").click();
                         } else {
                             alert('Error al procesar el pago');
                         }
@@ -410,11 +433,16 @@ let checkOut = {
                     .catch(error => {
                         console.error('Error:', error);
                         alert('Error al procesar el pago');
+
+                        // Remover mensaje de procesamiento
+                    document.getElementById("continue-finished-tab").innerText = "Continuar pago";
+                    boton.disabled = false;
                     });
                 } else {
                     alert('Por favor, selecciona una tarjeta antes de proceder con el pago.');
                 }
             });
+
         });
 
     },
