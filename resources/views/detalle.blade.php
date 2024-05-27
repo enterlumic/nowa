@@ -13,72 +13,7 @@
     <!-- /breadcrumb -->
 
     <!-- row -->
-    <div class="row row-sm">
-        <div class="col-xxl-12">
-            <div class="card">
-                <div class="card-body ">
-                    <div class="row row-sm ">
-                        <div class=" col-xxl-6 col-lg-12 col-md-12">
-                            <div class="row">
-                                <div class="col-xxl-2 col-xl-2 col-md-2 col-sm-3">
-                                    <div class="clearfix carousel-slider">
-                                        <div id="thumbcarousel" class="carousel slide" data-bs-interval="t">
-                                            <div class="carousel-inner">
-                                                @foreach($fotos as $ini=>  $producto)
-                                                    <ul class="carousel-item {{ $ini == 0 ? 'active' : '' }}">
-                                                        @foreach($producto->fotos_array as $index => $foto)
-                                                            <li data-bs-target="#Slider" data-bs-slide-to="{{ $index }}" class="thumb {{ $index == 0 ? 'active' : '' }} my-sm-2 m-2 mx-sm-0">
-                                                                <img src="{{ trim($foto) }}" alt="img">
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-9">
-                                    <div class="product-carousel border br-5">
-                                        <div id="Slider" class="carousel slide" data-bs-ride="false">
-                                            <div class="carousel-inner">
-                                                @foreach($fotos as $producto)
-                                                    @foreach($producto->fotos_array as $index => $foto)
-                                                        <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                                            <img src="{{ trim($foto) }}" alt="img" class="img-fluid mx-auto d-block">
-                                                            <div class="text-center mt-5 mb-5 btn-list">
-                                                                <!-- Aquí puedes añadir botones u otros elementos -->
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="details col-xxl-6 col-lg-12 col-md-12 mt-4">
-                            <h4 class="product-title mb-1">{{ $fotos[0]['titulo'] }}</h4>
-                            <h6 class="price">Precio: <span class="h3 ms-2">{{$fotos[0]['precio']}}</span></h6>
-
-                            <h5>Descripción</h5>
-                            {{$fotos[0]['descripcion']}} 
-
-                            <div class="mt-4 btn-list">
-                                <a href="javascript:void(0);" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"> </i>Agregar al carrito</a>
-                                <a href="javascript:void(0);" class="btn ripple btn-secondary"><i class="fe fe-credit-card"> </i>Comprar ahora</a>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <div id="product-container"></div>
 
     <div class="row row-sm">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">

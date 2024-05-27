@@ -72,6 +72,27 @@ class DetalleController extends Controller
         return view('detalle', compact('fotos'));
     }
 
+    public function get_data_by_id($id)
+    {
+        $producto = promociones::find($id);
+
+        if ($producto) {
+            $producto->fotos_array = explode("\n", trim($producto->fotos));
+            
+            // Añadir otros campos que se necesiten en la vista
+            $producto->titulo = $producto->titulo;
+            $producto->descripcion = $producto->descripcion;
+            $producto->precio = $producto->precio;
+            $producto->color = $producto->color;
+            $producto->precio_anterior = $producto->precio_anterior;
+            $producto->target = $producto->target;
+            
+            return response()->json($producto);
+        } else {
+            // Manejar el caso cuando el producto no se encuentra
+            return response()->json(['error' => 'Producto no encontrado'], 404);
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------

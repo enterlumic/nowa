@@ -110,4 +110,24 @@ Route::post('get_detalle_by_list', [DetalleController::class, 'get_detalle_by_li
 Route::get('get_detalle_diez', [DetalleController::class, 'get_detalle_diez']);
 Route::get('descargar_plantilla_detalle', [DetalleController::class, 'descargar_plantilla_detalle']);
 Route::get('validar_existencia_detalle', [DetalleController::class, 'validar_existencia_detalle']);
+Route::get('/producto/{id}', [DetalleController::class, 'get_data_by_id']);
+
+
+use App\Http\Controllers\CheckOutController;
+Route::get('check_out', [CheckOutController::class, 'index'])->middleware('auth') ;
+Route::post('set_check_out', [CheckOutController::class, 'set_check_out']);
+Route::post('set_import_check_out', [CheckOutController::class, 'set_import_check_out']);
+Route::post('get_check_out_by_id', [CheckOutController::class, 'get_check_out_by_id']);
+Route::post('delete_check_out', [CheckOutController::class, 'delete_check_out']);
+Route::post('undo_delete_check_out', [CheckOutController::class, 'undo_delete_check_out']);
+Route::get('get_check_out_datatable', [CheckOutController::class, 'get_check_out_datatable']);
+Route::post('truncate_check_out', [CheckOutController::class, 'truncate_check_out']);
+Route::post('truncate_sps_check_out', [CheckOutController::class, 'truncate_sps_check_out']);
+Route::post('form_importar_check_out', [CheckOutController::class, 'form_importar_check_out']);
+Route::get('export_excel_check_out', [CheckOutController::class, 'export_excel_check_out']);
+Route::post('get_cat_check_out', [CheckOutController::class, 'get_cat_check_out']);
+Route::post('get_check_out_by_list', [CheckOutController::class, 'get_check_out_by_list']);
+Route::get('get_check_out_diez', [CheckOutController::class, 'get_check_out_diez']);
+Route::get('descargar_plantilla_check_out', [CheckOutController::class, 'descargar_plantilla_check_out']);
+Route::get('validar_existencia_check_out', [CheckOutController::class, 'validar_existencia_check_out']);
 

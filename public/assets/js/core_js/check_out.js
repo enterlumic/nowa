@@ -1,63 +1,65 @@
-let detalle = {
+let checkOut = {
 
     init: function () {
 
         // Funciones principales
-        detalle.fn_set_detalle();
-        detalle.fn_get_by_id();
-        detalle.fn_datatable_detalle(rango_fecha='');
-        detalle.fn_scroll_detalle();
-        detalle.fn_importar_excel_detalle();
+        checkOut.fn_get();
+        checkOut.fn_set_check_out();
+        checkOut.fn_set_import_check_out();
+        checkOut.fn_datatable_check_out(rango_fecha='');
+        checkOut.fn_scroll_check_out();
+        checkOut.fn_importar_excel_checkOut();
 
         // Funciones para eventos
-        detalle.fn_modalHidedetalle();
-        detalle.fn_AgregarNuevodetalle();
-        detalle.fn_actualizarTabladetalle();
-        detalle.fn_Catdetalle();
-        detalle.fn_set_validar_existencia_detalle();
+        checkOut.fn_modalShowcheckOut();
+        checkOut.fn_modalHidecheckOut();
+        checkOut.fn_AgregarNuevocheckOut();
+        checkOut.fn_actualizarTablacheckOut();
+        checkOut.fn_CatcheckOut();
+        checkOut.fn_set_validar_existencia_check_out();
 
-        // Funciones principales que se encuentran en controlador >> detalleController
+        // Funciones principales que se encuentran en controlador >> checkOutController
         // ===============================================================
 
         // Store procedure
-        // sp_get_detalle
-        // sp_set_detalle
-        // sp_get_by_id_detalle
+        // sp_get_check_out
+        // sp_set_check_out
+        // sp_get_by_id_check_out
 
         // Llenar la tabla
-        // get_detalle_datatable 
+        // get_check_out_datatable 
 
         // Agregar o actualizar un registro
-        // set_detalle 
+        // set_check_out 
 
         // Importar registros
-        // set_import_detalle
+        // set_import_check_out
 
         // Truncate table útil para hacer pruebas
-        // truncate_detalle
-        // truncate_sps_detalle
+        // truncate_check_out
+        // truncate_sps_check_out
 
         // Trar una lista por si se ocupa como un catalogo util para llenar un combo
-        // get_cat_detalle
+        // get_cat_check_out
 
         // Útil para validar si ya existe un registro en la bd 
-        // validar_existencia_detalle
+        // validar_existencia_check_out
 
         // Obtener un registro por id se usa cuando se intenta actualizar un registro
-        // get_detalle_by_id
+        // get_check_out_by_id
 
         // Se utiliza para eliminar un registro en la tabla
-        // delete_detalle
+        // delete_check_out
 
         // FIN Funciones principales que se encuentran en los controladores
 
         // ===============================================================
     },
 
-    fn_datatable_detalle: function (rango_fecha) {
+    fn_datatable_check_out: function (rango_fecha) {
 
         // let columna = 
-        let table = $('#get_detalle_datatable').DataTable({
+        let table = $('#get_check_out_datatable').DataTable({
             "stateSave": false,
             "serverSide": true,
             "destroy": true,
@@ -66,19 +68,19 @@ let detalle = {
             "scrollCollapse": true,
             "lengthMenu": [10, 25, 50, 75, 100],
             "ajax": {
-                "url": "get_detalle_datatable",
+                "url": "get_check_out_datatable",
                 "type": "GET",
                 "data": function(d) {
-                    d.buscar_vCampo1_detalle = $('#buscar_vCampo1_detalle').val();
-                    d.buscar_vCampo2_detalle = $('#buscar_vCampo2_detalle').val();
-                    d.buscar_vCampo3_detalle = $('#buscar_vCampo3_detalle').val();
-                    d.buscar_vCampo4_detalle = $('#buscar_vCampo4_detalle').val();
-                    d.buscar_vCampo5_detalle = $('#buscar_vCampo5_detalle').val();
-                    d.buscar_vCampo6_detalle = $('#buscar_vCampo6_detalle').val();
-                    d.buscar_vCampo7_detalle = $('#buscar_vCampo7_detalle').val();
-                    d.buscar_vCampo8_detalle = $('#buscar_vCampo8_detalle').val();
-                    d.buscar_vCampo9_detalle = $('#buscar_vCampo9_detalle').val();
-                    d.buscar_vCampo10_detalle = $('#buscar_vCampo10_detalle').val();
+                    d.buscar_vCampo1_check_out = $('#buscar_vCampo1_check_out').val();
+                    d.buscar_vCampo2_check_out = $('#buscar_vCampo2_check_out').val();
+                    d.buscar_vCampo3_check_out = $('#buscar_vCampo3_check_out').val();
+                    d.buscar_vCampo4_check_out = $('#buscar_vCampo4_check_out').val();
+                    d.buscar_vCampo5_check_out = $('#buscar_vCampo5_check_out').val();
+                    d.buscar_vCampo6_check_out = $('#buscar_vCampo6_check_out').val();
+                    d.buscar_vCampo7_check_out = $('#buscar_vCampo7_check_out').val();
+                    d.buscar_vCampo8_check_out = $('#buscar_vCampo8_check_out').val();
+                    d.buscar_vCampo9_check_out = $('#buscar_vCampo9_check_out').val();
+                    d.buscar_vCampo10_check_out = $('#buscar_vCampo10_check_out').val();
                     // Añade aquí más datos de búsqueda si es necesario
                 },
                 "headers": {
@@ -133,7 +135,7 @@ let detalle = {
             // buttons: [
             //     {
             //         extend: 'excel',
-            //         title: 'Reporte detalle',
+            //         title: 'Reporte checkOut',
             //         className: 'btn header-item noti-icon btn-personalizado-xlxs',
             //         excelStyles: {
             //             template: 'blue_medium',
@@ -143,7 +145,7 @@ let detalle = {
             // "buttons": [
             //     {
             //         "extend": 'excel',
-            //         "title": 'Reporte detalle',
+            //         "title": 'Reporte checkOut',
             //         "className": 'btn header-item noti-icon btn-personalizado-xlxs',
             //         "excelStyles": {
             //             "template": 'blue_medium',
@@ -155,16 +157,16 @@ let detalle = {
 
             "columns": [
                 { "data": "id", visible: true},
-                { "data": "vCampo1_detalle", class: "vCampo1_detalle", visible: true },
-                { "data": "vCampo2_detalle", class: "vCampo2_detalle", visible: true },
-                { "data": "vCampo3_detalle", class: "vCampo3_detalle", visible: true },
-                { "data": "vCampo4_detalle", class: "vCampo4_detalle", visible: true },
-                { "data": "vCampo5_detalle", class: "vCampo5_detalle", visible: true },
-                { "data": "vCampo6_detalle", class: "vCampo6_detalle", visible: true },
-                { "data": "vCampo7_detalle", class: "vCampo7_detalle", visible: true },
-                { "data": "vCampo8_detalle", class: "vCampo8_detalle", visible: true },
-                { "data": "vCampo9_detalle", class: "vCampo9_detalle", visible: true },
-                { "data": "vCampo10_detalle", class: "vCampo10_detalle", visible: true },
+                { "data": "vCampo1_check_out", class: "vCampo1_check_out", visible: true },
+                { "data": "vCampo2_check_out", class: "vCampo2_check_out", visible: true },
+                { "data": "vCampo3_check_out", class: "vCampo3_check_out", visible: true },
+                { "data": "vCampo4_check_out", class: "vCampo4_check_out", visible: true },
+                { "data": "vCampo5_check_out", class: "vCampo5_check_out", visible: true },
+                { "data": "vCampo6_check_out", class: "vCampo6_check_out", visible: true },
+                { "data": "vCampo7_check_out", class: "vCampo7_check_out", visible: true },
+                { "data": "vCampo8_check_out", class: "vCampo8_check_out", visible: true },
+                { "data": "vCampo9_check_out", class: "vCampo9_check_out", visible: true },
+                { "data": "vCampo10_check_out", class: "vCampo10_check_out", visible: true },
             ],
 
             "columnDefs": [
@@ -174,10 +176,10 @@ let detalle = {
                         return '<div>\
                                     <ul class="list-inline mb-0 font-size-16">\
                                         <li class="list-inline-item">\
-                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Editar" class="text-success p-1 update-detalle"><i class="bx bxs-edit-alt"></i></a>\
+                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Editar" class="text-success p-1 update-check_out"><i class="bx bxs-edit-alt"></i></a>\
                                         </li>\
                                         <li class="list-inline-item">\
-                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Eliminar" class="text-danger p-1 delete-detalle"><i class="bx bxs-trash"></i></a>\
+                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Eliminar" class="text-danger p-1 delete-check_out"><i class="bx bxs-trash"></i></a>\
                                         </li>\
                                     </ul>\
                                 </div>';
@@ -188,90 +190,90 @@ let detalle = {
         });
 
         // Evento de clic en las filas de la tabla
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo1_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo1_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo1_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo1_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo2_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo2_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo2_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo2_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo3_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo3_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo3_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo3_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo4_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo4_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo4_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo4_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo5_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo5_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo5_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo5_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo6_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo6_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo6_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo6_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo7_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo7_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo7_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo7_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo8_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo8_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo8_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo8_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo9_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo9_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo9_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo9_check_out);
         });
 
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo10_detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', 'tr .vCampo10_check_out', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo10_detalle);
+            checkOut.fn_copyToClipboardcheckOut(data.vCampo10_check_out);
         });
         // FIN Evento de clic en las filas de la tabla
         //////////////////////////////////////////////////////////////////////
 
        // Aplicar la búsqueda
-        $("#get_detalle_datatable thead tr:eq(1) th").each(function (i) {
+        $("#get_check_out_datatable thead tr:eq(1) th").each(function (i) {
             $('input', this).on('keyup change', function () {
                 if (table.column(i).search() !== this.value) {
                     table
@@ -300,13 +302,13 @@ let detalle = {
         //     table.ajax.reload( null, false );
         // }, 5000 );
 
-        detalle.fn_update_detalle();
-        detalle.fn_delete_detalle();
+        checkOut.fn_update_check_out();
+        checkOut.fn_delete_check_out();
     },
 
-    fn_scroll_detalle: function() {
+    fn_scroll_check_out: function() {
 
-        let AppScroll = angular.module('app-scroll-detalle', ['infinite-scroll']);
+        let AppScroll = angular.module('app-scroll-check_out', ['infinite-scroll']);
         AppScroll.controller('ControllerScroll', function($scope, Reddit) {
             $scope.reddit = new Reddit();
         });
@@ -320,8 +322,8 @@ let detalle = {
 
             Reddit.prototype.nextPage = function() {
 
-                let id_detalle= $("#id_detalle").val();
-                if (id_detalle == 0) {
+                let id_check_out= $("#id_check_out").val();
+                if (id_check_out == 0) {
                     return;
                 }
 
@@ -330,17 +332,17 @@ let detalle = {
                 }
                 this.busy = true;
 
-                let url = "get_detalle_diez?id_detalle=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN="+$('meta[name="csrf-token"]').attr('content');
+                let url = "get_check_out_diez?id_check_out=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN="+$('meta[name="csrf-token"]').attr('content');
                 $http.jsonp(url).success(function(data) {
                     let items = data;
                     if (Array.isArray(items)) {
                         for (let i = 0; i < items.length; i++) {
                             this.items.push(items[i]);
                         }
-                        this.after = this.items[this.items.length - 1].id_detalle;
+                        this.after = this.items[this.items.length - 1].id_check_out;
                         this.busy = false;
                     } else {
-                        $("#id_detalle").val(0);
+                        $("#id_check_out").val(0);
                         this.busy = false;
                     }
                 }.bind(this)).error(function(data, status, headers, config) {
@@ -351,7 +353,7 @@ let detalle = {
         });
     },
 
-    fn_copyToClipboarddetalle: function(text) {
+    fn_copyToClipboardcheckOut: function(text) {
         // Crear un elemento temporal de input
         var tempInput = document.createElement("input");
         tempInput.style = "position: absolute; left: -1000px; top: -1000px";
@@ -362,18 +364,69 @@ let detalle = {
         document.body.removeChild(tempInput);
     },
 
-    fn_set_detalle: function () {
-        $("#form_detalle").validate({
+    fn_get: function () {
+
+        // Obtener la URL actual
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Obtener el valor del parámetro 'id'
+        const id = urlParams.get('id');
+
+        // Verificar si se obtuvo el parámetro correctamente
+        if (id) {
+            console.log('ID:', id);
+            // Aquí puedes usar el ID para hacer cualquier operación que necesites
+        } else {
+            console.log('No se encontró el parámetro id en la URL');
+        }
+
+        $.ajax({
+            url:"get_check_out_by_id",
+            data: {id: id},
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            success: function(data)
+            {
+                            const promocionHTML = `
+                                <div class="item flex-wrap px-4 py-3">
+                                    <div class="left flex-wrap gap-2">
+                                        <a href="javascript:void(0);" class="thumb rounded-3 mb-2">
+                                            <img src="${data.fotos}" alt="${data.titulo}" class="rounded-3">
+                                        </a>
+                                        <div class="purchase mb-2">
+                                            <h6><a href="javascript:void(0);">${data.titulo}</a></h6>
+                                        </div>
+                                    </div>
+                                    <span class="price fs-20">$${data.precio}</span>
+                                </div>
+                            `;
+
+                            // Insertar el contenido HTML en el contenedor
+                            $('#promocion-container').html(promocionHTML);
+
+                            // Actualizar el subtotal con el precio
+                            $('#promocion-precio').text(`$${data.precio}`);            
+            },
+            error: function(response)
+            {
+                console.log("response", response);
+            }
+        });
+
+    },
+
+    fn_set_check_out: function () {
+        $("#form_check_out").validate({
             submitHandler: function (form) {
-                let get_form = document.getElementById("form_detalle");
+                let get_form = document.getElementById("form_check_out");
                 let postData = new FormData(get_form);
 
-                let element_by_id= 'form_detalle';
+                let element_by_id= 'form_check_out';
                 let message=  'Cargando...' ;
                 let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
                 $.ajax({
-                    url: "set_detalle",
+                    url: "set_check_out",
                     data: postData,
                     cache: false,
                     processData: false,
@@ -393,9 +446,9 @@ let detalle = {
                         }
 
                         if (json["b_status"]) {
-                            $('#get_detalle_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_detalle").reset();
-                            $('#modalFormIUdetalle').modal('hide');
+                            $('#get_check_out_datatable').DataTable().ajax.reload();
+                            document.getElementById("form_check_out").reset();
+                            $('#modalFormIUcheckOut').modal('hide');
                         } else {
                             alert(json);
                         }
@@ -406,127 +459,88 @@ let detalle = {
                 });
             }
             , rules: {
-              vCampo1_detalle: {
+              vCampo1_check_out: {
                 required: true
               }
             }
             , messages: {
-                vCampo1_detalle: {
-                    minlength: "El vCampo1_detalle es requerido"
+                vCampo1_check_out: {
+                    minlength: "El vCampo1_check_out es requerido"
                 }
               }
         });
     },
 
-    fn_get_by_id: function () {
+    fn_set_import_check_out: function () {
+        $("#form_import_check_out").validate({
+            submitHandler: function (form) {
+                let get_form = document.getElementById("form_import_check_out");
+                let postData = new FormData(get_form);
 
-        var productId = detalle.fn_get_id(); // Cambia esto por el ID del producto que quieres cargar
-        $.ajax({
-            url: '/producto/' + productId,
-            method: 'GET',
-            success: function(data) {
-                if (Array.isArray(data.fotos_array) && data.fotos_array.length > 0) {
-                    var thumbHtml = data.fotos_array.map((foto, index) => `
-                        <li data-bs-target="#Slider" data-bs-slide-to="${index}" class="thumb ${index === 0 ? 'active' : ''} my-sm-2 m-2 mx-sm-0">
-                            <img src="${foto.trim()}" alt="img">
-                        </li>
-                    `).join('');
+                let element_by_id= 'form_import_check_out';
+                let message=  'Cargando...' ;
+                let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
-                    var sliderHtml = data.fotos_array.map((foto, index) => `
-                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                            <img src="${foto.trim()}" alt="img" class="img-fluid mx-auto d-block">
-                            <div class="text-center mt-5 mb-5 btn-list">
-                                <!-- Aquí puedes añadir botones u otros elementos -->
-                            </div>
-                        </div>
-                    `).join('');
+                $.ajax({
+                    url: "set_import_check_out",
+                    data: postData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: 'POST',
+                    success: function (response) {
+                        
+                        $loading.waitMe('hide');
 
-                    var productHtml = `
-                        <div class="row row-sm">
-                            <div class="col-xxl-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row row-sm">
-                                            <div class="col-xxl-6 col-lg-12 col-md-12">
-                                                <div class="row">
-                                                    <div class="col-xxl-2 col-xl-2 col-md-2 col-sm-3">
-                                                        <div class="clearfix carousel-slider">
-                                                            <div id="thumbcarousel" class="carousel slide" data-bs-interval="t">
-                                                                <div class="carousel-inner">
-                                                                    <ul class="carousel-item active">
-                                                                        ${thumbHtml}
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-9">
-                                                        <div class="product-carousel border br-5">
-                                                            <div id="Slider" class="carousel slide" data-bs-ride="false">
-                                                                <div class="carousel-inner">
-                                                                    ${sliderHtml}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="details col-xxl-6 col-lg-12 col-md-12 mt-4">
-                                                <h4 class="product-title mb-1">${data.titulo}</h4>
-                                                <h6 class="price">Precio: <span class="h3 ms-2">${data.precio}</span></h6>
-                                                <h5>Descripción</h5>
-                                                ${data.descripcion}
-                                                <div class="mt-4 btn-list">
-                                                    <a href="javascript:void(0);" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"></i> Agregar al carrito</a>
-                                                    <a href="check_out?id=${data.id}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"></i> Comprar ahora</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-                    $('#product-container').html(productHtml);
+                        let json ='';
+                        try {
+                            json = JSON.parse(response);
+                        } catch (e) {
+                            alert(response);
+                            return;
+                        }
 
-                    // Adding event listeners for thumbs after the HTML is updated
-                    var thumbs = document.querySelectorAll('.thumb');
-                    thumbs.forEach(function (thumb) {
-                        thumb.addEventListener('click', function () {
-                            // Check if the clicked element does not have the 'active' class
-                            if (!this.classList.contains('active')) {
-                                // Remove the 'active' class from all elements with the class 'thumb'
-                                thumbs.forEach(function (el) {
-                                    el.classList.remove('active');
-                                });
-                                // Add the 'active' class to the clicked element
-                                this.classList.add('active');
-                            }
-                        });
-                    });
-                } else {
-                    $('#product-container').html('<p>No hay fotos disponibles para este producto.</p>');
-                }
-            },
-            error: function(error) {
-                console.log('Error:', error);
+                        if (json["b_status"]) {
+                            $('#get_check_out_datatable').DataTable().ajax.reload();
+                            document.getElementById("form_import_check_out").reset();
+                            $('#modalImportFormcheckOut').modal('hide');
+                        } else {
+                            alert(json);
+                        }
+                    },
+                    error: function (response) {
+                        $loading.waitMe('hide');
+                        alert(response);
+                    }
+                });
             }
+            , rules: {
+              vCampo1_check_out: {
+                required: true
+              }
+            }
+            , messages: {
+                vCampo1_check_out: {
+                    minlength: "Mensaje personalizado vCampo1_check_out"
+                }
+              }
+        });
+    },
+
+    fn_modalShowcheckOut: function () {
+        $('#modalFormIUcheckOut').on('shown.bs.modal', function (e) {
+            $('#vCampo1_check_out', e.target).focus();
         });
 
+        $('#modalImportFormcheckOut').on('shown.bs.modal', function (e) {
+            $('#vc_importar', e.target).focus();
+        });
     },
 
-    fn_get_id: function () {
-        // Get the URL
-        const url = new URL(window.location.href);
+    fn_modalHidecheckOut: function () {
 
-        // Get the value of the 'id' parameter
-        const id = url.searchParams.get('id');
-
-        return id;
-    },
-
-    fn_modalHidedetalle: function () {
-
-        $('#modalFormIUdetalle').on('hidden.bs.modal', function (e) {
+        $('#modalFormIUcheckOut').on('hidden.bs.modal', function (e) {
 
             if ( $(".tipo-ya-existe").length ){
                 $(".tipo-ya-existe").addClass("d-none");
@@ -536,11 +550,11 @@ let detalle = {
                 $("#vCampo1_pruebas").removeClass("border-danger text-danger");
             }
 
-            if ( $("#form_detalle").length ){
-                $("#form_detalle input").removeClass("border-danger").removeClass("text-danger");
+            if ( $("#form_check_out").length ){
+                $("#form_check_out input").removeClass("border-danger").removeClass("text-danger");
             }
 
-            let validator = $("#form_detalle").validate();
+            let validator = $("#form_check_out").validate();
 
             validator.resetForm();
             $("label.error").hide();
@@ -551,70 +565,70 @@ let detalle = {
                 $("#id").remove();
             }
             
-            if ($("#form_detalle").length){
-                document.getElementById("form_detalle").reset();
+            if ($("#form_check_out").length){
+                document.getElementById("form_check_out").reset();
             }
 
-            if ($("#form_import_detalle").length){
-                document.getElementById("form_import_detalle").reset();
+            if ($("#form_import_check_out").length){
+                document.getElementById("form_import_check_out").reset();
             }
         });
     },
 
-    fn_AgregarNuevodetalle: function () {
-        $(document).on("click", "#add_new_detalle", function () {
-            document.getElementById("form_detalle").reset();            
-            $("#modalFormIUdetalle .modal-title").html("Nuevo");
+    fn_AgregarNuevocheckOut: function () {
+        $(document).on("click", "#add_new_check_out", function () {
+            document.getElementById("form_check_out").reset();            
+            $("#modalFormIUcheckOut .modal-title").html("Nuevo");
         });
     },
 
-    fn_actualizarTabladetalle: function () {
-        $(document).on("click", "#refresh_detalle", function () {
+    fn_actualizarTablacheckOut: function () {
+        $(document).on("click", "#refresh_check_out", function () {
 
-            if ($("#get_detalle_datatable").length){
-                $('#get_detalle_datatable').DataTable().ajax.reload();
+            if ($("#get_check_out_datatable").length){
+                $('#get_check_out_datatable').DataTable().ajax.reload();
             }
 
         });
     },
 
-    fn_truncateSPSdetalle: function () {
+    fn_truncateSPScheckOut: function () {
         $.ajax({
-            url:"truncate_sps_detalle",
+            url:"truncate_sps_check_out",
             cache: false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             success: function(response)
             {
-                if ($("#get_detalle_datatable").length){
-                    $('#get_detalle_datatable').DataTable().ajax.reload();
+                if ($("#get_check_out_datatable").length){
+                    $('#get_check_out_datatable').DataTable().ajax.reload();
                 }
             }
         });
     },
 
-    fn_truncatedetalle: function () {
+    fn_truncatecheckOut: function () {
         $.ajax({
-            url:"truncate_detalle",
+            url:"truncate_check_out",
             cache: false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             success: function(response)
             {
-                if ($("#get_detalle_datatable").length){
-                    $('#get_detalle_datatable').DataTable().ajax.reload();
+                if ($("#get_check_out_datatable").length){
+                    $('#get_check_out_datatable').DataTable().ajax.reload();
                 }
             }
         });
     },
 
-    fn_importar_excel_detalle: function() {
+    fn_importar_excel_checkOut: function() {
 
         // si no existe el elemento terminar...
-        if (! $('#FormImportardetalle').length)
+        if (! $('#FormImportarcheckOut').length)
             return;
 
-        let $form = $('#FormImportardetalle');
+        let $form = $('#FormImportarcheckOut');
 
         $form.find('input:file').fileuploader({
             addMore: true,
@@ -633,7 +647,7 @@ let detalle = {
             },
             onRemove: function(item) {
                 if (item.data.uploaded)
-                    $.post('files/assets/js/lumic/fileuploader-2.2/examples/drag-drop-form/php/ajax_remove_file_detalle.php', {
+                    $.post('files/assets/js/lumic/fileuploader-2.2/examples/drag-drop-form/php/ajax_remove_file_check_out.php', {
                         file: item.name
                     }, function(data) {
                         // if (data)
@@ -677,7 +691,7 @@ let detalle = {
                 }
             });
 
-            let element_by_id= 'FormImportardetalle';
+            let element_by_id= 'FormImportarcheckOut';
             let message=  'Importando archivo...' ;
             let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
@@ -747,12 +761,12 @@ let detalle = {
                         }
                     } catch (e) {}
 
-                    document.getElementById("FormImportardetalle").reset();
+                    document.getElementById("FormImportarcheckOut").reset();
                     $form.find('input[type="submit"]').removeAttr('disabled');
                     $loading.waitMe('hide');
 
-                    $("#modalImportFormdetalle").modal("hide");
-                    $('#get_detalle_datatable').DataTable().ajax.reload();
+                    $("#modalImportFormcheckOut").modal("hide");
+                    $('#get_check_out_datatable').DataTable().ajax.reload();
 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -774,10 +788,10 @@ let detalle = {
         });
     },
 
-    fn_Catdetalle: function(){
+    fn_CatcheckOut: function(){
 
         $.ajax({
-            url:"get_cat_detalle",
+            url:"get_cat_check_out",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             success: function(response)
@@ -793,10 +807,10 @@ let detalle = {
                 {
                     $(json['data']).each(function(i, j){
                         // Agregar este id en el select by id y luego borrar este comentario 
-                        // #id_cat_detalle' 
+                        // #id_cat_check_out' 
 
-                        if ($("#id_cat_detalle").length){
-                            $("#id_cat_detalle").append("<option value="+j['id']+"> "+j['vCampo1_detalle']+" </option>");
+                        if ($("#id_cat_check_out").length){
+                            $("#id_cat_check_out").append("<option value="+j['id']+"> "+j['vCampo1_check_out']+" </option>");
                         }
                     });
                 }
@@ -805,28 +819,28 @@ let detalle = {
         });
     },
 
-    fn_set_validar_existencia_detalle: function(){
+    fn_set_validar_existencia_check_out: function(){
 
-        $( "#vCampo1_detalle" ).keyup(function( event ) {
+        $( "#vCampo1_check_out" ).keyup(function( event ) {
 
             var id=0;
             // Si se esta editando return
-            if ( $("#modalFormIUdetalle #id").length ){
-                id= $("#modalFormIUdetalle #id").val();
+            if ( $("#modalFormIUcheckOut #id").length ){
+                id= $("#modalFormIUcheckOut #id").val();
             }
 
-            let vCampo1_detalle= this.value;
+            let vCampo1_check_out= this.value;
 
-            if(vCampo1_detalle ==""){
-                $("#modalFormIUdetalle .btn-action-form").attr("disabled",false);
-                $("#vCampo1_detalle").removeClass("border-danger").removeClass("text-danger");
+            if(vCampo1_check_out ==""){
+                $("#modalFormIUcheckOut .btn-action-form").attr("disabled",false);
+                $("#vCampo1_check_out").removeClass("border-danger").removeClass("text-danger");
                 $(".tipo-ya-existe").addClass("d-none");
                 return;
             }
 
             $.ajax({
-                url: "validar_existencia_detalle",
-                data: { vCampo1_detalle: vCampo1_detalle, id: id},
+                url: "validar_existencia_check_out",
+                data: { vCampo1_check_out: vCampo1_check_out, id: id},
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type: 'GET',
                 contentType: "application/json",
@@ -835,12 +849,12 @@ let detalle = {
                     var json = JSON.parse(response);
 
                     if (json['b_status']) {
-                        $("#modalFormIUdetalle .btn-action-form").attr("disabled",true);
-                        $("#vCampo1_detalle").addClass("border-danger").addClass("text-danger");
+                        $("#modalFormIUcheckOut .btn-action-form").attr("disabled",true);
+                        $("#vCampo1_check_out").addClass("border-danger").addClass("text-danger");
                         $(".tipo-ya-existe").removeClass("d-none");
                     } else {
-                        $("#modalFormIUdetalle .btn-action-form").attr("disabled",false);
-                        $("#vCampo1_detalle").removeClass("border-danger").removeClass("text-danger");
+                        $("#modalFormIUcheckOut .btn-action-form").attr("disabled",false);
+                        $("#vCampo1_check_out").removeClass("border-danger").removeClass("text-danger");
                         $(".tipo-ya-existe").addClass("d-none");
                     }
                 },
@@ -849,30 +863,30 @@ let detalle = {
         });
     },
 
-    fn_update_detalle: function(){
+    fn_update_check_out: function(){
 
-        $('#get_detalle_datatable tbody').on('click', '.update-detalle', function () {
+        $('#get_check_out_datatable tbody').on('click', '.update-check_out', function () {
             // Abrir modal!
-            $('#modalFormIUdetalle').modal('show');
+            $('#modalFormIUcheckOut').modal('show');
 
             let id = this.id;
-            document.getElementById("form_detalle").reset();
+            document.getElementById("form_check_out").reset();
 
             if ($("#id").length)
             {
                 $("#id").remove();
             }
 
-            $("#form_detalle").prepend('<input type="hidden" name="id" id="id" value=" '+ id +' ">');
+            $("#form_check_out").prepend('<input type="hidden" name="id" id="id" value=" '+ id +' ">');
 
-            $("#modalFormIUdetalle .modal-title").html("Editar");
+            $("#modalFormIUcheckOut .modal-title").html("Editar");
 
-            let element_by_id= 'form_detalle';
+            let element_by_id= 'form_check_out';
             let message=  'Cargando...' ;
             let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
             $.ajax({
-                url:"get_detalle_by_id",
+                url:"get_check_out_by_id",
                 data: {id: id},
                 cache: false,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -940,20 +954,20 @@ let detalle = {
         });
     },
 
-    fn_delete_detalle: function(){
-        $('#get_detalle_datatable tbody').on('click', '.delete-detalle', function () {
+    fn_delete_check_out: function(){
+        $('#get_check_out_datatable tbody').on('click', '.delete-check_out', function () {
 
-            document.getElementById("form_detalle").reset();
+            document.getElementById("form_check_out").reset();
             $("label.error").hide();
             $(".error").removeClass("error");
 
             let id = this.id;
-            let element_by_id= 'form_detalle';
+            let element_by_id= 'form_check_out';
             let message=  'Eliminando...' ;
             let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
             $.ajax({
-                url:"delete_detalle",
+                url:"delete_check_out",
                 data: {"id": id},
                 cache: false,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -961,8 +975,8 @@ let detalle = {
                     success: function(response)
                     {
 
-                        $('#get_detalle_datatable').DataTable().ajax.reload();
-                        $('#modalFormIUdetalle').modal('hide');
+                        $('#get_check_out_datatable').DataTable().ajax.reload();
+                        $('#modalFormIUcheckOut').modal('hide');
                         $loading.waitMe('hide');
 
                         let n = new Noty({
@@ -974,7 +988,7 @@ let detalle = {
                                 buttons: [
                                   Noty.button('Deshacer', 'btn btn-success btn-sm', function () {
                                         $.ajax({
-                                            url:"undo_delete_detalle",
+                                            url:"undo_delete_check_out",
                                             data: {"id" : id},
                                             cache: false,
                                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -982,7 +996,7 @@ let detalle = {
                                                 success: function(response)
                                                 {
                                                     n.close();
-                                                    $('#get_detalle_datatable').DataTable().ajax.reload();
+                                                    $('#get_check_out_datatable').DataTable().ajax.reload();
 
                                                     new Noty({
                                                         text: 'Se ha deshecho la acción.',
@@ -1019,9 +1033,9 @@ let detalle = {
         });  
     },
 
-    fn_eventos_extra_detalle: function(){
+    fn_eventos_extra_check_out: function(){
     },
 
 };
 
-detalle.init();
+checkOut.init();
