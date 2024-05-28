@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-between">
                                         <button type="button" class="btn btn-light m-1" id="back-personal-trigger4">Anterior</button>
-                                        <button type="button" class="btn btn-secondary m-1" id="continue-payment-trigger1">Pedir de nuevo</button>
+                                        <button type="button" class="btn btn-secondary m-1" id="continue-payment-trigger1">Ver mi pedido</button>
                                     </div>
                                 </div>
                             </div>

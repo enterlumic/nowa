@@ -4,10 +4,12 @@ let promociones = {
 
         // Funciones principales
         promociones.fn_set_promociones();
+        promociones.fn_set_python();
         promociones.fn_set_import_promociones();
         promociones.fn_datatable_promociones(rango_fecha='');
         promociones.fn_scroll_promociones();
         promociones.fn_importar_excel_promociones();
+        promociones.deleteProduct();
 
         // Funciones para eventos
         promociones.fn_modalShowpromociones();
@@ -152,7 +154,7 @@ let promociones = {
             //     },
             // ],
 
-            // "order": [[0, "asc"]],
+            "order": [[0, "desc"]],
 
             "columns": [
                 { "data": "id", visible: true},
@@ -400,6 +402,47 @@ let promociones = {
                         } else {
                             alert(json);
                         }
+                    },
+                    error: function (response) {
+                        $loading.waitMe('hide');
+                    }
+                });
+            }
+            , rules: {
+              fotos: {
+                required: true
+              }
+            }
+            , messages: {
+                fotos: {
+                    minlength: "El fotos es requerido"
+                }
+              }
+        });
+    },
+
+    fn_set_python: function () {
+        $("#form_python").validate({
+            submitHandler: function (form) {
+                let get_form = document.getElementById("form_python");
+                let postData = new FormData(get_form);
+
+                let element_by_id= 'form_python';
+                let message=  'Cargando...' ;
+                let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
+
+                $.ajax({
+                    url: "set_python",
+                    data: postData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: 'POST',
+                    success: function (response) {
+
+                        $loading.waitMe('hide');
+
                     },
                     error: function (response) {
                         $loading.waitMe('hide');
@@ -981,7 +1024,33 @@ let promociones = {
         });  
     },
 
-    fn_eventos_extra_promociones: function(){
+    deleteProduct: function(){
+
+
+        $(document).on('click', '.eliminarProducto', function () {
+
+            var productId = $(this).data('id'); // Get data-id attribute
+            // var productItem = $(this).closest('li'); // Find the closest <li> element
+            // productItem.remove(); // Remove the product item from the DOM
+
+            $.ajax({
+                url:"delete_promociones",
+                data: {"id": productId},
+                cache: false,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                type: 'POST',
+                    success: function(response)
+                    {
+
+                    },
+                    error: function(response)
+                    {
+                        $loading.waitMe('hide');
+                    }
+            });
+
+
+        }); 
     },
 
 };

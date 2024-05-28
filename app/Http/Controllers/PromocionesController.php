@@ -651,4 +651,27 @@ class PromocionesController extends Controller
         // Eliminar el SP
         DB::unprepared('DROP PROCEDURE IF EXISTS `sp_get_promociones` ');
     }
+
+    public function runPythonScript(Request $request)
+    {
+
+        $url = $request->input('url');
+
+        // Path to your Python script
+        $pythonScriptPath = base_path('combined_script.py');
+
+        // Create the process to run the Python script
+        $process = new Process(['python3', $pythonScriptPath, $url]);
+        $process->run();
+
+        // Check if the process was successful
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        // Get the output of the script
+        $output = $process->getOutput();
+
+
+    }
 }

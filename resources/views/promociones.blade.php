@@ -3,6 +3,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="left-content">
             <span class="main-content-title mg-b-0 mg-b-lg-1">Promociones</span>
+            <button id="add_new_python" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUpython">Nuevo</button>
         </div>
         <div class="justify-content-center mt-2">
             <ol class="breadcrumb">
@@ -55,6 +56,11 @@
                                                             <li><a href="wish-list.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Add to Wishlist" class="primary-gradient me-2"><i class="fa fa-heart"></i></a></li>
                                                             <li><a href="product-cart.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Add to Cart" class="secondary-gradient me-2"><i class="fa fa-shopping-cart"></i></a></li>
                                                             <li><a href="product-details.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Quick View" class="info-gradient"><i class="fas fa-eye"></i></a></li>
+                                                            <li>
+                                                                <a href="javascript:void(0);" data-id="@{{item.id}}" data-bs-placement="top" data-bs-toggle="tooltip" title="Remove from Cart" class="secondary-gradient me-2 eliminarProducto">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                     <div class="text-center pt-2">
@@ -144,6 +150,7 @@
         {{-- Modal para Agregar o modificar un nuevo registro  --}}
         {{-- add_promociones // en sublime F12 te lleva al .blade --}}
         @include('modals.add_promociones')
+        @include('modals.add_python')
 
         {{-- Modal para descargar platilla, importar desde un excel, o pegar una lista de registro en text area  --}}
         {{-- import_promociones // en sublime F12 te lleva al .blade --}}

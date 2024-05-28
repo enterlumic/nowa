@@ -69,4 +69,12 @@
     <!-- .div-modals -->
 </x-app-layout>
 
+<style type="text/css">
+    .ui-pdp-description__content{
+        font-size: 17px;
+        font-weight:400;
+        word-wrap: break-word;
+    }
+
+</style>
 <script src="assets/js/core_js/detalle.js?{{ rand() }}"></script>
