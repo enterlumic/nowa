@@ -267,7 +267,7 @@ let clienteConekta = {
 
     fn_conekta: function() {
 
-        Conekta.setPublicKey('key_A6zG1iqB2OQnq4jjLyAliR0');
+        Conekta.setPublicKey('key_EIdf0aImuo2b1dNISDUD20Q');
 
         var conektaSuccessResponseHandler = function(token) {
             var $form = $("#form_cliente_conekta");
@@ -323,8 +323,10 @@ let clienteConekta = {
 
     conektaSuccessResponseHandler: function (token) {
         let get_form = document.getElementById("form_cliente_conekta");
+
         // Añadir el token al formulario
         $(get_form).append($('<input type="hidden" name="token_id" />').val(token.id));
+
         // Ahora enviar el formulario al backend
         let postData = new FormData(get_form);
         let element_by_id = 'form_cliente_conekta';
@@ -332,7 +334,7 @@ let clienteConekta = {
         let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
 
         $.ajax({
-            url: "set_cliente_conekta",
+            url: "createCustomer",
             data: postData,
             cache: false,
             processData: false,
@@ -340,6 +342,7 @@ let clienteConekta = {
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             success: function (response) {
+
                 $loading.waitMe('hide');
                 let json = '';
                 try {
@@ -348,13 +351,24 @@ let clienteConekta = {
                     alert(response);
                     return;
                 }
+
                 if (json["b_status"]) {
+
+                    // Si no existe se esta agregando desde el checkout
+                    if (!$('#get_cliente_conekta_datatable').length){
+                        checkOut.fn_customerConnekta();
+                        $('#modalFormIUclienteConekta').modal('hide');
+                        return ;
+                    }
+
+                    // Solo aplica cuando se registra desde conekta
                     $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
                     document.getElementById("form_cliente_conekta").reset();
                     $('#modalFormIUclienteConekta').modal('hide');
                 } else {
                     alert(json);
                 }
+
             },
             error: function (response) {
                 $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
@@ -418,8 +432,16 @@ let clienteConekta = {
 
     fn_AgregarNuevoclienteConekta: function () {
         $(document).on("click", "#add_new_cliente_conekta", function () {
-            document.getElementById("form_cliente_conekta").reset();            
-            $("#modalFormIUclienteConekta .modal-title").html("Nuevo");
+            document.getElementById("form_cliente_conekta").reset();
+
+            // En el proceso check out
+            if ( $(this).hasClass('ui-list__item') ){
+                if (!$('#agregando_tarjeta').length){
+                    $('#form_cliente_conekta').append($('<input type="hidden" name="agregando_tarjeta" id="agregando_tarjeta" />'));
+                }
+            }
+
+            $("#modalFormIUclienteConekta .modal-title").html("Agregar nueva tarjeta");
         });
     },
 
@@ -690,7 +712,7 @@ let clienteConekta = {
 
             $("#form_cliente_conekta").prepend('<input type="hidden" name="id" id="id" value=" '+ id +' ">');
 
-            $("#modalFormIUclienteConekta .modal-title").html("Editar");
+            $("#modalFormIUclienteConekta .modal-title").html("Editar tarjeta");
 
             let element_by_id= 'form_cliente_conekta';
             let message=  'Cargando...' ;

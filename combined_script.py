@@ -54,10 +54,10 @@ def run_script():
         titulo_tag = soup.find('h1', {'class': 'ui-pdp-title'})
         titulo = titulo_tag.text.strip() if titulo_tag else 'No encontrado'
 
-        precio_tag = soup.find('span', {'class': 'andes-money-amount__fraction'})
+        precio_tag = soup.find('span', {'class': 'price-tag-fraction'})
         precio = precio_tag.text.strip() if precio_tag else 'No encontrado'
 
-        descripcion_tag = soup.find('p', {'class': 'ui-pdp-description__content'})
+        descripcion_tag = soup.find('div', {'class': 'ui-pdp-description__content'})
         descripcion = str(descripcion_tag) if descripcion_tag else 'No encontrado'
 
         status_label.config(text="Conectando a la base de datos...")
@@ -88,6 +88,9 @@ def run_script():
     finally:
         progress['value'] = 0
 
+def clear_url_entry():
+    url_entry.delete(0, tk.END)
+
 # Crear la ventana principal
 root = tk.Tk()
 root.title("Extractor de Información de Productos")
@@ -100,7 +103,10 @@ url_entry = ttk.Entry(root, width=50)
 url_entry.grid(row=0, column=1, padx=10, pady=10)
 
 run_button = ttk.Button(root, text="Ejecutar", command=run_script)
-run_button.grid(row=1, column=0, columnspan=2, pady=10)
+run_button.grid(row=1, column=0, pady=10)
+
+clear_button = ttk.Button(root, text="Limpiar", command=clear_url_entry)
+clear_button.grid(row=1, column=1, pady=10)
 
 progress = ttk.Progressbar(root, orient='horizontal', length=400, mode='determinate')
 progress.grid(row=2, column=0, columnspan=2, pady=10)

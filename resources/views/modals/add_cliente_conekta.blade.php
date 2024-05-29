@@ -13,30 +13,38 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-sm-12">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" value="Gustavo Martinez" size="20" name="name" data-conekta="card[name]"/>
+                    {{-- Ir ================================= --}}
+                    @php function set_cliente_conekta(){} @endphp
+                    <div class="row gy-3">
+                        <div class="col-md-12">
+                            <label for="cc-name" class="form-label">Nombre en la tarjeta</label>
+                            <input type="text" value="Ari Martinez" class="form-control" placeholder="Ingrese el nombre" name="name" data-conekta="card[name]">
+                            <small class="text-muted">Nombre completo como aparece en la tarjeta</small>
                         </div>
-                        <div class="col-sm-12 d-none tipo-ya-existe">
-                            <span class="badge bg-danger text-uppercase">Este registro ya existe</span>
+
+                        <div class="col-md-12">
+                            <label for="cc-number" class="form-label">Número de tarjeta de crédito</label>
+                            <input type="text" value="5256783274081893" class="form-control" placeholder="xxxx xxxx xxxx xxxx" name="number"  data-conekta="card[number]">
                         </div>
-                        <div class="col-sm-12">
-                            <label for="number" class="form-label">Number</label>
-                            <input type="text" class="form-control" value="5256783274081893" size="20" name="number" data-conekta="card[number]"/>
+
+                        <div class="col-md-4">
+                            <label for="cc-expiration" class="form-label">Mes de Expiración</label>
+                            <input type="text" value="08" class="form-control" placeholder="MM"  name="exp_month" data-conekta="card[exp_month]">
                         </div>
-                        <div class="col-sm-12">
-                            <label for="cvc" class="form-label">Cvc</label>
-                            <input type="text" class="form-control" value="530" size="4" name="cvc" data-conekta="card[cvc]"/>
+
+                        <div class="col-md-4">
+                            <label for="cc-expiration" class="form-label">Año de Expiración</label>
+                            <input type="text" value="2025" class="form-control" placeholder="YYYY" name="exp_year" data-conekta="card[exp_year]">
                         </div>
-                        <div class="col-12">
-                            <label for="exp_month" class="form-label">Exp_Month</label>
-                            <input type="text" class="form-control" value="08" size="2" name="exp_month" data-conekta="card[exp_month]"/>
+
+                        <div class="col-md-4">
+                            <label for="cc-cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" value="25" placeholder="xxx" name="cvc" data-conekta="card[cvc]">
                         </div>
-                        <div class="col-12">
-                            <label for="exp_month" class="form-label">Exp_Year</label>
-                            <input type="text" class="form-control" value="25" size="2" name="exp_year" data-conekta="card[exp_year]"/>
-                        </div>
+                    </div>
+
+                    <div class="text-muted mt-2 fst-italic">
+                        <i data-feather="lock" class="text-muted icon-xs"></i> Su transacción está asegurada con encriptación SSL
                     </div>
                 </div>
                 <div class="modal-footer m-t-10">

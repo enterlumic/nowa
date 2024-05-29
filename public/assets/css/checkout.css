@@ -1,0 +1,127 @@
+.badge-type-selection__list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.badge-type-selection__list-item {
+    margin-bottom: 10px;
+}
+
+.ui-radio__label {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+}
+
+.ui-radio__label:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ui-radio-element {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.ui-radio__background {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-radio__outer-circle {
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.ui-radio__input:checked + .ui-radio__background .ui-radio__outer-circle {
+    background-color: #007bff;
+}
+
+.ui-radio__input:checked + .ui-radio__background + .ui-radio__text {
+    background-color: #e0f7fa; /* Color de fondo cuando está seleccionado */
+}
+
+.ui-radio__text {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    border-radius: 8px;
+}
+
+.ui-badge--small img {
+    border-radius: 50%;
+    border: 2px solid #007bff;
+}
+
+.badge-type__metadata {
+    margin-left: 10px;
+}
+
+.badge-type-selection__list-title {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.badge-type-selection__list-text {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.badge-type-selection__list-text .phone {
+    display: block;
+    margin-top: 5px;
+}
+
+/* Make sure the selected item stays painted */
+.ui-radio__input:checked + .ui-radio__background + .ui-radio__text {
+    background-color: #e0f7fa;
+}
+
+.ui-radio__input:checked + .ui-radio__background + .ui-radio__text .badge-type__metadata {
+    background-color: #e0f7fa;
+}
+
+.main-contact-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.main-img-user img {
+    border-radius: 50%;
+    margin-right: 15px;
+}
+.main-contact-body {
+    flex: 1;
+}
+.main-contact-body h6 {
+    margin: 0;
+}
+.main-contact-body .phone {
+    color: #888;
+}
+.card-info {
+    display: flex;
+    align-items: center;
+}
+.card-info img {
+    margin-left: 10px;
+}

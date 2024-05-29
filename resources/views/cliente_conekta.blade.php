@@ -74,4 +74,3 @@
 
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
 <script src="assets/js/core_js/cliente_conekta.js?{{ rand() }}"></script>
-{{-- fn_conekta --}}

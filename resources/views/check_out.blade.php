@@ -1,158 +1,210 @@
 <x-app-layout>
-    <!-- breadcrumb -->
-    <div class="breadcrumb-header justify-content-between">
-        <div class="left-content">
-            <span class="main-content-title mg-b-0 mg-b-lg-1">Check Out</span>
-        </div>
-        <div class="justify-content-center mt-2">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item fs-15"><a href="javascript:void(0);">Pages</a></li>
-            </ol>
-        </div>
-    </div>
-    <!-- /breadcrumb -->
-    <!-- row -->
-    <div class="row justify-content-center">
-        <div class="col-xl-9">
+
+    <div class="row">
+        <div class="col-xl-8">
             <div class="card">
-                <div class="card-body p-0 product-checkout">
-                    <ul class="nav nav-tabs tab-style-2 d-sm-flex d-block border-bottom border-block-end-dashed" id="myTab1" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="shipped-tab" data-bs-toggle="tab" data-bs-target="#shipped-tab-pane" type="button" role="tab" aria-controls="shipped-tab" aria-selected="false">
-                                <i class="ri-number-1 me-2 align-middle"></i>Pedido
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="delivered-tab" data-bs-toggle="tab" data-bs-target="#delivery-tab-pane" type="button" role="tab" aria-controls="delivered-tab" aria-selected="false">
-                                <i class="ri-number-2 me-2 align-middle"></i>Pagos
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="finished-tab" data-bs-toggle="tab" data-bs-target="#finished-tab-pane" type="button" role="tab" aria-controls="finished-tab" aria-selected="false">
-                                <i class="ri-number-3 me-2 align-middle"></i>Finalizado
-                            </button>
-                        </li>
-                    </ul>
-                    <div class="row">
-                        <div class="col-xl-8 mx-auto">
-                            <div class="tab-content border m-4" id="myTabContent">
-                                <div class="tab-pane fade show active border-0 p-0" id="shipped-tab-pane" role="tabpanel" aria-labelledby="shipped-tab-pane" tabindex="0">
-
-                                    <div class="p-4">
-                                        <h5 class="text-start mb-2">Tu pedido</h5>
-                                        <p class="mb-4 text-muted tx-13 ms-0 text-start">Lista de producto seleccionado</p>
+                <div class="card-body checkout-tab">
+                    <form action="#form_check_out" id="form_check_out" method="post">
+                        <div id="smartwizard">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#step-1">
+                                        <div class="num">1</div>
+                                        Agendar cita
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#step-2">
+                                        <span class="num">2</span>
+                                        Información del taller
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#step-3">
+                                        <span class="num">3</span>
+                                        Método de pago
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                
+                                {{-- ========================== --}}
+                                {{-- Inicio paso 1 Agendar cita --}}
+                                <div id="step-1" class="tab-pane" role="tabpanel">
+                                    <div>
+                                        <h5 class="mb-1">Agendar cita</h5>
                                     </div>
-                                    <div id="promocion-container">
+                                    <div class="mt-4">
+                                        <div class="row gy-3">
+                                            <div class="col-md-6">
+                                                <label for="appointmentDateTime" class="form-label">Seleccione una fecha</label>
+                                                <div id="errorSeleccionarFecha"></div>
+                                                <input type="date" id="appointmentDateTime" class="form-control d-none" name="appointmentDateTime" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="appointmentTimeGroup" class="form-label">Seleccione una hora</label>
+                                                <div id="errorSeleccionarHorario"></div>
+                                                <div id="appointmentTimeGroup" class="horarios">
+                                                    <ul class="badge-type-selection__list">
+                                                        <li class="badge-type-selection__list-item ui-list__item">
+                                                            <div>
+                                                                <label tabindex="0" class="ui-radio__label">
+                                                                    <div class="ui-radio-element">
+                                                                        <input type="radio" name="horario_dispobible[]" value="09-10" class="ui-radio__input d-none">
+                                                                        <div class="ui-radio__background">
+                                                                            <div class="ui-radio__outer-circle"></div>
+                                                                            <div class="ui-radio__inner-circle"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ui-radio__text">
+                                                                        <div class="badge-type__metadata">
+                                                                            <span class="badge-type-selection__list-title"> 09:00 - 10:00 AM </span>
+                                                                            <p class="badge-type-selection__list-text">
+                                                                                <span>Lunes</span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <li class="badge-type-selection__list-item ui-list__item">
+                                                            <div>
+                                                                <label tabindex="0" class="ui-radio__label">
+                                                                    <div class="ui-radio-element">
+                                                                        <input type="radio" name="horario_dispobible[]" value="10-11" class="ui-radio__input d-none">
+                                                                        <div class="ui-radio__background">
+                                                                            <div class="ui-radio__outer-circle"></div>
+                                                                            <div class="ui-radio__inner-circle"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ui-radio__text">
+                                                                        <div class="badge-type__metadata">
+                                                                            <span class="badge-type-selection__list-title"> 10:00 - 11:00 AM </span>
+                                                                            <p class="badge-type-selection__list-text">
+                                                                                <span>Lunes</span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
 
-                                    </div>
-                                    <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-between">
-                                        <button type="button" class="btn btn-success m-1" id="continue-payment-trigger">Siguiente</button>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade border-0 p-0" id="delivery-tab-pane" role="tabpanel" aria-labelledby="delivery-tab-pane" tabindex="0">
-                                    <div class="p-4">
-                                        <div class="">
-                                            <h5 class="text-start mb-2">Pagos</h5>
-                                            <p class="mb-4 text-muted tx-13 ms-0 text-start">Completa los detalles de tu tarjeta para finalizar tu compra de manera segura.</p>
-
-                                            <!-- Button to trigger modal -->
-                                            <button id="add_new_cliente_conekta" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUclienteConekta">Agregar Nueva Tarjeta</button>
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <h6>Tarjetas Guardadas:</h6>
-                                            <div id="mainContactList">
-                                                @foreach($savedCards as $card)
-                                                    <div class="main-contact-item seleccionar-medio-pago" data-card-id="{{ $card->id }}">
-                                                        <div class="main-img-user online"><img alt="avatar" src="../assets/images/faces/2.jpg"></div>
-                                                        <div class="main-contact-body">
-                                                            <h6>{{ $card->name }}</h6><span class="phone">********{{ substr($card->number, -4) }}</span>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-between">
-                                        <button type="button" class="btn btn-light m-1" id="back-personal-trigger3">Anterior</button>
-                                        <button type="button" class="btn btn-success m-1" id="continue-finished-tab">Continuar pago</button>
+                                </div>
+                                <div id="step-2" class="tab-pane" role="tabpanel">
+                                    <div>
+                                        <h5 class="mb-1">Informacion del taller</h5>
+                                        <p class="text-muted mb-4">Te mostramos la dirección del taller</p>
+                                    </div>
+                                    <div class="mt-4">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="flex-grow-1">
+                                                <h5 class="fs-14 mb-0">Dirección Guardada</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row gy-3">
+                                            <div class="col-lg-4 col-sm-6">
+                                                <div class="form-check card-radio">
+                                                    <input id="shippingAddress01" name="shippingAddress" type="radio" class="form-check-input" checked>
+                                                    <label class="form-check-label" for="shippingAddress01">
+                                                        <span class="mb-4 fw-semibold d-block text-muted text-uppercase">Dirección de Rac Automotriz</span>
+                                                        <span class="fs-14 mb-2 d-block">Isaac Garza 2018</span>
+                                                        <span class="text-muted fw-normal text-wrap mb-1 d-block">Obrera, 64010 Monterrey, N.L.</span>
+                                                        <span class="text-muted fw-normal d-block">Tel. 81 8342 3649</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <!-- Modal structure -->
-                                @include('modals.add_cliente_conekta')
-
-                                <div class="tab-pane fade border-0 p-0" id="finished-tab-pane" role="tabpanel" aria-labelledby="finished-tab-pane" tabindex="0">
-                                    <div class="text-center p-4">
-                                        <div class="">
-                                            <h5 class="text-center mb-4">¡Tu pedido ha sido confirmado!</h5>
+                                <div id="step-3" class="tab-pane" role="tabpanel">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="flex-grow-1">
+                                            <h5>¿Como quires pagar?</h5>
                                         </div>
-                                        <svg class="wd-100 ht-100 mx-auto justify-content-center mb-3 text-center" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
-                                            <circle class="path circle" fill="none" stroke="#22c03c" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
-                                            <polyline class="path check" fill="none" stroke="#22c03c" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
-                                        </svg>
-                                        <p class="success pl-5 pr-5">Pedido realizado con éxito. Tu pedido será despachado pronto. Mientras tanto, puedes rastrear tu pedido en la sección "Mis pedidos".</p>
                                     </div>
-                                    <div class="px-4 py-3 border-top border-block-start-dashed d-sm-flex justify-content-between">
-                                        <button type="button" class="btn btn-light m-1" id="back-personal-trigger4">Anterior</button>
-                                        <button type="button" class="btn btn-secondary m-1" id="continue-payment-trigger1">Ver mi pedido</button>
+                                    <div class="collapse show" id="paymentmethodCollapse">
+                                        <div class="card p-4 border shadow-none mb-0 mt-4">
+                                            <ul class="badge-type-selection__list">
+                                                
+                                                <div id="DivCustomerConekta"></div>
+
+                                                <li class="add-card-new ui-list__item modal-effect" id="add_new_cliente_conekta" data-bs-effect="effect-slide-in-bottom" data-bs-toggle="modal" data-bs-target="#modalFormIUclienteConekta">
+                                                    <div>
+                                                        <label tabindex="0" class="ui-radio__label">
+                                                            <div class="ui-radio__text">
+                                                                <span class="ui-badge ui-badge--small">
+                                                                    <img src="https://via.placeholder.com/30" alt="Nueva Tarjeta" width="30">
+                                                                </span>
+                                                                <div class="badge-type__metadata">
+                                                                    <span class="badge-type-selection__list-title">
+                                                                        Nueva Tarjeta
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <input type="hidden" name="customer_id" id="customer_id">
+                        <input type="hidden" name="card_id" id="card_id">
+                        <input type="hidden" name="id_producto" id="id_producto">
+                    </form>
                 </div>
+                <!-- end card body -->
             </div>
+            <!-- end card -->
         </div>
+        {{-- Agremos el detalle del producto que se selecciono --}}
+        @include('extras.detalleProducto')
     </div>
 
-    <!-- row closed -->
-    <div class="div-modals">
+    @include('modals.add_cliente_conekta')
 
-        {{-- Modal para Agregar o modificar un nuevo registro  --}}
-        {{-- add_check_out // en sublime F12 te lleva al .blade --}}
-        @include('modals.add_check_out')
-
-        {{-- Modal para descargar platilla, importar desde un excel, o pegar una lista de registro en text area  --}}
-        {{-- import_check_out // en sublime F12 te lleva al .blade --}}
-        @include('modals.import_check_out')
-
-    </div>
-    <!-- .div-modals -->
 </x-app-layout>
 
-<script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
-<script src="assets/js/core_js/cliente_conekta.js?{{ rand() }}"></script>
+<!-- Include SmartWizard CSS -->
+<link href="assets/css/smart_wizard_theme_arrows.min.css" rel="stylesheet" type="text/css" />
 
-<script src="assets/js/core_js/check_out.js?{{ rand() }}"></script>
+<!-- Include SmartWizard JS -->
+<script src="https://unpkg.com/smartwizard@6/dist/js/jquery.smartWizard.min.js"></script>
 
 <!-- Handle-counter js -->
 <script src="assets/js/handlecounter.js"></script>
 
-<!-- Internal Checkout JS -->
-<script src="assets/js/checkout.js?{{ rand() }}"></script>
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="assets/css/checkout.css" rel="stylesheet" >
 
-<style type="text/css">
-    .seleccionar-medio-pago.selected {
-        border: 2px solid blue;
-        background-color: #f0f8ff;
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Flatpickr Locale ES -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+<!-- Include Conekta -->
+<script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
+<script src="assets/js/core_js/check_out.js?{{ rand() }}"></script>
+<script src="assets/js/core_js/cliente_conekta.js?{{ rand() }}"></script>
+
+@php
+    function getCardLogoUrl($brand) {
+        $logos = [
+            'visa' => 'https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg',
+            'mastercard' => 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg',
+            'american express' => 'https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg'
+            // Agrega más marcas si es necesario
+        ];
+
+        return $logos[strtolower($brand)] ?? 'https://via.placeholder.com/30';
     }
-
-    pre {
-        background-color: #fff; /* Fondo blanco */
-        padding: 20px; /* Espaciado interno */
-        border-radius: 4px; /* Bordes ligeramente redondeados */
-        font-family: Arial, sans-serif; /* Fuente sans-serif */
-        font-size: 14px !important; /* Tamaño de fuente */
-        line-height: 1.6 !important; /* Altura de línea */
-        color: #fff !important; /* Color del texto */
-        white-space: pre-wrap; /* Ajustar el texto al ancho del contenedor */
-        border: 1px solid #ddd; /* Borde ligero */
-        margin: 20px 0; /* Espaciado superior e inferior */
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    }
-
-
-</style>
-
+@endphp

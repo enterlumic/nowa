@@ -3,7 +3,6 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="left-content">
             <span class="main-content-title mg-b-0 mg-b-lg-1">Promociones</span>
-            <button id="add_new_python" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUpython">Nuevo</button>
         </div>
         <div class="justify-content-center mt-2">
             <ol class="breadcrumb">
@@ -39,7 +38,6 @@
                 <!-- Tab panes -->
                 <div class="tab-content text-muted">
                     <div class="tab-pane active" id="tab-datatable" role="tabpanel">
-
                         <div ng-app='app-scroll-promociones' ng-controller='ControllerScroll'>
                             <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
                                 <div class="col-xl-12 col-lg-12 col-md-12">
@@ -84,9 +82,7 @@
                                 <div ng-show='reddit.busy'>Cargando...</div>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="tab-pane" id="tab-scroll" role="tabpanel">
 
                         <div class=" d-flex align-items-center">
@@ -146,7 +142,6 @@
     </div>
     <!-- row closed -->
     <div class="div-modals">
-
         {{-- Modal para Agregar o modificar un nuevo registro  --}}
         {{-- add_promociones // en sublime F12 te lleva al .blade --}}
         @include('modals.add_promociones')
@@ -155,7 +150,6 @@
         {{-- Modal para descargar platilla, importar desde un excel, o pegar una lista de registro en text area  --}}
         {{-- import_promociones // en sublime F12 te lleva al .blade --}}
         @include('modals.import_promociones')
-
     </div>
     <!-- .div-modals -->
 </x-app-layout>

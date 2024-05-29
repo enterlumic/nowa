@@ -5,7 +5,6 @@ let detalle = {
         // Funciones principales
         detalle.fn_set_detalle();
         detalle.fn_get_by_id();
-        detalle.fn_datatable_detalle(rango_fecha='');
         detalle.fn_scroll_detalle();
         detalle.fn_importar_excel_detalle();
 
@@ -52,256 +51,6 @@ let detalle = {
         // FIN Funciones principales que se encuentran en los controladores
 
         // ===============================================================
-    },
-
-    fn_datatable_detalle: function (rango_fecha) {
-
-        // let columna = 
-        let table = $('#get_detalle_datatable').DataTable({
-            "stateSave": false,
-            "serverSide": true,
-            "destroy": true,
-            "responsive": false,
-            "pageLength": 10,
-            "scrollCollapse": true,
-            "lengthMenu": [10, 25, 50, 75, 100],
-            "ajax": {
-                "url": "get_detalle_datatable",
-                "type": "GET",
-                "data": function(d) {
-                    d.buscar_vCampo1_detalle = $('#buscar_vCampo1_detalle').val();
-                    d.buscar_vCampo2_detalle = $('#buscar_vCampo2_detalle').val();
-                    d.buscar_vCampo3_detalle = $('#buscar_vCampo3_detalle').val();
-                    d.buscar_vCampo4_detalle = $('#buscar_vCampo4_detalle').val();
-                    d.buscar_vCampo5_detalle = $('#buscar_vCampo5_detalle').val();
-                    d.buscar_vCampo6_detalle = $('#buscar_vCampo6_detalle').val();
-                    d.buscar_vCampo7_detalle = $('#buscar_vCampo7_detalle').val();
-                    d.buscar_vCampo8_detalle = $('#buscar_vCampo8_detalle').val();
-                    d.buscar_vCampo9_detalle = $('#buscar_vCampo9_detalle').val();
-                    d.buscar_vCampo10_detalle = $('#buscar_vCampo10_detalle').val();
-                    // Añade aquí más datos de búsqueda si es necesario
-                },
-                "headers": {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            "processing": true,
-            "language": {
-                "processing": '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Cargando...</span>',
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": '<div class="text-center">\
-                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#25a0e2,secondary:#00bd9d" style="width:75px;height:75px">\
-                                                    </lord-icon>\
-                                                    <h5 class="mt-2">Sin resultados</h5>\
-                                                    <p class="text-muted mb-0">Hemos buscado en más de 50 Registros No encontramos ningún registro para su búsqueda.</p>\
-                                                </div>',
-                "sEmptyTable": "Ningún registro disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": '<div class="spinner-border text-primary avatar-sm" role="status">\
-                                        <span class="visually-hidden">Loading...</span>\
-                                    </div>',
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-            // guarda el estado de la tabla (paginación, filtrado, etc.)
-            ,
-            stateSaveCallback: function (settings, data) {
-                localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
-            },
-            stateLoadCallback: function (settings) {
-                return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
-            },
-            fnDrawCallback: function( oSettings ) {
-                $('[data-toggle="tooltip"]').tooltip();
-            },
-            // "dom": 'Brtip',
-            // buttons: [
-            //     {
-            //         extend: 'excel',
-            //         title: 'Reporte detalle',
-            //         className: 'btn header-item noti-icon btn-personalizado-xlxs',
-            //         excelStyles: {
-            //             template: 'blue_medium',
-            //         },
-            //     },
-            // ],
-            // "buttons": [
-            //     {
-            //         "extend": 'excel',
-            //         "title": 'Reporte detalle',
-            //         "className": 'btn header-item noti-icon btn-personalizado-xlxs',
-            //         "excelStyles": {
-            //             "template": 'blue_medium',
-            //         },
-            //     },
-            // ],
-
-            // "order": [[0, "asc"]],
-
-            "columns": [
-                { "data": "id", visible: true},
-                { "data": "vCampo1_detalle", class: "vCampo1_detalle", visible: true },
-                { "data": "vCampo2_detalle", class: "vCampo2_detalle", visible: true },
-                { "data": "vCampo3_detalle", class: "vCampo3_detalle", visible: true },
-                { "data": "vCampo4_detalle", class: "vCampo4_detalle", visible: true },
-                { "data": "vCampo5_detalle", class: "vCampo5_detalle", visible: true },
-                { "data": "vCampo6_detalle", class: "vCampo6_detalle", visible: true },
-                { "data": "vCampo7_detalle", class: "vCampo7_detalle", visible: true },
-                { "data": "vCampo8_detalle", class: "vCampo8_detalle", visible: true },
-                { "data": "vCampo9_detalle", class: "vCampo9_detalle", visible: true },
-                { "data": "vCampo10_detalle", class: "vCampo10_detalle", visible: true },
-            ],
-
-            "columnDefs": [
-                {
-                    "targets": 11,
-                    "render": function (data, type, row, meta) {
-                        return '<div>\
-                                    <ul class="list-inline mb-0 font-size-16">\
-                                        <li class="list-inline-item">\
-                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Editar" class="text-success p-1 update-detalle"><i class="bx bxs-edit-alt"></i></a>\
-                                        </li>\
-                                        <li class="list-inline-item">\
-                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Eliminar" class="text-danger p-1 delete-detalle"><i class="bx bxs-trash"></i></a>\
-                                        </li>\
-                                    </ul>\
-                                </div>';
-                    },
-                    "class": "text-center"
-                }
-            ]
-        });
-
-        // Evento de clic en las filas de la tabla
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo1_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo1_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo2_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo2_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo3_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo3_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo4_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo4_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo5_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo5_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo6_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo6_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo7_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo7_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo8_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo8_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo9_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo9_detalle);
-        });
-
-        $('#get_detalle_datatable tbody').on('click', 'tr .vCampo10_detalle', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            detalle.fn_copyToClipboarddetalle(data.vCampo10_detalle);
-        });
-        // FIN Evento de clic en las filas de la tabla
-        //////////////////////////////////////////////////////////////////////
-
-       // Aplicar la búsqueda
-        $("#get_detalle_datatable thead tr:eq(1) th").each(function (i) {
-            $('input', this).on('keyup change', function () {
-                if (table.column(i).search() !== this.value) {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        if ( $("#btn-personalizados").length && $(".btn-personalizado-xlxs").length ){
-            $('#btn-personalizados').html('');
-            table.buttons().container().appendTo( '#btn-personalizados' );
-            $('.btn-personalizado-xlxs').html('<i class="mdi mdi-microsoft-excel text-success"></i>');
-            $('.btn-personalizado-xlxs').removeClass('btn-secondary header-item');
-            $('.btn-personalizado-xlxs').addClass('header-item noti-icon');
-        }
-
-        if ( $('#vc-buscador').length ){
-            $('#vc-buscador').keyup(function(){
-                table.search($(this).val()).draw() ;
-            });
-        }
-
-        // setInterval( function () {
-        //     table.ajax.reload( null, false );
-        // }, 5000 );
-
-        detalle.fn_update_detalle();
-        detalle.fn_delete_detalle();
     },
 
     fn_scroll_detalle: function() {
@@ -418,101 +167,106 @@ let detalle = {
         });
     },
 
-    fn_get_by_id: function () {
+fn_get_by_id: function () {
+    var productId = detalle.fn_get_id();
+    $.ajax({
+        url: '/producto/' + productId,
+        method: 'GET',
+        success: function(data) {
+            if (Array.isArray(data.fotos_array) && data.fotos_array.length > 0) {
+                var thumbHtml = data.fotos_array.map((foto, index) => `
+                    <li data-bs-target="#Slider" data-bs-slide-to="${index}" class="thumb ${index === 0 ? 'active' : ''} my-sm-2 m-2 mx-sm-0">
+                        <img src="${foto.trim()}" alt="img">
+                    </li>
+                `).join('');
 
-        var productId = detalle.fn_get_id(); // Cambia esto por el ID del producto que quieres cargar
-        $.ajax({
-            url: '/producto/' + productId,
-            method: 'GET',
-            success: function(data) {
-                if (Array.isArray(data.fotos_array) && data.fotos_array.length > 0) {
-                    var thumbHtml = data.fotos_array.map((foto, index) => `
-                        <li data-bs-target="#Slider" data-bs-slide-to="${index}" class="thumb ${index === 0 ? 'active' : ''} my-sm-2 m-2 mx-sm-0">
-                            <img src="${foto.trim()}" alt="img">
-                        </li>
-                    `).join('');
-
-                    var sliderHtml = data.fotos_array.map((foto, index) => `
-                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                            <img src="${foto.trim()}" alt="img" class="img-fluid mx-auto d-block">
-                            <div class="text-center mt-5 mb-5 btn-list">
-                                <!-- Aquí puedes añadir botones u otros elementos -->
-                            </div>
+                var sliderHtml = data.fotos_array.map((foto, index) => `
+                    <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                        <img src="${foto.trim()}" alt="img" class="img-fluid mx-auto d-block">
+                        <div class="text-center mt-5 mb-5 btn-list">
+                            <!-- Aquí puedes añadir botones u otros elementos -->
                         </div>
-                    `).join('');
+                    </div>
+                `).join('');
 
-                    var productHtml = `
-                        <div class="row row-sm">
-                            <div class="col-xxl-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row row-sm">
-                                            <div class="col-xxl-6 col-lg-12 col-md-12">
-                                                <div class="row">
-                                                    <div class="col-xxl-2 col-xl-2 col-md-2 col-sm-3">
-                                                        <div class="clearfix carousel-slider">
-                                                            <div id="thumbcarousel" class="carousel slide" data-bs-interval="t">
-                                                                <div class="carousel-inner">
-                                                                    <ul class="carousel-item active">
-                                                                        ${thumbHtml}
-                                                                    </ul>
-                                                                </div>
+                var productHtml = `
+                    <div class="row row-sm">
+                        <div class="col-xxl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row row-sm">
+                                        <div class="col-xxl-6 col-lg-12 col-md-12">
+                                            <div class="row">
+                                                <div class="col-xxl-2 col-xl-2 col-md-2 col-sm-3">
+                                                    <div class="clearfix carousel-slider">
+                                                        <div id="thumbcarousel" class="carousel slide" data-bs-interval="t">
+                                                            <div class="carousel-inner">
+                                                                <ul class="carousel-item active">
+                                                                    ${thumbHtml}
+                                                                </ul>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-9">
-                                                        <div class="product-carousel border br-5">
-                                                            <div id="Slider" class="carousel slide" data-bs-ride="false">
-                                                                <div class="carousel-inner">
-                                                                    ${sliderHtml}
-                                                                </div>
+                                                </div>
+                                                <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-9">
+                                                    <div class="product-carousel border br-5">
+                                                        <div id="Slider" class="carousel slide" data-bs-ride="false">
+                                                            <div class="carousel-inner">
+                                                                ${sliderHtml}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="details col-xxl-6 col-lg-12 col-md-12 mt-4">
-                                                <h4 class="product-title mb-1">${data.titulo}</h4>
-                                                <h6 class="price">Precio: <span class="h3 ms-2">${data.precio}</span></h6>
-                                                <h5>Descripción</h5>
-                                                <pre class="styled-pre">${data.descripcion.trim()}</pre>
-                                                <div class="mt-4 btn-list">
-                                                    <a href="javascript:void(0);" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"></i> Agregar al carrito</a>
-                                                    <a href="check_out?id=${data.id}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"></i> Comprar ahora</a>
-                                                </div>
+                                        </div>
+                                        <div class="details col-xxl-6 col-lg-12 col-md-12 mt-4">
+                                            <h4 class="product-title mb-1">${data.titulo}</h4>
+                                            <h6 class="price">Precio: <span class="h3 ms-2">${data.precio}</span></h6>
+                                            <h5>Descripción</h5>
+                                            <pre class="styled-pre">${data.descripcion.trim()}</pre>
+                                            <div class="mt-4 btn-list">
+                                                <a href="javascript:void(0);" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"></i> Agregar al carrito</a>
+                                                <a href="check_out?id=${data.id}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"></i> Comprar ahora</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>`;
-                    $('#product-container').html(productHtml);
+                        </div>
+                    </div>`;
+                $('#product-container').html(productHtml);
 
-                    // Adding event listeners for thumbs after the HTML is updated
-                    var thumbs = document.querySelectorAll('.thumb');
-                    thumbs.forEach(function (thumb) {
-                        thumb.addEventListener('click', function () {
-                            // Check if the clicked element does not have the 'active' class
-                            if (!this.classList.contains('active')) {
-                                // Remove the 'active' class from all elements with the class 'thumb'
-                                thumbs.forEach(function (el) {
-                                    el.classList.remove('active');
-                                });
-                                // Add the 'active' class to the clicked element
-                                this.classList.add('active');
-                            }
-                        });
+                // Adding event listeners for thumbs after the HTML is updated
+                var thumbs = document.querySelectorAll('.thumb');
+                thumbs.forEach(function (thumb) {
+                    thumb.addEventListener('click', function () {
+                        // Check if the clicked element does not have the 'active' class
+                        if (!this.classList.contains('active')) {
+                            // Remove the 'active' class from all elements with the class 'thumb'
+                            thumbs.forEach(function (el) {
+                                el.classList.remove('active');
+                            });
+                            // Add the 'active' class to the clicked element
+                            this.classList.add('active');
+                        }
                     });
-                } else {
-                    $('#product-container').html('<p>No hay fotos disponibles para este producto.</p>');
-                }
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
+                });
 
-    },
+                // Agregar evento para el botón de agendar cita
+                document.getElementById('agendar-cita').addEventListener('click', function () {
+                    window.location.href = '/agendar-cita?producto=' + data.id;
+                });
+
+            } else {
+                $('#product-container').html('<p>No hay fotos disponibles para este producto.</p>');
+            }
+        },
+        error: function(error) {
+            console.log('Error:', error);
+        }
+    });
+},
+
 
     fn_get_id: function () {
         // Get the URL
@@ -771,37 +525,6 @@ let detalle = {
                     }
                 }
             });
-        });
-    },
-
-    fn_Catdetalle: function(){
-
-        $.ajax({
-            url:"get_cat_detalle",
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            success: function(response)
-            {
-                let json= '';
-                try {
-                    json= JSON.parse(response);
-                } catch (e) {
-                    console.log(response);
-                }
-                
-                if (json["b_status"])
-                {
-                    $(json['data']).each(function(i, j){
-                        // Agregar este id en el select by id y luego borrar este comentario 
-                        // #id_cat_detalle' 
-
-                        if ($("#id_cat_detalle").length){
-                            $("#id_cat_detalle").append("<option value="+j['id']+"> "+j['vCampo1_detalle']+" </option>");
-                        }
-                    });
-                }
-
-            }
         });
     },
 

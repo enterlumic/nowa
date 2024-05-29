@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\detalle;
 use App\Lib\LibCore;
 use App\Models\promociones;
 use Session;
@@ -54,7 +53,6 @@ class DetalleController extends Controller
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_detalle' , 'vc_info' => "index - detalle" ] );
 
-
         $fotos = promociones::all()->map(function($producto) {
             $producto->fotos_array = explode("\n", trim($producto->fotos));
             
@@ -92,84 +90,6 @@ class DetalleController extends Controller
             // Manejar el caso cuando el producto no se encuentra
             return response()->json(['error' => 'Producto no encontrado'], 404);
         }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Datatable registro especial como se requiere en js
-    |--------------------------------------------------------------------------
-    | 
-    | @return json
-    |
-    */
-    public function get_detalle_datatable(Request $request)
-    {
-        if(!\Schema::hasTable('detalle')){
-            return json_encode(array("data"=>"" ));
-        }
-
-        if (   ( isset($request->buscar_vCampo1_detalle) && !empty($request->buscar_vCampo1_detalle) )
-            || ( isset($request->buscar_vCampo2_detalle) && !empty($request->buscar_vCampo2_detalle) )
-            || ( isset($request->buscar_vCampo3_detalle) && !empty($request->buscar_vCampo3_detalle) )
-            || ( isset($request->buscar_vCampo4_detalle) && !empty($request->buscar_vCampo4_detalle) )
-            || ( isset($request->buscar_vCampo5_detalle) && !empty($request->buscar_vCampo5_detalle) )
-            || ( isset($request->buscar_vCampo6_detalle) && !empty($request->buscar_vCampo6_detalle) )
-            || ( isset($request->buscar_vCampo7_detalle) && !empty($request->buscar_vCampo7_detalle) )
-            || ( isset($request->buscar_vCampo8_detalle) && !empty($request->buscar_vCampo8_detalle) )
-            || ( isset($request->buscar_vCampo9_detalle) && !empty($request->buscar_vCampo9_detalle) )
-            || ( isset($request->buscar_vCampo10_detalle) && !empty($request->buscar_vCampo10_detalle) )
-        ){
-            $buscar= 0;
-        }else{
-            $buscar= 1;
-        }
-
-        $request->search= isset($request->search["value"]) ? $request->search["value"] : '';
-        $buscar_vCampo1_detalle= isset($request->buscar_vCampo1_detalle) ? $request->buscar_vCampo1_detalle :'';
-        $buscar_vCampo2_detalle= isset($request->buscar_vCampo2_detalle) ? $request->buscar_vCampo2_detalle :'';
-        $buscar_vCampo3_detalle= isset($request->buscar_vCampo3_detalle) ? $request->buscar_vCampo3_detalle :'';
-        $buscar_vCampo4_detalle= isset($request->buscar_vCampo4_detalle) ? $request->buscar_vCampo4_detalle :'';
-        $buscar_vCampo5_detalle= isset($request->buscar_vCampo5_detalle) ? $request->buscar_vCampo5_detalle :'';
-        $buscar_vCampo6_detalle= isset($request->buscar_vCampo6_detalle) ? $request->buscar_vCampo6_detalle :'';
-        $buscar_vCampo7_detalle= isset($request->buscar_vCampo7_detalle) ? $request->buscar_vCampo7_detalle :'';
-        $buscar_vCampo8_detalle= isset($request->buscar_vCampo8_detalle) ? $request->buscar_vCampo8_detalle :'';
-        $buscar_vCampo9_detalle= isset($request->buscar_vCampo9_detalle) ? $request->buscar_vCampo9_detalle :'';
-        $buscar_vCampo10_detalle= isset($request->buscar_vCampo10_detalle) ? $request->buscar_vCampo10_detalle :'';
-        $request->start = isset($request->start) ? $request->start : intval(0);
-        $request->length= isset( $request->length) ? $request->length : intval(10);
-        $request->column= isset( $request->order[0]['column']) ? $request->order[0]['column'] : intval(0);
-        $request->order= isset( $request->order[0]['dir']) ? $request->order[0]['dir'] : 'DESC';
-
-        // Lógica para invocar el procedimiento almacenado
-        $sql= 'CALL sp_get_detalle(
-               '.$buscar.'
-            , "'.$request->search.'"
-            , "'.$buscar_vCampo1_detalle.'"
-            , "'.$buscar_vCampo2_detalle.'"
-            , "'.$buscar_vCampo3_detalle.'"
-            , "'.$buscar_vCampo4_detalle.'"
-            , "'.$buscar_vCampo5_detalle.'"
-            , "'.$buscar_vCampo6_detalle.'"
-            , "'.$buscar_vCampo7_detalle.'"
-            , "'.$buscar_vCampo8_detalle.'"
-            , "'.$buscar_vCampo9_detalle.'"
-            , "'.$buscar_vCampo10_detalle.'"
-            ,  '.$request->start.'
-            ,  '.$request->length.'
-            ,  '.$request->column.'
-            ,  "'.$request->order.'"
-            ,  @v_registro_total)';
-
-        $result = DB::select($sql);
-
-        // Recuperar el valor de la variable de salida
-        $v_registro_total = DB::select('SELECT @v_registro_total as v_registro_total')[0]->v_registro_total;
-
-        return response()->json([
-            'data' => $result,
-            'recordsTotal' => $v_registro_total,
-            'recordsFiltered' => $v_registro_total,
-        ]);
     }
 
     /*

@@ -55,6 +55,9 @@ class ClienteConektaController extends Controller
     public function index()
     {
 
+        // $getCustomers = $this->conektaService->getCustomers();
+        // return response()->json($getCustomers);
+
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_cliente_conekta' , 'vc_info' => "index - cliente_conekta" ] );
         return view('cliente_conekta');
     }
@@ -158,7 +161,7 @@ class ClienteConektaController extends Controller
 
             // Guarda en bd el id de conekta
             $data=[ 'user_id' => Auth::user()->id,
-                    'id_conekta' => isset($customer->id)? $customer->id: "",
+                    'customer_id' => isset($customer->id)? $customer->id: "",
                     'payment_source_id' => isset($customer->default_payment_source_id)? $customer->default_payment_source_id: "",
                     'name' => isset($request->name)? $request->name:"",
                     'number' => isset($request->number)? $request->number: "",
@@ -169,7 +172,7 @@ class ClienteConektaController extends Controller
 
             // Si ya existe solo se actualiza el registro
             if (isset($request->id)){
-                unset($data['id_conekta'], $data['payment_source_id']);
+                unset($data['customer_id'], $data['payment_source_id']);
                 DB::table('cliente_conekta')->where('id', $request->id)->update($data);
             }else{ // Nuevo registro
                 DB::table('cliente_conekta')->insert($data);
@@ -206,10 +209,74 @@ class ClienteConektaController extends Controller
 
                 // return response()->json($order);
 
-                return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));                
+                return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
             }
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Agrega o modificar registro
+    |--------------------------------------------------------------------------
+    | 
+    | Modifica el registro solo si manda el parametro '$request->id'
+    | @return json
+    |
+    */
+    public function createCustomer(Request $request)
+    {
+        $customerData = [
+            'name'  => $request->name,
+            'email' => Auth::user()->email,
+            'phone' => "8187074784",
+            'payment_sources' => [
+                [
+                    'type' => 'card',
+                    'token_id' => $request->token_id
+                ]
+            ]
+        ];
+
+        // ================================
+        // Crear un nuevo cliente CONKEKTA
+        // ================================
+        try {
+
+            // Validar que no este actualizando el registro
+            if (!isset($request->id)){
+                $customer = $this->conektaService->createCustomer($customerData);
+            }
+
+            // Guarda en bd el id de conekta
+            $data=[ 'user_id' => Auth::user()->id,
+                    'customer_id' => isset($customer->id)? $customer->id: "",
+                    'payment_source_id' => isset($customer->default_payment_source_id)? $customer->default_payment_source_id: "",
+                    'name' => isset($request->name)? $request->name:"",
+                    'number' => isset($request->number)? $request->number: "",
+                    'card_type' => $customer->payment_sources[0]['card_type'],
+                    'brand' => $customer->payment_sources[0]['brand'],
+                    'cvc' => isset($request->cvc)? $request->cvc: "",
+                    'exp_month' => isset($request->exp_month)? $request->exp_month: "",
+                    'exp_year' => isset($request->exp_year)? $request->exp_year: "",
+            ];
+
+            // Si ya existe solo se actualiza el registro
+            if (isset($request->id)){
+                unset($data['customer_id'], $data['payment_source_id']);
+                DB::table('cliente_conekta')->where('id', $request->id)->update($data);
+            }else{ // Nuevo registro
+                DB::table('cliente_conekta')->insert($data);
+            }
+
+            return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));                
+
+
+        } catch (Exception $e) {
+            return json_encode(array("b_status"=> false, "vc_message" => "Ocurrio un error..."));
         }
 
     }
@@ -325,13 +392,13 @@ class ClienteConektaController extends Controller
         $id=$request->id;
 
         $result = DB::table('cliente_conekta')
-            ->select('id_conekta')
+            ->select('customer_id')
             ->where('id', $id)
             ->first();
 
         // Valido si tiene al menos un registro
-        if (!empty($result->id_conekta)){
-            $customer = $this->conektaService->deleteCustomer($result->id_conekta);
+        if (!empty($result->customer_id)){
+            $customer = $this->conektaService->deleteCustomer($result->customer_id);
         }
 
         clienteConekta::where('id', $id)->delete();

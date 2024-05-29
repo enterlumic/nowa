@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::connection('mysql')->create('cliente_conekta', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->comment('ID del usuario');
-            $table->string('id_conekta', 26)->nullable()->comment('ID de Conekta');
+            $table->string('customer_id', 26)->nullable()->comment('ID de Conekta');
             $table->string('payment_source_id', 26)->nullable()->comment('Medio de pago');
             $table->string('name', 30)->nullable()->comment('Nombre del cliente');
             $table->string('number', 30)->nullable()->comment('Número de tarjeta');
             $table->string('cvc', 5)->nullable()->comment('Código de seguridad');
+            $table->string('card_type', 5)->nullable()->comment('Código que indica el tipo de tarjeta (por ejemplo, crédito, débito)');
+            $table->string('brand', 50)->nullable()->comment('Marca de la tarjeta (por ejemplo, Visa, MasterCard, American Express).');
             $table->string('exp_month', 5)->nullable()->comment('Mes de expiración');
             $table->string('exp_year', 5)->nullable()->comment('Año de expiración');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Fecha de creación');
