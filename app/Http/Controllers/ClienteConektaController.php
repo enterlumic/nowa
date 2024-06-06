@@ -58,6 +58,9 @@ class ClienteConektaController extends Controller
         // $getCustomers = $this->conektaService->getCustomers();
         // return response()->json($getCustomers);
 
+        // $customer = $this->conektaService->deleteCustomer('cus_2w3qwwkS3cZSNGFsU');
+        // dd($customer);
+
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_cliente_conekta' , 'vc_info' => "index - cliente_conekta" ] );
         return view('cliente_conekta');
     }
