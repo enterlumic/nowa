@@ -59,6 +59,7 @@ Route::get('get_cliente_conekta_datatable', [ClienteConektaController::class, 'g
 Route::post('get_cat_cliente_conekta', [ClienteConektaController::class, 'get_cat_cliente_conekta']);
 Route::get('validar_existencia_cliente_conekta', [ClienteConektaController::class, 'validar_existencia_cliente_conekta']);
 Route::delete('cliente_conekta/{customerId}', [ClienteConektaController::class, 'deleteCustomer']);
+Route::get('/conekta-key', [ClienteConektaController::class, 'getConektaKey']);
 
 use App\Http\Controllers\PromocionesController;
 Route::get('promociones', [PromocionesController::class, 'index'])->middleware('auth') ;

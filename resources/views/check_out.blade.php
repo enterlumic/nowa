@@ -185,6 +185,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link href="assets/css/checkout.css" rel="stylesheet" >
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/smartwizard/4.4.1/css/smart_wizard.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/smartwizard/4.4.1/css/smart_wizard_theme_dots.min.css" rel="stylesheet" type="text/css" />
+
+
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 

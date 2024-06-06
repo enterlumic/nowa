@@ -31,4 +31,7 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'conekta' => [
+        'public_key' => env('CONEKTA_PUBLIC_KEY'),
+    ],
 ];

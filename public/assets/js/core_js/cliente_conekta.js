@@ -145,7 +145,7 @@ let clienteConekta = {
             //     },
             // ],
 
-            // "order": [[0, "asc"]],
+            "order": [[0, "desc"]],
 
             "columns": [
                 { "data": "id" , visible: true},
@@ -267,7 +267,16 @@ let clienteConekta = {
 
     fn_conekta: function() {
 
-        Conekta.setPublicKey('key_EIdf0aImuo2b1dNISDUD20Q');
+        $.ajax({
+            url: '/conekta-key',
+            method: 'GET',
+            success: function(response) {
+                Conekta.setPublicKey(response.key);
+            },
+            error: function() {
+                console.error('Error al obtener la llave de Conekta');
+            }
+        });
 
         var conektaSuccessResponseHandler = function(token) {
             var $form = $("#form_cliente_conekta");

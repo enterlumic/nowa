@@ -436,4 +436,11 @@ class ClienteConektaController extends Controller
         // Eliminar el SP
         DB::unprepared('DROP PROCEDURE IF EXISTS `sp_get_cliente_conekta` ');
     }
+
+    public function getConektaKey()
+    {
+        $conektaKey = config('services.conekta.public_key');
+        return response()->json(['key' => $conektaKey]);
+    }
+
 }
