@@ -12,7 +12,6 @@ let detalle = {
         detalle.fn_modalHidedetalle();
         detalle.fn_AgregarNuevodetalle();
         detalle.fn_actualizarTabladetalle();
-        detalle.fn_Catdetalle();
         detalle.fn_set_validar_existencia_detalle();
 
         // Funciones principales que se encuentran en controlador >> detalleController
@@ -252,10 +251,7 @@ fn_get_by_id: function () {
                     });
                 });
 
-                // Agregar evento para el botón de agendar cita
-                document.getElementById('agendar-cita').addEventListener('click', function () {
-                    window.location.href = '/agendar-cita?producto=' + data.id;
-                });
+
 
             } else {
                 $('#product-container').html('<p>No hay fotos disponibles para este producto.</p>');

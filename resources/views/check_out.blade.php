@@ -176,7 +176,7 @@
 <link href="assets/css/smart_wizard_theme_arrows.min.css" rel="stylesheet" type="text/css" />
 
 <!-- Include SmartWizard JS -->
-<script src="https://unpkg.com/smartwizard@6/dist/js/jquery.smartWizard.min.js"></script>
+<script src="assets/js/core_js/jquery.smartWizard.min.js"></script>
 
 <!-- Handle-counter js -->
 <script src="assets/js/handlecounter.js"></script>
@@ -185,8 +185,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link href="assets/css/checkout.css" rel="stylesheet" >
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/smartwizard/4.4.1/css/smart_wizard.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/smartwizard/4.4.1/css/smart_wizard_theme_dots.min.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/smart_wizard.min.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/smart_wizard_theme_dots.min.css" rel="stylesheet" type="text/css" />
 
 
 <!-- Flatpickr JS -->

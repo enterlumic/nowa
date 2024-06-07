@@ -56,11 +56,8 @@ class CheckOutController extends Controller
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_check_out' , 'vc_info' => "index - check_out" ] );
 
-        $response = $this->conektaService->getCustomers();
-        $customers = json_decode(json_encode($response->original['customers']), true);
-
         // Pasar los datos a la vista
-        return view('check_out', ['customers' => $customers]);
+        return view('check_out');
 
     }
 
@@ -75,6 +72,7 @@ class CheckOutController extends Controller
     */
     public function set_check_out(Request $request)
     {
+
 
         if(!\Schema::hasTable('check_out')){
             Notification::route('mail', ['odin0464@gmail.com'])->notify(
@@ -320,5 +318,21 @@ class CheckOutController extends Controller
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al procesar el pago.'], 500);
         }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Compra completaado
+    |--------------------------------------------------------------------------
+    |
+    */
+    public function completado()
+    {
+        $this->LibCore->setSkynet( ['vc_evento'=> 'index_check_out' , 'vc_info' => "index - check_out" ] );
+
+        // Pasar los datos a la vista
+        return view('completado');
+
     }
 }

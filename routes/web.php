@@ -104,4 +104,5 @@ Route::post('set_check_out', [CheckOutController::class, 'set_check_out']);
 Route::post('get_check_out_by_id', [CheckOutController::class, 'get_check_out_by_id']);
 Route::post('process-payment', [CheckOutController::class, 'processPayment'])->name('process.payment');
 Route::post('fn_getCustomerConekta', [CheckOutController::class, 'fn_getCustomerConekta'])->name('fn_getCustomerConekta');
+Route::get('completado', [CheckOutController::class, 'completado'])->middleware('auth') ;
 

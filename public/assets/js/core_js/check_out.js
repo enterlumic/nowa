@@ -26,8 +26,11 @@ let checkOut = {
             maxDate: new Date().fp_incr(60), // 60 días desde la fecha actual
             dateFormat: "Y-m-d H:i",
             locale: "es", // Esto establece el calendario en español
-            defaultDate: null, // new Date().fp_incr(3) // Fecha predeterminada a 3 días desde hoy
+            defaultDate: localStorage.getItem('selectedDate') || null, // Fecha predeterminada desde el caché
             onChange: function(selectedDates, dateStr, instance) {
+                // Guardar la fecha seleccionada en caché
+                localStorage.setItem('selectedDate', dateStr);
+                
                 // Validar el formulario cuando se selecciona una fecha
                 $("#form_check_out").valid();
             }
@@ -73,6 +76,19 @@ let checkOut = {
 
                 // Assuming you have a container element to append this card HTML
                 $('#DivCustomerConekta').html(cardsHTML);
+
+                $(document).on('click', '.ui-list__item', function() {
+
+                    let selectedRadio = $(this).find('input[type="radio"]').first();
+                    selectedRadio.prop('checked', true); // Selecciona el radio button
+
+                    let value = selectedRadio.val();
+                    let customerId = selectedRadio.data('customer-id');
+                    
+                    $('#customer_id').val(customerId);
+                    $('#card_id').val(value);
+
+                });
             }
         });
 
@@ -154,20 +170,20 @@ let checkOut = {
             selected: 0,
             theme: 'dots',
             justified: true,
-            toolbarSettings: {
-                toolbarPosition: 'bottom',
-                toolbarButtonPosition: 'end',
-                showNextButton: true,
-                showPreviousButton: true,
-                toolbarExtraButtons: [
-                    $('<button></button>').text('Finish')
-                        .addClass('btn btn-info')
-                        .on('click', function () {
-                            if ($('#form_check_out').valid()) {
-                                $('#form_check_out').submit();
-                            }
-                        })
-                ]
+            toolbar: {
+                showNextButton: true, // show/hide a Next button
+                showPreviousButton: true, // show/hide a Previous button
+                position: 'bottom', // none|top|bottom|both
+                extraHtml: `<button type="submit" class="btn btn-success sw-btn d-none" id="comprar-checkout" >Comprar</button>`
+            },
+            lang: { // Language variables for button
+                next: 'Siguiente',
+                previous: 'Atras'
+            },
+            keyboard: {
+                keyNavigation: false, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
+                keyLeft: [37], // Left key code
+                keyRight: [39] // Right key code
             }
         });
 
@@ -201,9 +217,7 @@ let checkOut = {
                         }
 
                         if (json["b_status"]) {
-                            $('#get_check_out_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_check_out").reset();
-                            $('#modalFormIUcheckOut').modal('hide');
+                            window.location.href = 'completado';                            
                         } else {
                             alert(json);
                         }
@@ -252,7 +266,17 @@ let checkOut = {
 
             if (stepDirection === 1) {
                 return $("#form_check_out").valid();
+            }else{
+                $(".sw-toolbar-elm .sw-btn-next").removeClass('d-none');
             }
+
+            if (stepDirection === 2) {
+                $(".sw-toolbar-elm .sw-btn-next").addClass('d-none');
+                $(".sw-toolbar-elm #comprar-checkout").removeClass('d-none');
+            }else{
+                $(".sw-toolbar-elm #comprar-checkout").addClass('d-none');
+            }
+
             return true;
         });
 
