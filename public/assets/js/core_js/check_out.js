@@ -14,7 +14,7 @@ let checkOut = {
         checkOut.fn_get();
         checkOut.fn_calendario();
         checkOut.fn_customerConnekta();
-        checkOut.fn_set_check_out();
+        checkOut.fn_fnCreateOrder();
         checkOut.fn_eventos_clicks();
         checkOut.fn_modalAgregarEfecto();
     },
@@ -91,7 +91,6 @@ let checkOut = {
                 });
             }
         });
-
     },
 
     fn_get: function () {
@@ -162,7 +161,7 @@ let checkOut = {
         }
     },
 
-    fn_set_check_out: function () {
+    fn_fnCreateOrder: function () {
 
         // https://techlaboratory.net/jquery-smartwizard
 
@@ -197,7 +196,7 @@ let checkOut = {
                 let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
                 $.ajax({
-                    url: "set_check_out",
+                    url: "fnCreateOrder",
                     data: postData,
                     cache: false,
                     processData: false,
@@ -206,23 +205,34 @@ let checkOut = {
                     type: 'POST',
                     success: function (response) {
 
-                        $loading.waitMe('hide');
-
                         let json ='';
                         try {
                             json = JSON.parse(response);
                         } catch (e) {
-                            alert(response);
+                            console.log("response", response);
                             return;
                         }
 
                         if (json["b_status"]) {
                             window.location.href = 'completado';                            
                         } else {
-                            alert(json);
+
+                            Swal.fire({
+                                title: json["vc_message"],
+                                confirmButtonText: 'Aceptar',
+                                showClass: {
+                                    popup: 'animate__animated animate__bounceIn'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__bounceOut'
+                                }
+                            });
+
+                            $loading.waitMe('hide');
                         }
                     },
                     error: function (response) {
+                        console.log("response", response);
                         $loading.waitMe('hide');
                     }
                 });
@@ -290,21 +300,6 @@ let checkOut = {
         });
     },
 
-    fn_truncatecheckOut: function () {
-        $.ajax({
-            url:"truncate_check_out",
-            cache: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            success: function(response)
-            {
-                if ($("#get_check_out_datatable").length){
-                    $('#get_check_out_datatable').DataTable().ajax.reload();
-                }
-            }
-        });
-    },
-
     fn_eventos_clicks: function(){
 
         $('.main-contact-item').on('click touch', function () {
@@ -312,7 +307,6 @@ let checkOut = {
             $(this).siblings().removeClass('selected');
             $('body').addClass('main-content-body-show');
         });        
-
     },
 
     fn_modalAgregarEfecto: function(){
@@ -325,10 +319,8 @@ let checkOut = {
             var modalBodyInput = exampleModal.querySelector('.modal-body input')
             modalTitle.textContent = 'New message to ' + recipient
             modalBodyInput.value = recipient
-        })
+        });
 
-        // Animated modals 
-        /* showing modal effects */
         document.querySelectorAll(".modal-effect").forEach(e => {
             e.addEventListener('click', function (e) {
                 e.preventDefault();

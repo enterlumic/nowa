@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::connection('mysql')->getConnection()->statement('
-            CREATE PROCEDURE sp_set_check_out(IN `v_id` BIGINT(20)
+            CREATE PROCEDURE sp_fnCreateOrder(IN `v_id` BIGINT(20)
                                                               , IN `v_vCampo1_check_out` VARCHAR(200)
                                                               , IN `v_vCampo2_check_out` VARCHAR(210)
                                                               , IN `v_vCampo3_check_out` VARCHAR(220)

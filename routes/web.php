@@ -51,15 +51,14 @@ use App\Http\Controllers\ClienteConektaController;
 Route::get('cliente_conekta', [ClienteConektaController::class, 'index'])->middleware('auth') ;
 Route::post('set_cliente_conekta', [ClienteConektaController::class, 'set_cliente_conekta']);
 Route::post('createCustomer', [ClienteConektaController::class, 'createCustomer']);
-Route::post('set_import_cliente_conekta', [ClienteConektaController::class, 'set_import_cliente_conekta']);
 Route::post('get_cliente_conekta_by_id', [ClienteConektaController::class, 'get_cliente_conekta_by_id']);
 Route::post('delete_cliente_conekta', [ClienteConektaController::class, 'delete_cliente_conekta']);
 Route::post('undo_delete_cliente_conekta', [ClienteConektaController::class, 'undo_delete_cliente_conekta']);
 Route::get('get_cliente_conekta_datatable', [ClienteConektaController::class, 'get_cliente_conekta_datatable']);
-Route::post('get_cat_cliente_conekta', [ClienteConektaController::class, 'get_cat_cliente_conekta']);
-Route::get('validar_existencia_cliente_conekta', [ClienteConektaController::class, 'validar_existencia_cliente_conekta']);
 Route::delete('cliente_conekta/{customerId}', [ClienteConektaController::class, 'deleteCustomer']);
 Route::get('/conekta-key', [ClienteConektaController::class, 'getConektaKey']);
+Route::get('fnGetCustomerPaymentSources', [ClienteConektaController::class, 'fnGetCustomerPaymentSources'])->middleware('auth') ;
+
 
 use App\Http\Controllers\PromocionesController;
 Route::get('promociones', [PromocionesController::class, 'index'])->middleware('auth') ;
@@ -100,7 +99,7 @@ Route::get('/producto/{id}', [DetalleController::class, 'get_data_by_id']);
 
 use App\Http\Controllers\CheckOutController;
 Route::get('check_out', [CheckOutController::class, 'index'])->middleware('auth') ;
-Route::post('set_check_out', [CheckOutController::class, 'set_check_out']);
+Route::post('fnCreateOrder', [CheckOutController::class, 'fnCreateOrder']);
 Route::post('get_check_out_by_id', [CheckOutController::class, 'get_check_out_by_id']);
 Route::post('process-payment', [CheckOutController::class, 'processPayment'])->name('process.payment');
 Route::post('fn_getCustomerConekta', [CheckOutController::class, 'fn_getCustomerConekta'])->name('fn_getCustomerConekta');

@@ -39,7 +39,7 @@
 
                         <div class="col-md-4">
                             <label for="cc-cvv" class="form-label">CVV</label>
-                            <input type="text" class="form-control" value="25" placeholder="xxx" name="cvc" data-conekta="card[cvc]">
+                            <input type="text" class="form-control" value="123" placeholder="xxx" name="cvc" data-conekta="card[cvc]">
                         </div>
                     </div>
 

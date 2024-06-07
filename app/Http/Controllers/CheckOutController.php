@@ -68,21 +68,17 @@ class CheckOutController extends Controller
     | 
     | Modifica el registro solo si manda el parametro '$request->id'
     | @return json
+    | fn_fnCreateOrder JS
     |
     */
-    public function set_check_out(Request $request)
+    public function fnCreateOrder(Request $request)
     {
 
-
-        if(!\Schema::hasTable('check_out')){
-            Notification::route('mail', ['odin0464@gmail.com'])->notify(
-                new FncheckOutSendMail(
-                    'Notificación no existe tabla checkOut'
-                    , __DIR__ ." \ n"
-                )
-            );
-            return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla checkOut"));
+        if (!isset($request->customer_id) || empty($request->customer_id)){
+                return json_encode(array("b_status"=> false, "vc_message" =>'Favor de seleccionar una Tarjeta'  ));
         }
+
+        dd($request->all());
 
         try {
            // Crear orden
@@ -111,13 +107,18 @@ class CheckOutController extends Controller
 
             $order = $this->conektaService->createOrder($orderData);
 
-            // return response()->json($order);
+            if ($order['b_status']){
+                return json_encode(array("b_status"=> true, "vc_message" => $order['vc_message']));
+            }else{
+                return json_encode(array("b_status"=> false, "vc_message" => $order['vc_message']));
+            }
 
-            return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));                
-        
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return json_encode(array("b_status"=> false, "vc_message" => $e->getMessage()));
         }
+        
+        return json_encode(array("b_status"=> false, "vc_message" => 'Ocurrio un error'));
+
     }
 
     /*
@@ -202,6 +203,10 @@ class CheckOutController extends Controller
             ->select('id', 'user_id', 'customer_id', 'payment_source_id', 'name', 'number', 'cvc', 'card_type', 'brand', 'exp_month', 'exp_year', 'created_at', 'updated_at', 'b_status')
             ->where('user_id', Auth::user()->id)
             ->get();
+
+        if ($results->isEmpty()) {
+            return false;
+        }
 
         $logos = config('logos');
 
@@ -306,8 +311,6 @@ class CheckOutController extends Controller
                         ]
                     ]
                 ];
-
-                dd($orderData);
 
                 $order = $this->conektaService->createOrder($orderData);
 

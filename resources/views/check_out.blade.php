@@ -150,6 +150,7 @@
                                                     </div>
                                                 </li>
                                             </ul>
+                                                <div id="errorSeleccionarMetodoPago"></div>
                                         </div>
                                     </div>
                                 </div>

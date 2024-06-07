@@ -4,55 +4,108 @@ let clienteConekta = {
     init: function () {
 
         // Funciones principales
-        clienteConekta.fn_conekta();
+        clienteConekta.fn_conekta_key();
         clienteConekta.fn_set_cliente_conekta();
         clienteConekta.fn_datatable_cliente_conekta(rango_fecha='');
-        clienteConekta.fn_importar_excel_cliente_conekta();
 
         // Funciones para eventos
         clienteConekta.fn_modalShowclienteConekta();
         clienteConekta.fn_modalHideclienteConekta();
         clienteConekta.fn_AgregarNuevoclienteConekta();
         clienteConekta.fn_actualizarTablaclienteConekta();
-        clienteConekta.fn_CatclienteConekta();
-        clienteConekta.fn_set_validar_existencia_cliente_conekta();
-
-        // Funciones principales que se encuentran en controlador >> clienteConektaController
-        // ===============================================================
-
-        // Store procedure
-        // sp_get_cliente_conekta
-        // sp_set_cliente_conekta
-        // sp_get_by_id_cliente_conekta
-
-        // Llenar la tabla
-        // get_cliente_conekta_datatable 
-
-        // Agregar o actualizar un registro
-        // set_cliente_conekta 
-
-        // Importar registros
-
-        // Truncate table útil para hacer pruebas
-        // truncate_cliente_conekta
-
-        // Trar una lista por si se ocupa como un catalogo util para llenar un combo
-        // get_cat_cliente_conekta
-
-        // Útil para validar si ya existe un registro en la bd 
-        // validar_existencia_cliente_conekta
-
-        // Obtener un registro por id se usa cuando se intenta actualizar un registro
-        // get_cliente_conekta_by_id
-
-        // Se utiliza para eliminar un registro en la tabla
-        // delete_cliente_conekta
-
-        // FIN Funciones principales que se encuentran en los controladores
-
-        // ===============================================================
     },
 
+    fn_set_cliente_conekta: function () {
+
+        $("#form_cliente_conekta").validate({
+            submitHandler: function (form) {
+                let get_form = document.getElementById("form_cliente_conekta");
+                let element_by_id = 'form_cliente_conekta';
+                let message = 'Cargando...';
+                let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
+
+                // Inicia la generación del token de Conekta
+                Conekta.Token.create(get_form, clienteConekta.conektaSuccessResponseHandler, clienteConekta.conektaErrorResponseHandler);
+
+                return false; // Previene el envío automático del formulario
+            },
+            rules: {
+                name: {
+                    required: true
+                }
+            },
+            messages: {
+                  name: {
+                      minlength: "El nombre es requerido"
+                  }
+            }
+        });
+    },
+
+    conektaSuccessResponseHandler: function (token) {
+        let get_form = document.getElementById("form_cliente_conekta");
+
+        // Añadir el token al formulario
+        $(get_form).append($('<input type="hidden" name="token_id" />').val(token.id));
+
+        // Ahora enviar el formulario al backend
+        let postData = new FormData(get_form);
+        let element_by_id = 'form_cliente_conekta';
+        let message = 'Cargando...';
+        let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
+
+        $.ajax({
+            url: "createCustomer",
+            data: postData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            success: function (response) {
+
+                $loading.waitMe('hide');
+                let json = '';
+                try {
+                    json = JSON.parse(response);
+                } catch (e) {
+                    alert(response);
+                    return;
+                }
+
+                if (json["b_status"]) {
+
+                    // Si no existe se esta agregando desde el checkout
+                    if (!$('#get_cliente_conekta_datatable').length){
+                        checkOut.fn_customerConnekta();
+                        $('#modalFormIUclienteConekta').modal('hide');
+                        return ;
+                    }
+
+                    // Solo aplica cuando se registra desde conekta
+                    $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
+                    document.getElementById("form_cliente_conekta").reset();
+                    $('#modalFormIUclienteConekta').modal('hide');
+                } else {
+                    alert(json);
+                }
+
+            },
+            error: function (response) {
+                $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
+                $loading.waitMe('hide');
+            }
+        });
+    },
+
+    conektaErrorResponseHandler: function (response) {
+        let get_form = document.getElementById("form_cliente_conekta");
+        $(get_form).find(".card-errors").text(response.message_to_purchaser);
+        $(get_form).find("button").prop("disabled", false);
+        let element_by_id = 'form_cliente_conekta';
+        let $loading = LibreriaGeneral.f_cargando(element_by_id, 'Cargando...');
+        $loading.waitMe('hide');
+    },
     fn_datatable_cliente_conekta: function (rango_fecha) {
 
         // let columna = 
@@ -123,27 +176,6 @@ let clienteConekta = {
             fnDrawCallback: function( oSettings ) {
                 $('[data-toggle="tooltip"]').tooltip();
             },
-            // "dom": 'Brtip',
-            // buttons: [
-            //     {
-            //         extend: 'excel',
-            //         title: 'Reporte clienteConekta',
-            //         className: 'btn header-item noti-icon btn-personalizado-xlxs',
-            //         excelStyles: {
-            //             template: 'blue_medium',
-            //         },
-            //     },
-            // ],
-            // "buttons": [
-            //     {
-            //         "extend": 'excel',
-            //         "title": 'Reporte clienteConekta',
-            //         "className": 'btn header-item noti-icon btn-personalizado-xlxs',
-            //         "excelStyles": {
-            //             "template": 'blue_medium',
-            //         },
-            //     },
-            // ],
 
             "order": [[0, "desc"]],
 
@@ -265,7 +297,7 @@ let clienteConekta = {
         document.body.removeChild(tempInput);
     },
 
-    fn_conekta: function() {
+    fn_conekta_key: function() {
 
         $.ajax({
             url: '/conekta-key',
@@ -289,110 +321,6 @@ let clienteConekta = {
             $form.find(".card-errors").text(response.message_to_purchaser);
             $form.find("button").prop("disabled", false);
         };
-
-        // $(function() {
-        //   $("#form_cliente_conekta").submit(function(event) {
-        //     var $form = $(this);
-        //     // Previene hacer submit más de una vez
-        //     $form.find("button").prop("disabled", true);
-        //     console.log("1", 1);
-        //     Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
-        //     return false;
-        //   });
-        // });     
-    },
-
-    fn_set_cliente_conekta: function () {
-
-        $("#form_cliente_conekta").validate({
-            submitHandler: function (form) {
-                let get_form = document.getElementById("form_cliente_conekta");
-                let element_by_id = 'form_cliente_conekta';
-                let message = 'Cargando...';
-                let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
-
-                // Inicia la generación del token de Conekta
-                Conekta.Token.create(get_form, clienteConekta.conektaSuccessResponseHandler, clienteConekta.conektaErrorResponseHandler);
-
-                return false; // Previene el envío automático del formulario
-            },
-            rules: {
-                name: {
-                    required: true
-                }
-            },
-            messages: {
-                  name: {
-                      minlength: "El name es requerido"
-                  }
-            }
-        });
-
-    },
-
-    conektaSuccessResponseHandler: function (token) {
-        let get_form = document.getElementById("form_cliente_conekta");
-
-        // Añadir el token al formulario
-        $(get_form).append($('<input type="hidden" name="token_id" />').val(token.id));
-
-        // Ahora enviar el formulario al backend
-        let postData = new FormData(get_form);
-        let element_by_id = 'form_cliente_conekta';
-        let message = 'Cargando...';
-        let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
-
-        $.ajax({
-            url: "createCustomer",
-            data: postData,
-            cache: false,
-            processData: false,
-            contentType: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            success: function (response) {
-
-                $loading.waitMe('hide');
-                let json = '';
-                try {
-                    json = JSON.parse(response);
-                } catch (e) {
-                    alert(response);
-                    return;
-                }
-
-                if (json["b_status"]) {
-
-                    // Si no existe se esta agregando desde el checkout
-                    if (!$('#get_cliente_conekta_datatable').length){
-                        checkOut.fn_customerConnekta();
-                        $('#modalFormIUclienteConekta').modal('hide');
-                        return ;
-                    }
-
-                    // Solo aplica cuando se registra desde conekta
-                    $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-                    document.getElementById("form_cliente_conekta").reset();
-                    $('#modalFormIUclienteConekta').modal('hide');
-                } else {
-                    alert(json);
-                }
-
-            },
-            error: function (response) {
-                $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-                $loading.waitMe('hide');
-            }
-        });
-    },
-
-    conektaErrorResponseHandler: function (response) {
-        let get_form = document.getElementById("form_cliente_conekta");
-        $(get_form).find(".card-errors").text(response.message_to_purchaser);
-        $(get_form).find("button").prop("disabled", false);
-        let element_by_id = 'form_cliente_conekta';
-        let $loading = LibreriaGeneral.f_cargando(element_by_id, 'Cargando...');
-        $loading.waitMe('hide');
     },
 
     fn_modalShowclienteConekta: function () {
@@ -442,14 +370,6 @@ let clienteConekta = {
     fn_AgregarNuevoclienteConekta: function () {
         $(document).on("click", "#add_new_cliente_conekta", function () {
             document.getElementById("form_cliente_conekta").reset();
-
-            // En el proceso check out
-            if ( $(this).hasClass('ui-list__item') ){
-                if (!$('#agregando_tarjeta').length){
-                    $('#form_cliente_conekta').append($('<input type="hidden" name="agregando_tarjeta" id="agregando_tarjeta" />'));
-                }
-            }
-
             $("#modalFormIUclienteConekta .modal-title").html("Agregar nueva tarjeta");
         });
     },
@@ -460,247 +380,6 @@ let clienteConekta = {
             if ($("#get_cliente_conekta_datatable").length){
                 $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
             }
-
-        });
-    },
-
-    fn_importar_excel_cliente_conekta: function() {
-
-        // si no existe el elemento terminar...
-        if (! $('#FormImportarclienteConekta').length)
-            return;
-
-        let $form = $('#FormImportarclienteConekta');
-
-        $form.find('input:file').fileuploader({
-            addMore: true,
-            changeInput: '<div class="fileuploader-input">' +
-                '<div class="fileuploader-input-inner">' +
-                '<div>${captions.feedback} ${captions.or} <span>${captions.button}</span></div>' +
-                '</div>' +
-                '</div>',
-            theme: 'dropin',
-            upload: true,
-            enableApi: true,
-            onSelect: function(item) {
-                item.upload = null;
-                $(".btn-importar").removeClass('btn-disabled disabled');
-                $(".btn-importar").removeAttr('disabled');            
-            },
-            onRemove: function(item) {
-                if (item.data.uploaded)
-                    $.post('files/assets/js/lumic/fileuploader-2.2/examples/drag-drop-form/php/ajax_remove_file_cliente_conekta.php', {
-                        file: item.name
-                    }, function(data) {
-                        // if (data)
-                            // $(".text-success").html("");
-                    });
-            },
-            captions: $.extend(true, {}, $.fn.fileuploader.languages['en'], {
-                feedback: 'Arrastra y suelta aquí',
-                or: 'ó <br>',
-                button: 'Buscar archivo'
-            })
-          });
-
-        // form submit
-        $form.on('submit', function(e) {
-            e.preventDefault();
-            let formData = new FormData(),
-                _fileuploaderFields = [];
-
-            // append inputs to FormData
-            $.each($form.serializeArray(), function(key, field) {
-                formData.append(field.name, field.value);
-            });
-            // append file inputs to FormData
-            $.each($form.find("input:file"), function(index, input) {
-                let $input = $(input),
-                    name = $input.attr('name'),
-                    files = $input.prop('files'),
-                    api = $.fileuploader.getInstance($input);
-
-                // add fileuploader files to the formdata
-                if (api) {
-                    if ($.inArray(name, _fileuploaderFields) > -1)
-                        return;
-                    files = api.getChoosedFiles();
-                    _fileuploaderFields.push($input);
-                }
-
-                for (let i = 0; i < files.length; i++) {
-                    formData.append(name, (files[i].file ? files[i].file : files[i]), (files[i].name ? files[i].name : false));
-                }
-            });
-
-            let element_by_id= 'FormImportarclienteConekta';
-            let message=  'Importando archivo...' ;
-            let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
-
-            $.ajax({
-                url: $form.attr('action') || '#',
-                data: formData,
-                type: $form.attr('method') || 'POST',
-                enctype: $form.attr('enctype') || 'multipart/form-data',
-                cache: false,
-                contentType: false,
-                processData: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                beforeSend: function() {
-                    $form.find('.form-status').html('<div class="progressbar-holder"><div class="progressbar"></div></div>');
-                    $form.find('input[type="submit"]').attr('disabled', 'disabled');
-                },
-                xhr: function() {
-                    let xhr = $.ajaxSettings.xhr();
-
-                    if (xhr.upload) {
-                        xhr.upload.addEventListener("progress", this.progress, false);
-                    }
-
-                    return xhr;
-                },
-                success: function(result, textStatus, jqXHR) {
-                    // update input values
-                    try {
-                        let data = JSON.parse(result);
-
-                        for (let key in data) {
-                            let field = data[key],
-                                api;
-
-                            // if fileuploader input
-                            if (field.files) {
-                                let input = _fileuploaderFields.filter(function(element) {
-                                        return key == element.attr('name').replace('[]', '');
-                                    }).shift(),
-                                    api = input ? $.fileuploader.getInstance(input) : null;
-
-                                if (field.hasWarnings) {
-                                    for (let warning in field.warnings) {
-                                        alert(field.warnings[warning]);
-                                    }
-
-                                    return this.error ? this.error(jqXHR, textStatus, field.warnings) : null;
-                                }
-
-                                if (api) {
-                                    // update the fileuploader's file names
-                                    for (let i = 0; i < field.files.length; i++) {
-                                        $.each(api.getChoosedFiles(), function(index, item) {
-                                            if (field.files[i].old_name == item.name) {
-                                                item.name = field.files[i].name;
-                                                item.html.find('.column-title > div:first-child').text(field.files[i].name).attr('title', field.files[0].name);
-                                            }
-                                            item.data.uploaded = true;
-                                        });
-                                    }
-
-                                    api.updateFileList();
-                                }
-                            } else {
-                                $form.find('[name="' + key + '"]:input').val(field);
-                            }
-                        }
-                    } catch (e) {}
-
-                    document.getElementById("FormImportarclienteConekta").reset();
-                    $form.find('input[type="submit"]').removeAttr('disabled');
-                    $loading.waitMe('hide');
-
-                    $("#modalImportFormclienteConekta").modal("hide");
-                    $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    $form.find('.form-status').html('<p class="text-error">Error!</p>');
-                    $form.find('input[type="submit"]').removeAttr('disabled');
-                    $(".btn-importar").removeClass('btn-disabled disabled');
-                    $(".btn-importar").removeAttr('disabled');                     
-
-                    $loading.waitMe('hide');
-                },
-                progress: function(e) {
-                    if (e.lengthComputable) {
-                        let t = Math.round(e.loaded * 100 / e.total).toString();
-
-                        $form.find('.form-status .progressbar').css('width', t + '%');
-                    }
-                }
-            });
-        });
-    },
-
-    fn_CatclienteConekta: function(){
-
-        $.ajax({
-            url:"get_cat_cliente_conekta",
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            success: function(response)
-            {
-                let json= '';
-                try {
-                    json= JSON.parse(response);
-                } catch (e) {
-                    console.log(response);
-                }
-                
-                if (json["b_status"])
-                {
-                    $(json['data']).each(function(i, j){
-                        // Agregar este id en el select by id y luego borrar este comentario 
-                        // #id_cat_cliente_conekta' 
-
-                        if ($("#id_cat_cliente_conekta").length){
-                            $("#id_cat_cliente_conekta").append("<option value="+j['id']+"> "+j['name']+" </option>");
-                        }
-                    });
-                }
-
-            }
-        });
-    },
-
-    fn_set_validar_existencia_cliente_conekta: function(){
-
-        $( "#name" ).keyup(function( event ) {
-
-            var id=0;
-            // Si se esta editando return
-            if ( $("#modalFormIUclienteConekta #id").length ){
-                id= $("#modalFormIUclienteConekta #id").val();
-            }
-
-            let name= this.value;
-
-            if(name ==""){
-                $("#modalFormIUclienteConekta .btn-action-form").attr("disabled",false);
-                $("#name").removeClass("border-danger").removeClass("text-danger");
-                $(".tipo-ya-existe").addClass("d-none");
-                return;
-            }
-
-            $.ajax({
-                url: "validar_existencia_cliente_conekta",
-                data: { name: name, id: id},
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'GET',
-                contentType: "application/json",
-                success: function (response) {
-
-                    var json = JSON.parse(response);
-
-                    if (json['b_status']) {
-                        $("#modalFormIUclienteConekta .btn-action-form").attr("disabled",true);
-                        $("#name").addClass("border-danger").addClass("text-danger");
-                        $(".tipo-ya-existe").removeClass("d-none");
-                    } else {
-                        $("#modalFormIUclienteConekta .btn-action-form").attr("disabled",false);
-                        $("#name").removeClass("border-danger").removeClass("text-danger");
-                        $(".tipo-ya-existe").addClass("d-none");
-                    }
-                },
-            });
 
         });
     },
@@ -799,12 +478,8 @@ let clienteConekta = {
     fn_delete_cliente_conekta: function(){
         $('#get_cliente_conekta_datatable tbody').on('click', '.delete-cliente_conekta', function () {
 
-            document.getElementById("form_cliente_conekta").reset();
-            $("label.error").hide();
-            $(".error").removeClass("error");
-
             let id = this.id;
-            let element_by_id= 'form_cliente_conekta';
+            let element_by_id= 'get_cliente_conekta_datatable';
             let message=  'Eliminando...' ;
             let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
@@ -821,51 +496,6 @@ let clienteConekta = {
                         $('#modalFormIUclienteConekta').modal('hide');
                         $loading.waitMe('hide');
 
-                        let n = new Noty({
-                            type: "warning",
-                            close: false,
-                            text: "<b>Se movio a la papelera<b>" ,
-                            layout: 'topCenter',
-                            timeout: 20e3,
-                                buttons: [
-                                  Noty.button('Deshacer', 'btn btn-success btn-sm', function () {
-                                        $.ajax({
-                                            url:"undo_delete_cliente_conekta",
-                                            data: {"id" : id},
-                                            cache: false,
-                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                            type: 'POST',
-                                                success: function(response)
-                                                {
-                                                    n.close();
-                                                    $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
-
-                                                    new Noty({
-                                                        text: 'Se ha deshecho la acción.',
-                                                        type: "warning",
-                                                        layout: 'topCenter',
-                                                        timeout: 1e3,
-                                                    }).show();
-
-
-                                                },
-                                                error: function(response)
-                                                {
-                                                    alert("Ocurrio un error");
-                                                }
-                                        });
-                                  }
-                                  ,{
-                                      'id'         : 'id-'+id
-                                    , 'data-status': 'ok'
-                                  }
-                                  )
-                                  , Noty.button('Cerrar', 'btn btn-error', function () {
-                                        n.close();
-                                    })
-                                ]
-                        });
-                        n.show();
                     },
                     error: function(response)
                     {
@@ -873,6 +503,56 @@ let clienteConekta = {
                     }
             });
         });  
+    },
+
+    _fnAddPaymentSource: function (customerId, token) {
+        let get_form = document.getElementById("form_cliente_conekta");
+
+        // Añadir el token al formulario
+        $(get_form).append($('<input type="hidden" name="conektaTokenId" />').val(token.id));
+
+        // Ahora enviar el formulario al backend
+        let postData = new FormData(get_form);
+        let element_by_id = 'form_cliente_conekta';
+        let message = 'Cargando...';
+        let $loading = LibreriaGeneral.f_cargando(element_by_id, message);
+
+        $.ajax({
+            url: "/addPaymentSource",
+            data: postData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            success: function (response) {
+                $loading.waitMe('hide');
+                let json = '';
+                try {
+                    json = JSON.parse(response);
+                } catch (e) {
+                    alert(response);
+                    return;
+                }
+
+                if (json["b_status"]) {
+                    if (!$('#get_cliente_conekta_datatable').length) {
+                        checkOut.fn_customerConnekta();
+                        $('#modalFormIUclienteConekta').modal('hide');
+                        return;
+                    }
+                    $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
+                    document.getElementById("form_cliente_conekta").reset();
+                    $('#modalFormIUclienteConekta').modal('hide');
+                } else {
+                    alert(json);
+                }
+            },
+            error: function (response) {
+                $('#get_cliente_conekta_datatable').DataTable().ajax.reload();
+                $loading.waitMe('hide');
+            }
+        });
     },
 
     fn_eventos_extra_cliente_conekta: function(){

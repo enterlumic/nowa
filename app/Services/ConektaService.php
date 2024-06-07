@@ -18,7 +18,7 @@ class ConektaService
     }
 
     // Crear un Cliente en conekta esto es importante cuando no es un pago unico
-    public function createCustomer($customerData)
+    public function fnCreateCustomer($customerData)
     {
         try {
             $customer = Customer::create($customerData);
@@ -33,9 +33,9 @@ class ConektaService
     {
         try {
             $order = Order::create($orderData);
-            return $order;
+            return ["b_status"=> true, "vc_message" => $order ];
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            return ["b_status"=> false, "vc_message" => $e->getMessage() ];
         }
     }
 
@@ -62,9 +62,42 @@ class ConektaService
             // Obtiene la lista de clientes desde Conekta
             $customers = Customer::where([]);
 
-            return response()->json(['customers' => $customers], 200);
+            return $customers;
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return $e->getMessage();
         }
     }
+
+    // Agregar una fuente de pago a un cliente en Conekta
+    public function AddPaymentSource($customerId, $paymentSourceData)
+    {
+        try {
+            // Busca el cliente por ID
+            $customer = Customer::find($customerId);
+
+            // Agrega la fuente de pago
+            $paymentSource = $customer->createPaymentSource($paymentSourceData);
+
+            return ["b_status" => true, "vc_message" => $paymentSource];
+        } catch (Exception $e) {
+            return ["b_status" => false, "vc_message" => $e->getMessage()];
+        }
+    }
+
+    // Obtener las fuentes de pago de un cliente por su ID
+    public function getCustomerPaymentSources($customerId)
+    {
+        try {
+            // Busca el cliente por ID
+            $customer = Customer::find($customerId);
+
+            // Obtiene las fuentes de pago del cliente
+            $paymentSources = $customer->payment_sources;
+
+            return ["b_status" => true, "vc_message" => $paymentSources];
+        } catch (Exception $e) {
+            return ["b_status" => false, "vc_message" => $e->getMessage()];
+        }
+    }
+
 }
