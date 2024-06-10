@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\SkynetController;
 use Illuminate\Support\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class LibCore
@@ -48,6 +49,26 @@ class LibCore
 
         $id_user_o_id_cliente = Auth::id()!== null ? Auth::id() :  0 ;
         $skynet->set_skynet( [ 'vc_evento'=> $params['vc_evento'], 'vc_info' => $params['vc_info'], 'id_user_o_id_cliente' => $id_user_o_id_cliente ] );
+    }
+
+    public function setLogs($params)
+    {
+        $user_id = Auth::id()!== null ? Auth::id() :  0 ;
+
+        return
+        DB::table('logss')->insert([
+            'user_id' => $user_id,
+            'context' => isset($params['context']) ? $params['context'] : '',
+            'event_type' => isset($params['event_type']) ? $params['event_type'] : '',
+            'event_data' => isset($params['event_data']) ? $params['event_data'] : '',
+            'execution_time' => isset($params['execution_time']) ? $params['execution_time'] :'',
+            'status' => isset($params['status']) ? $params['status'] : '',
+            'severity' => isset($params['severity']) ? $params['severity'] : '',
+            'source' => isset($params['source']) ? $params['source'] : '',
+            'ip_address' => Request::capture()->ip(),
+            'user_agent' => Request::capture()->header('User-Agent'),
+            'description' => ''
+        ]);
     }
 
     public function date_format($dt)

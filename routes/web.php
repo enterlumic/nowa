@@ -124,3 +124,21 @@ Route::get('get_sandbox_types_diez', [SandboxTypesController::class, 'get_sandbo
 Route::get('descargar_plantilla_sandbox_types', [SandboxTypesController::class, 'descargar_plantilla_sandbox_types']);
 Route::get('validar_existencia_sandbox_types', [SandboxTypesController::class, 'validar_existencia_sandbox_types']);
 
+use App\Http\Controllers\LogssController;
+Route::get('logss', [LogssController::class, 'index'])->middleware('auth') ;
+Route::post('set_logss', [LogssController::class, 'set_logss']);
+Route::post('set_import_logss', [LogssController::class, 'set_import_logss']);
+Route::post('get_logss_by_id', [LogssController::class, 'get_logss_by_id']);
+Route::post('delete_logss', [LogssController::class, 'delete_logss']);
+Route::post('undo_delete_logss', [LogssController::class, 'undo_delete_logss']);
+Route::get('get_logss_datatable', [LogssController::class, 'get_logss_datatable']);
+Route::post('truncate_logss', [LogssController::class, 'truncate_logss']);
+Route::post('truncate_sps_logss', [LogssController::class, 'truncate_sps_logss']);
+Route::post('form_importar_logss', [LogssController::class, 'form_importar_logss']);
+Route::get('export_excel_logss', [LogssController::class, 'export_excel_logss']);
+Route::post('get_cat_logss', [LogssController::class, 'get_cat_logss']);
+Route::post('get_logss_by_list', [LogssController::class, 'get_logss_by_list']);
+Route::get('get_logss_diez', [LogssController::class, 'get_logss_diez']);
+Route::get('descargar_plantilla_logss', [LogssController::class, 'descargar_plantilla_logss']);
+Route::get('validar_existencia_logss', [LogssController::class, 'validar_existencia_logss']);
+

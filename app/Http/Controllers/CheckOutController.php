@@ -104,6 +104,8 @@ class CheckOutController extends Controller
             ];
 
             $order = $this->conektaService->createOrder($orderData);
+            $this->LibCore->setLogs( ['event_type'=> 'fnCreateOrder' , 'context'=> 'data', 'event_data' => json_encode($orderData) ] );
+            $this->LibCore->setLogs( ['event_type'=> 'fnCreateOrder' , 'context'=> 'request', 'event_data' => json_encode($order) ] );
 
             if ($order['b_status']){
                 return json_encode(array("b_status"=> true, "vc_message" => $order['vc_message']));
