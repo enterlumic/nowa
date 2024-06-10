@@ -52,4 +52,10 @@
         <span class="side-menu__label">Sandbox</span>
     </a>
 </li>
+<li class="slide">
+    <a href="logss" class="side-menu__item">
+        <i class="material-icons side-menu__icon">assignment</i>
+        <span class="side-menu__label">Logs</span>
+    </a>
+</li>
 <!-- End::slide -->
