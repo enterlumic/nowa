@@ -78,8 +78,6 @@ class CheckOutController extends Controller
                 return json_encode(array("b_status"=> false, "vc_message" =>'Favor de seleccionar una Tarjeta'  ));
         }
 
-        dd($request->all());
-
         try {
            // Crear orden
             $orderData = [

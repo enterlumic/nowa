@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name', 30)->nullable()->comment('Nombre del cliente');
             $table->string('number', 30)->nullable()->comment('Número de tarjeta');
             $table->string('cvc', 5)->nullable()->comment('Código de seguridad');
-            $table->string('card_type', 5)->nullable()->comment('Código que indica el tipo de tarjeta (por ejemplo, crédito, débito)');
+            $table->string('card_type', 12)->nullable()->comment('Código que indica el tipo de tarjeta (por ejemplo, crédito, débito)');
             $table->string('brand', 50)->nullable()->comment('Marca de la tarjeta (por ejemplo, Visa, MasterCard, American Express).');
             $table->string('exp_month', 5)->nullable()->comment('Mes de expiración');
             $table->string('exp_year', 5)->nullable()->comment('Año de expiración');

@@ -105,3 +105,22 @@ Route::post('process-payment', [CheckOutController::class, 'processPayment'])->n
 Route::post('fn_getCustomerConekta', [CheckOutController::class, 'fn_getCustomerConekta'])->name('fn_getCustomerConekta');
 Route::get('completado', [CheckOutController::class, 'completado'])->middleware('auth') ;
 
+
+use App\Http\Controllers\SandboxTypesController;
+Route::get('sandbox_types', [SandboxTypesController::class, 'index'])->middleware('auth') ;
+Route::post('set_sandbox_types', [SandboxTypesController::class, 'set_sandbox_types']);
+Route::post('set_import_sandbox_types', [SandboxTypesController::class, 'set_import_sandbox_types']);
+Route::post('get_sandbox_types_by_id', [SandboxTypesController::class, 'get_sandbox_types_by_id']);
+Route::post('delete_sandbox_types', [SandboxTypesController::class, 'delete_sandbox_types']);
+Route::post('undo_delete_sandbox_types', [SandboxTypesController::class, 'undo_delete_sandbox_types']);
+Route::get('get_sandbox_types_datatable', [SandboxTypesController::class, 'get_sandbox_types_datatable']);
+Route::post('truncate_sandbox_types', [SandboxTypesController::class, 'truncate_sandbox_types']);
+Route::post('truncate_sps_sandbox_types', [SandboxTypesController::class, 'truncate_sps_sandbox_types']);
+Route::post('form_importar_sandbox_types', [SandboxTypesController::class, 'form_importar_sandbox_types']);
+Route::get('export_excel_sandbox_types', [SandboxTypesController::class, 'export_excel_sandbox_types']);
+Route::post('get_cat_sandbox_types', [SandboxTypesController::class, 'get_cat_sandbox_types']);
+Route::post('get_sandbox_types_by_list', [SandboxTypesController::class, 'get_sandbox_types_by_list']);
+Route::get('get_sandbox_types_diez', [SandboxTypesController::class, 'get_sandbox_types_diez']);
+Route::get('descargar_plantilla_sandbox_types', [SandboxTypesController::class, 'descargar_plantilla_sandbox_types']);
+Route::get('validar_existencia_sandbox_types', [SandboxTypesController::class, 'validar_existencia_sandbox_types']);
+

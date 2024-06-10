@@ -247,6 +247,17 @@ class ClienteConektaController extends Controller
         // ================================
         try {
 
+            $result = DB::table('sandbox_types')
+                        ->select('id', 'b_status')
+                        ->where('name', 'Tarjetas')
+                        ->first();
+
+            if ($result) {
+                $request->token_id= 'tok_test_mastercard_4444';
+                $request->number = '5555555555554444';
+                $request->cvc= 123;
+            }
+
             // Validar que no este actualizando el registro
             if (!isset($request->id)){
 
@@ -286,6 +297,9 @@ class ClienteConektaController extends Controller
             }else{ // Nuevo registro
                 DB::table('cliente_conekta')->insert($data);
             }
+
+            // $this->LibCore->setSkynet( ['vc_evento'=> 'createCustomer' , 'request' => json_encode($data) ] );
+            // $this->LibCore->setSkynet( ['vc_evento'=> 'createCustomer' , 'reponse' => json_encode($customer) ] );
 
             return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
 

@@ -46,4 +46,10 @@
         <span class="side-menu__label">Conekta</span>
     </a>
 </li>
+<li class="slide">
+    <a href="sandbox_types" class="side-menu__item">
+        <i class="material-icons side-menu__icon">build</i>
+        <span class="side-menu__label">Sandbox</span>
+    </a>
+</li>
 <!-- End::slide -->
