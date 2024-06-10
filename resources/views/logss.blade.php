@@ -41,11 +41,8 @@
                         <div class=" d-flex align-items-center">
                             <h5 class="mb-0 flex-grow-1"></h5>
                             <div>
-                                <button id="truncate_sps_logss" class="btn btn-danger" onclick="logss.fn_truncateSPSlogss()">Truncate SPS</button>
                                 <button id="truncate_logss" class="btn btn-danger" onclick="logss.fn_truncatelogss()">Truncate</button>
                                 <button id="refresh_logss" class="btn btn-success" onclick="logss.fn_actualizarTablalogss()">Actualizar</button>
-                                <button id="add_new_logss" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUlogss">Nuevo</button>
-                                <button id="import_logss" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormlogss">Importar</button>
                             </div>
                         </div>
                         <div class="card-body">
