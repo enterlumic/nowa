@@ -45,6 +45,11 @@ let checkOut = {
             type: 'POST',
             success: function(data) {
                 let cardsHTML = '';
+                
+                if (!data){
+                    return;
+                }
+
                 data.forEach(function(card) {
                     cardsHTML += `
                         <li class="badge-type-selection__list-item ui-list__item">

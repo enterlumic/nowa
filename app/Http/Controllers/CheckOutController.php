@@ -193,7 +193,7 @@ class CheckOutController extends Controller
     |--------------------------------------------------------------------------
     | Obtener clientes conekta desde la bd
     |--------------------------------------------------------------------------
-    | 
+    | fn_customerConnekta JS
     | @return json
     |
     */
