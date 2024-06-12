@@ -1,4 +1,6 @@
 
-fnCreateOrder
+fnCreateOrder         // Crear order -> Checkout 
 
-createCustomer
+createCustomer        // Crear cliente -> checkout
+
+set_cliente_conekta   // Crear cliente -> conekta

@@ -58,7 +58,7 @@ class ClienteConektaController extends Controller
         // $getCustomers = $this->conektaService->getCustomers();
         // dd($getCustomers);
 
-        // $customer = $this->conektaService->deleteCustomer('cus_2w4jue1dNCPz1kyqQ');
+        // $customer = $this->conektaService->deleteCustomer('cus_2w5iUE7u4Jhy1bVVV');
         // dd($customer);
 
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_cliente_conekta' , 'vc_info' => "index - cliente_conekta" ] );
@@ -210,7 +210,8 @@ class ClienteConektaController extends Controller
 
                 $order = $this->conektaService->createOrder($orderData);
 
-                // return response()->json($order);
+                $this->LibCore->setLogs( ['event_type'=> 'set_cliente_conekta' , 'context'=> 'data', 'event_data' => json_encode($orderData) ] );
+                $this->LibCore->setLogs( ['event_type'=> 'set_cliente_conekta' , 'context'=> 'response', 'event_data' => json_encode($order) ] );
 
                 return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
             }
