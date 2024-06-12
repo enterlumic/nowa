@@ -127,11 +127,24 @@ let sandboxTypes = {
             "columns": [
                 { "data": "id", visible: true},
                 { "data": "name", class: "name", visible: true },
-                { "data": "description", class: "description", visible: true },
-                { "data": "is_sandbox", class: "is_sandbox", visible: true },
+                { "data": "description", class: "description", visible: false },
+                { "data": "is_sandbox", class: "is_sandbox", visible: false },
             ],
 
             "columnDefs": [
+                {
+                    "targets": 1,
+                    "render": function (data, type, row, meta) {
+                        return   "<h6>"+row.name+"</h6>" 
+                        + " "+ row.description
+                        + `<div class="form-check form-check-md form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" data-id="${row.id}" role="switch" >
+                                <label class="form-check-label" for="switch-md">SandBox</label>
+                            </div>`
+                        ;
+                    },
+                    "class": "text-center"
+                },
                 {
                     "targets": 4,
                     "render": function (data, type, row, meta) {
@@ -149,6 +162,27 @@ let sandboxTypes = {
                     "class": "text-center"
                 }
             ]
+        });
+
+        $('#get_sandbox_types_datatable tbody').on('click', '.form-check-input', function() {
+            var dataId = $(this).data('id');
+            var isChecked = $(this).is(':checked');
+
+           $.ajax({
+                url: '/sandboxSwitch',  // Ruta de la API para actualizar el estado
+                method: 'POST',
+                data: {
+                    id: dataId,
+                    checked: isChecked,
+                },
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) {
+                    console.log('Estado del checkbox actualizado exitosamente', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al actualizar el estado del checkbox', error);
+                }
+            });
         });
 
         // Evento de clic en las filas de la tabla

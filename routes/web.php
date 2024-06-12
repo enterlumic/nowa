@@ -123,6 +123,7 @@ Route::post('get_sandbox_types_by_list', [SandboxTypesController::class, 'get_sa
 Route::get('get_sandbox_types_diez', [SandboxTypesController::class, 'get_sandbox_types_diez']);
 Route::get('descargar_plantilla_sandbox_types', [SandboxTypesController::class, 'descargar_plantilla_sandbox_types']);
 Route::get('validar_existencia_sandbox_types', [SandboxTypesController::class, 'validar_existencia_sandbox_types']);
+Route::post('/sandboxSwitch', [SandboxTypesController::class, 'sandboxSwitch']);
 
 use App\Http\Controllers\LogssController;
 Route::get('logss', [LogssController::class, 'index'])->middleware('auth') ;

@@ -558,4 +558,20 @@ class SandboxTypesController extends Controller
         // Eliminar el SP
         DB::unprepared('DROP PROCEDURE IF EXISTS `sp_get_sandbox_types` ');
     }
+
+    public function sandboxSwitch(Request $request)
+    {
+        // Obtener los datos de la solicitud    
+        $data=[ 'is_sandbox' => $request->checked];
+
+        // Si ya existe solo se actualiza el registro
+        if (isset($request->id)){
+            DB::table('sandbox_types')->where('id', $request->id)->update($data);
+            return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
+        }else{ // Nuevo registro
+            DB::table('sandbox_types')->insert($data);
+            return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
+        }
+
+    }
 }

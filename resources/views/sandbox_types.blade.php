@@ -41,11 +41,8 @@
                         <div class=" d-flex align-items-center">
                             <h5 class="mb-0 flex-grow-1"></h5>
                             <div>
-                                <button id="truncate_sps_sandbox_types" class="btn btn-danger" onclick="sandboxTypes.fn_truncateSPSsandboxTypes()">Truncate SPS</button>
-                                <button id="truncate_sandbox_types" class="btn btn-danger" onclick="sandboxTypes.fn_truncatesandboxTypes()">Truncate</button>
                                 <button id="refresh_sandbox_types" class="btn btn-success" onclick="sandboxTypes.fn_actualizarTablasandboxTypes()">Actualizar</button>
                                 <button id="add_new_sandbox_types" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUsandboxTypes">Nuevo</button>
-                                <button id="import_sandbox_types" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormsandboxTypes">Importar</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -59,15 +56,6 @@
                                                 <th >Description</th>
                                                 <th >Is_Sandbox</th>
                                                 <th style="width: 9%">Acción</th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th class="name"><input type="text" id="buscar_name" placeholder="Buscar por name"></th>
-                                                <th class="description"><input type="text" id="buscar_description" placeholder="Buscar por description"></th>
-                                                <th class="is_sandbox"><input type="text" id="buscar_is_sandbox" placeholder="Buscar por is_sandbox"></th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                     </table>
