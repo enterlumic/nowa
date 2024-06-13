@@ -307,79 +307,74 @@ let promociones = {
         promociones.fn_delete_promociones();
     },
 
-fn_scroll_promociones: function() {
-    let AppScroll = angular.module('app-scroll-promociones', ['infinite-scroll']);
-    AppScroll.controller('ControllerScroll', function($scope, Reddit) {
-        $scope.reddit = new Reddit();
-    });
+    fn_scroll_promociones: function() {
+        let AppScroll = angular.module('app-scroll-promociones', ['infinite-scroll']);
+        AppScroll.controller('ControllerScroll', function($scope, Reddit) {
+            $scope.reddit = new Reddit();
+        });
 
-    AppScroll.factory('Reddit', function($http) {
-        let Reddit = function() {
-            this.items = [];
-            this.busy = false;
-            this.after = '';  // Inicializa this.after como una cadena vacía
-            this.allItemsLoaded = false;  // Flag to indicate all items are loaded
-        };
-
-        Reddit.prototype.nextPage = function() {
-            if (this.busy || this.allItemsLoaded) {
-                return;
-            }
-
-            this.busy = true;
-
-            let url = "get_promociones_diez?id_promociones=" + (this.after || '') + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + $('meta[name="csrf-token"]').attr('content');
-            console.log("Fetching URL:", url);  // Debugging URL fetch
-            $http.jsonp(url).success(function(data) {
-                let items = data;
-
-                if (Array.isArray(items) && items.length > 0) {
-                    console.log("items fetched:", items);
-                    let newItems = [];
-                    for (let i = 0; i < items.length; i++) {
-                        // Check if the item already exists in the list to avoid duplicates
-                        if (!this.items.some(item => item.id === items[i].id)) {
-                            newItems.push(items[i]);
-                        }
-                    }
-                    this.items = this.items.concat(newItems);
-                    console.log("Updated items list:", this.items);
-                    // Ensure after is set correctly
-                    if (newItems.length > 0) {
-                        this.after = newItems[newItems.length - 1].id;
-                    }
-                    console.log("Updated after value:", this.after);
-                    this.busy = false;
-                } else {
-                    // No more items to load, set the flag
-                    this.allItemsLoaded = true;
-                    this.busy = false;
-                }
-            }.bind(this)).error(function(data, status, headers, config) {
+        AppScroll.factory('Reddit', function($http) {
+            let Reddit = function() {
+                this.items = [];
                 this.busy = false;
-            }.bind(this));
-        };
+                this.after = '';  // Inicializa this.after como una cadena vacía
+                this.allItemsLoaded = false;  // Flag to indicate all items are loaded
+            };
 
-        // Function to validate and display item by id
-        Reddit.prototype.validateAndDisplayById = function(id) {
-            let foundItem = this.items.find(item => item.id === id);
-            if (foundItem) {
-                console.log("Found item:", foundItem);
-                // Display the item information as needed
-                alert("Item found: " + JSON.stringify(foundItem));
-            } else {
-                console.log("Item not found with id:", id);
-            }
-        };
+            Reddit.prototype.nextPage = function() {
+                if (this.busy || this.allItemsLoaded) {
+                    return;
+                }
 
-        return Reddit;
-    });
-},
+                this.busy = true;
 
+                let url = "get_promociones_diez?id_promociones=" + (this.after || '') + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + $('meta[name="csrf-token"]').attr('content');
+                console.log("Fetching URL:", url);  // Debugging URL fetch
+                $http.jsonp(url).success(function(data) {
+                    let items = data;
 
-// let url = "get_promociones_diez?id_promociones=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + $('meta[name="csrf-token"]').attr('content');
+                    if (Array.isArray(items) && items.length > 0) {
+                        console.log("items fetched:", items);
+                        let newItems = [];
+                        for (let i = 0; i < items.length; i++) {
+                            // Check if the item already exists in the list to avoid duplicates
+                            if (!this.items.some(item => item.id === items[i].id)) {
+                                newItems.push(items[i]);
+                            }
+                        }
+                        this.items = this.items.concat(newItems);
+                        console.log("Updated items list:", this.items);
+                        // Ensure after is set correctly
+                        if (newItems.length > 0) {
+                            this.after = newItems[newItems.length - 1].id;
+                        }
+                        console.log("Updated after value:", this.after);
+                        this.busy = false;
+                    } else {
+                        // No more items to load, set the flag
+                        this.allItemsLoaded = true;
+                        this.busy = false;
+                    }
+                }.bind(this)).error(function(data, status, headers, config) {
+                    this.busy = false;
+                }.bind(this));
+            };
 
-// let url = "get_promociones_diez?id_promociones=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + $('meta[name="csrf-token"]').attr('content');
+            // Function to validate and display item by id
+            Reddit.prototype.validateAndDisplayById = function(id) {
+                let foundItem = this.items.find(item => item.id === id);
+                if (foundItem) {
+                    console.log("Found item:", foundItem);
+                    // Display the item information as needed
+                    alert("Item found: " + JSON.stringify(foundItem));
+                } else {
+                    console.log("Item not found with id:", id);
+                }
+            };
+
+            return Reddit;
+        });
+    },
 
     fn_copyToClipboardpromociones: function(text) {
         // Crear un elemento temporal de input
