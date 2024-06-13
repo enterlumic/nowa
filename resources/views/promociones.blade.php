@@ -20,15 +20,15 @@
                     <div class="flex-shrink-0">
                         <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#tab-datatable" role="tab">
-                                    <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
-                                    <span class="d-none d-sm-block">Mosaico</span> 
+                                <a class="nav-link active" data-bs-toggle="tab" href="#tab-scroll" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                    <span class="d-none d-sm-block">Tabla</span> 
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#tab-scroll" role="tab">
-                                    <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-                                    <span class="d-none d-sm-block">Tabla</span> 
+                                <a class="nav-link " data-bs-toggle="tab" href="#tab-datatable" role="tab">
+                                    <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                                    <span class="d-none d-sm-block">Mosaico</span> 
                                 </a>
                             </li>
                         </ul>
@@ -38,6 +38,58 @@
                 <!-- Tab panes -->
                 <div class="tab-content text-muted">
                     <div class="tab-pane active" id="tab-datatable" role="tabpanel">
+
+                        <div class=" d-flex align-items-center">
+                            <h5 class="mb-0 flex-grow-1"></h5>
+                            <div>
+                                <button id="refresh_promociones" class="btn btn-success" onclick="promociones.fn_actualizarTablapromociones()">Actualizar</button>
+                                <button id="add_new_promociones" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUpromociones">Nuevo</button>
+                                <button id="import_promociones" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormpromociones">Importar</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-rep-plugin">
+                                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                    <table id="get_promociones_datatable" class="table table-striped" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%">id</th>
+                                                <th >Fotos</th>
+                                                <th >Titulo</th>
+                                                <th >Descripcion</th>
+                                                <th >Precio</th>
+                                                <th >Marca</th>
+                                                <th >Review</th>
+                                                <th >Cantidad</th>
+                                                <th >Color</th>
+                                                <th >Precio_Anterior</th>
+                                                <th >Target</th>
+                                                <th style="width: 9%">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <thead class="d-none">
+                                            <tr>
+                                                <th></th>
+                                                <th class="fotos"><input type="text" id="buscar_fotos" placeholder="Buscar por fotos"></th>
+                                                <th class="titulo"><input type="text" id="buscar_titulo" placeholder="Buscar por titulo"></th>
+                                                <th class="descripcion"><input type="text" id="buscar_descripcion" placeholder="Buscar por descripcion"></th>
+                                                <th class="precio"><input type="text" id="buscar_precio" placeholder="Buscar por precio"></th>
+                                                <th class="marca"><input type="text" id="buscar_marca" placeholder="Buscar por marca"></th>
+                                                <th class="review"><input type="text" id="buscar_review" placeholder="Buscar por review"></th>
+                                                <th class="cantidad"><input type="text" id="buscar_cantidad" placeholder="Buscar por cantidad"></th>
+                                                <th class="color"><input type="text" id="buscar_color" placeholder="Buscar por color"></th>
+                                                <th class="precio_anterior"><input type="text" id="buscar_precio_anterior" placeholder="Buscar por precio_anterior"></th>
+                                                <th class="target"><input type="text" id="buscar_target" placeholder="Buscar por target"></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-scroll" role="tabpanel">
+
                         <div ng-app='app-scroll-promociones' ng-controller='ControllerScroll'>
                             <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
                                 <div class="col-xl-12 col-lg-12 col-md-12">
@@ -98,57 +150,6 @@
                             </div>
                         </div>
 
-                    </div>
-                    <div class="tab-pane" id="tab-scroll" role="tabpanel">
-
-                        <div class=" d-flex align-items-center">
-                            <h5 class="mb-0 flex-grow-1"></h5>
-                            <div>
-                                <button id="refresh_promociones" class="btn btn-success" onclick="promociones.fn_actualizarTablapromociones()">Actualizar</button>
-                                <button id="add_new_promociones" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUpromociones">Nuevo</button>
-                                <button id="import_promociones" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormpromociones">Importar</button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-rep-plugin">
-                                <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                    <table id="get_promociones_datatable" class="table table-striped" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 5%">id</th>
-                                                <th >Fotos</th>
-                                                <th >Titulo</th>
-                                                <th >Descripcion</th>
-                                                <th >Precio</th>
-                                                <th >Marca</th>
-                                                <th >Review</th>
-                                                <th >Cantidad</th>
-                                                <th >Color</th>
-                                                <th >Precio_Anterior</th>
-                                                <th >Target</th>
-                                                <th style="width: 9%">Acción</th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th class="fotos"><input type="text" id="buscar_fotos" placeholder="Buscar por fotos"></th>
-                                                <th class="titulo"><input type="text" id="buscar_titulo" placeholder="Buscar por titulo"></th>
-                                                <th class="descripcion"><input type="text" id="buscar_descripcion" placeholder="Buscar por descripcion"></th>
-                                                <th class="precio"><input type="text" id="buscar_precio" placeholder="Buscar por precio"></th>
-                                                <th class="marca"><input type="text" id="buscar_marca" placeholder="Buscar por marca"></th>
-                                                <th class="review"><input type="text" id="buscar_review" placeholder="Buscar por review"></th>
-                                                <th class="cantidad"><input type="text" id="buscar_cantidad" placeholder="Buscar por cantidad"></th>
-                                                <th class="color"><input type="text" id="buscar_color" placeholder="Buscar por color"></th>
-                                                <th class="precio_anterior"><input type="text" id="buscar_precio_anterior" placeholder="Buscar por precio_anterior"></th>
-                                                <th class="target"><input type="text" id="buscar_target" placeholder="Buscar por target"></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -427,6 +427,30 @@ class PromocionesController extends Controller
             return json_encode(array("data"=>"" ));
         }
 
+        $id_inicio= !is_numeric($request->id_promociones) ? 0 : $request->id_promociones;
+        $id_fin= !is_numeric($request->id_promociones) ? 10 : $request->id_promociones +10;
+
+        // dd($id_inicio, $id_fin);
+
+        $count = DB::table('promociones')->where('b_status', '>', 0)->count();
+        $count= ($count -1);
+        if ($count == $request->id_promociones ){
+
+             file_put_contents(storage_path('logs/laravel.log'), ">>>>>>>>".$request->id_promociones. "\n\n\n", FILE_APPEND);        
+
+            return false;
+        }
+
+             file_put_contents(storage_path('logs/laravel.log'), $request->id_promociones. "\n\n\n", FILE_APPEND);        
+
+        if (isset($request->id_promociones) && $request->id_promociones > 0){
+            $id_promociones= $request->id_promociones;
+        }else{
+            $id_promociones= 10;
+        }
+
+        DB::enableQueryLog();
+
         $data= DB::table("promociones")
         ->select("id"
             , "fotos"
@@ -438,9 +462,16 @@ class PromocionesController extends Controller
             , "cantidad"
         )
         ->where("promociones.b_status", ">", 0)
-        ->limit(5)
+        ->whereBetween("promociones.id", [$id_inicio, $id_fin]) // Cambia $id_inicio y $id_fin por los valores deseados
+         ->where('b_status', '>', 0)
+        ->limit(10)
         ->orderBy("promociones.id","desc")
         ->get();
+
+
+// file_put_contents(storage_path('logs/laravel.log'), json_encode(DB::getQueryLog()) . "\n\n\n", FILE_APPEND);        
+
+// dd(DB::getQueryLog());
 
         $total= $data->count();
 
@@ -457,6 +488,8 @@ class PromocionesController extends Controller
                                 , 'cantidad'=>$value->cantidad
                 );
             }
+
+             // file_put_contents(storage_path('logs/laravel.log'), json_encode($arr) . "\n\n\n", FILE_APPEND);        
 
             return response()
             ->json($arr)
