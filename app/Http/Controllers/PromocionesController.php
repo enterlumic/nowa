@@ -438,7 +438,7 @@ class PromocionesController extends Controller
             , "cantidad"
         )
         ->where("promociones.b_status", ">", 0)
-        ->limit(50)
+        ->limit(5)
         ->orderBy("promociones.id","desc")
         ->get();
 

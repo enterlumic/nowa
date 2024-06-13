@@ -51,9 +51,21 @@
                                                             <img class="pic-2" ng-src="@{{item.fotos}}" alt="product-image-1">
                                                         </a>
                                                         <ul class="icons list-unstyled">
-                                                            <li><a href="wish-list.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Add to Wishlist" class="primary-gradient me-2"><i class="fa fa-heart"></i></a></li>
-                                                            <li><a href="product-cart.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Add to Cart" class="secondary-gradient me-2"><i class="fa fa-shopping-cart"></i></a></li>
-                                                            <li><a href="product-details.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Quick View" class="info-gradient"><i class="fas fa-eye"></i></a></li>
+                                                            <li>
+                                                                <a href="wish-list.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Add to Wishlist" class="primary-gradient me-2">
+                                                                    <i class="fa fa-heart"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="product-cart.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Add to Cart" class="secondary-gradient me-2">
+                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="product-details.html" data-bs-placement="top" data-bs-toggle="tooltip" title="Quick View" class="info-gradient">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
+                                                            </li>
                                                             <li>
                                                                 <a href="javascript:void(0);" data-id="@{{item.id}}" data-bs-placement="top" data-bs-toggle="tooltip" title="Remove from Cart" class="secondary-gradient me-2 eliminarProducto">
                                                                     <i class="fa fa-trash"></i>
@@ -70,7 +82,7 @@
                                                             <i class="ion ion-md-star-half text-warning"></i>
                                                             <i class="ion ion-md-star-outline text-warning"></i>
                                                         </span>
-                                                        <h4 class="h5 mb-0 mt-1 text-center fw-bold fs-22">@{{item.precio}} 
+                                                        <h4 class="h5 mb-0 mt-1 text-center fw-bold fs-22">@{{item.precio}}
                                                             <span class="text-secondary fw-normal fs-13 ms-1 prev-price text-decoration-line-through">@{{item.precio}}</span>
                                                         </h4>
                                                     </div>
@@ -80,16 +92,18 @@
                                     </div>
                                 </div>
                                 <div ng-show='reddit.busy'>Cargando...</div>
+                                <div id="no-more-items" style="display: none;">
+                                    No hay más elementos para mostrar.
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <div class="tab-pane" id="tab-scroll" role="tabpanel">
 
                         <div class=" d-flex align-items-center">
                             <h5 class="mb-0 flex-grow-1"></h5>
                             <div>
-                                <button id="truncate_sps_promociones" class="btn btn-danger" onclick="promociones.fn_truncateSPSpromociones()">Truncate SPS</button>
-                                <button id="truncate_promociones" class="btn btn-danger" onclick="promociones.fn_truncatepromociones()">Truncate</button>
                                 <button id="refresh_promociones" class="btn btn-success" onclick="promociones.fn_actualizarTablapromociones()">Actualizar</button>
                                 <button id="add_new_promociones" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormIUpromociones">Nuevo</button>
                                 <button id="import_promociones" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormpromociones">Importar</button>
@@ -155,3 +169,24 @@
 </x-app-layout>
 
 <script src="assets/js/core_js/promociones.js?{{ rand() }}"></script>
+
+<style type="text/css">
+
+    .product-image {
+        position: relative;
+        overflow: hidden;
+        width: 100%; /* Ajusta el ancho según necesites */
+        padding-top: 100%; /* Esto asegura que el contenedor mantenga una proporción cuadrada */
+    }
+
+    .product-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Esto asegura que la imagen cubra todo el contenedor */
+    }
+        
+
+</style>

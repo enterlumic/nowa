@@ -307,52 +307,79 @@ let promociones = {
         promociones.fn_delete_promociones();
     },
 
-    fn_scroll_promociones: function() {
+fn_scroll_promociones: function() {
+    let AppScroll = angular.module('app-scroll-promociones', ['infinite-scroll']);
+    AppScroll.controller('ControllerScroll', function($scope, Reddit) {
+        $scope.reddit = new Reddit();
+    });
 
-        let AppScroll = angular.module('app-scroll-promociones', ['infinite-scroll']);
-        AppScroll.controller('ControllerScroll', function($scope, Reddit) {
-            $scope.reddit = new Reddit();
-        });
+    AppScroll.factory('Reddit', function($http) {
+        let Reddit = function() {
+            this.items = [];
+            this.busy = false;
+            this.after = '';  // Inicializa this.after como una cadena vacía
+            this.allItemsLoaded = false;  // Flag to indicate all items are loaded
+        };
 
-        AppScroll.factory('Reddit', function($http) {
-            let Reddit = function() {
-                this.items = [];
-                this.busy = false;
-                this.after = '';
-            };
+        Reddit.prototype.nextPage = function() {
+            if (this.busy || this.allItemsLoaded) {
+                return;
+            }
 
-            Reddit.prototype.nextPage = function() {
+            this.busy = true;
 
-                let id_promociones= $("#id_promociones").val();
-                if (id_promociones == 0) {
-                    return;
-                }
+            let url = "get_promociones_diez?id_promociones=" + (this.after || '') + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + $('meta[name="csrf-token"]').attr('content');
+            console.log("Fetching URL:", url);  // Debugging URL fetch
+            $http.jsonp(url).success(function(data) {
+                let items = data;
 
-                if (this.busy) {
-                    return;
-                }
-                this.busy = true;
-
-                let url = "get_promociones_diez?id_promociones=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN="+$('meta[name="csrf-token"]').attr('content');
-                $http.jsonp(url).success(function(data) {
-                    let items = data;
-                    if (Array.isArray(items)) {
-                        for (let i = 0; i < items.length; i++) {
-                            this.items.push(items[i]);
+                if (Array.isArray(items) && items.length > 0) {
+                    console.log("items fetched:", items);
+                    let newItems = [];
+                    for (let i = 0; i < items.length; i++) {
+                        // Check if the item already exists in the list to avoid duplicates
+                        if (!this.items.some(item => item.id === items[i].id)) {
+                            newItems.push(items[i]);
                         }
-                        this.after = this.items[this.items.length - 1].id_promociones;
-                        this.busy = false;
-                    } else {
-                        $("#id_promociones").val(0);
-                        this.busy = false;
                     }
-                }.bind(this)).error(function(data, status, headers, config) {
+                    this.items = this.items.concat(newItems);
+                    console.log("Updated items list:", this.items);
+                    // Ensure after is set correctly
+                    if (newItems.length > 0) {
+                        this.after = newItems[newItems.length - 1].id;
+                    }
+                    console.log("Updated after value:", this.after);
+                    this.busy = false;
+                } else {
+                    // No more items to load, set the flag
+                    this.allItemsLoaded = true;
+                    this.busy = false;
+                }
+            }.bind(this)).error(function(data, status, headers, config) {
+                this.busy = false;
+            }.bind(this));
+        };
 
-                });
-            };
-            return Reddit;
-        });
-    },
+        // Function to validate and display item by id
+        Reddit.prototype.validateAndDisplayById = function(id) {
+            let foundItem = this.items.find(item => item.id === id);
+            if (foundItem) {
+                console.log("Found item:", foundItem);
+                // Display the item information as needed
+                alert("Item found: " + JSON.stringify(foundItem));
+            } else {
+                console.log("Item not found with id:", id);
+            }
+        };
+
+        return Reddit;
+    });
+},
+
+
+// let url = "get_promociones_diez?id_promociones=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + $('meta[name="csrf-token"]').attr('content');
+
+// let url = "get_promociones_diez?id_promociones=" + this.after + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + $('meta[name="csrf-token"]').attr('content');
 
     fn_copyToClipboardpromociones: function(text) {
         // Crear un elemento temporal de input
