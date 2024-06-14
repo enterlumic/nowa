@@ -47,7 +47,55 @@
                                 <button id="import_promociones" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalImportFormpromociones">Importar</button>
                             </div>
                         </div>
-                        <div class="card-body">
+
+                        <div class="row d-noned">
+                            @foreach($promociones as $promocion)
+                            @php
+                                $imagenes = explode('\n', $promocion->fotos); // Asumiendo que las imágenes están separadas por comas
+                                dd(1, $imagenes);
+                                $primeraImagen = trim($imagenes[0]); // Obtén la primera imagen y elimina espacios en blanco
+                            @endphp
+                            <div class="col-md-4">
+                                <div class="card mb-4">
+                                    <div class="image-container">
+                                    <img src="{{ asset($primeraImagen) }}" class="card-img-top" alt="{{ $promocion->titulo }}">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $promocion->titulo }}</h5>
+                                        <p class="card-text"><strong>Precio:</strong> ${{ is_numeric($promocion->precio) ? number_format($promocion->precio, 2) : '' }}</p>
+                                        @if ($promocion->precio_anterior)
+                                        <p class="card-text text-decoration-line-through">Antes: ${{ number_format($promocion->precio_anterior, 2) }}</p>
+                                        @endif
+                                        @if ($promocion->cantidad > 0)
+                                        <p class="card-text"><strong>Disponible:</strong> {{ $promocion->cantidad }} unidades</p>
+                                        @else
+                                        <p class="card-text text-danger">Agotado</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <style type="text/css">
+                        .image-container {
+                            width: 100%;
+                            aspect-ratio: 5 / 4; /* Puedes ajustar esta relación según tus necesidades */
+                            overflow: hidden;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .card-img-top {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                            
+                        </style>
+
+                        <div class="card-body ">
                             <div class="table-rep-plugin">
                                 <div class="table-responsive mb-0" data-pattern="priority-columns">
                                     <table id="get_promociones_datatable" class="table table-striped" style="width:100%">
@@ -188,6 +236,5 @@
         height: 100%;
         object-fit: cover; /* Esto asegura que la imagen cubra todo el contenedor */
     }
-        
 
 </style>

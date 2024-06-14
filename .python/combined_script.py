@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import ttk, messagebox, filedialog
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -10,11 +9,20 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
+import os
+from PIL import Image
+
+default_download_folder = "/var/www/html/nowa/public/assets/images/promociones"
 
 def run_script():
     url = url_entry.get()
+    download_folder = folder_entry.get()
     if not url:
         messagebox.showerror("Error", "Por favor, ingrese la URL del producto.")
+        return
+
+    if not download_folder:
+        messagebox.showerror("Error", "Por favor, seleccione una carpeta para descargar las imágenes.")
         return
 
     try:
@@ -45,7 +53,22 @@ def run_script():
                 imagenes.append(src)
 
         driver.quit()
-        imagenes_urls = "\n".join(imagenes)
+
+        # Descargar y guardar imágenes redimensionadas
+        imagenes_urls = []
+        target_size = (320, 320)  # Tamaño objetivo
+        for i, img_url in enumerate(imagenes):
+            img_data = requests.get(img_url).content
+            img_name = os.path.join(download_folder, f"imagen_{i+1}.jpg")
+            with open(img_name, 'wb') as handler:
+                handler.write(img_data)
+            # Redimensionar la imagen
+            img = Image.open(img_name)
+            img = img.resize(target_size, Image.ANTIALIAS)
+            img.save(img_name)
+            imagenes_urls.append(img_name)
+
+        imagenes_urls_str = "\n".join(imagenes_urls)
 
         status_label.config(text="Extrayendo información de la página...")
         response = requests.get(url)
@@ -71,7 +94,7 @@ def run_script():
         cursor.execute('''
             INSERT INTO promociones (fotos, titulo, descripcion, precio, target)
             VALUES (%s, %s, %s, %s, %s)
-        ''', (imagenes_urls, titulo, descripcion, precio, url))
+        ''', (imagenes_urls_str, titulo, descripcion, precio, url))
         conn.commit()
         cursor.close()
         conn.close()
@@ -91,6 +114,15 @@ def run_script():
 def clear_url_entry():
     url_entry.delete(0, tk.END)
 
+def select_folder():
+    folder_selected = filedialog.askdirectory()
+    if folder_selected:
+        folder_entry.delete(0, tk.END)
+        folder_entry.insert(0, folder_selected)
+    else:
+        folder_entry.delete(0, tk.END)
+        folder_entry.insert(0, default_download_folder)
+
 # Crear la ventana principal
 root = tk.Tk()
 root.title("Extractor de Información de Productos")
@@ -102,17 +134,27 @@ url_label.grid(row=0, column=0, padx=10, pady=10)
 url_entry = ttk.Entry(root, width=50)
 url_entry.grid(row=0, column=1, padx=10, pady=10)
 
+folder_label = ttk.Label(root, text="Carpeta de Descarga:")
+folder_label.grid(row=1, column=0, padx=10, pady=10)
+
+folder_entry = ttk.Entry(root, width=50)
+folder_entry.grid(row=1, column=1, padx=10, pady=10)
+folder_entry.insert(0, default_download_folder)
+
+select_folder_button = ttk.Button(root, text="Seleccionar", command=select_folder)
+select_folder_button.grid(row=1, column=2, padx=10, pady=10)
+
 run_button = ttk.Button(root, text="Ejecutar", command=run_script)
-run_button.grid(row=1, column=0, pady=10)
+run_button.grid(row=2, column=0, pady=10)
 
 clear_button = ttk.Button(root, text="Limpiar", command=clear_url_entry)
-clear_button.grid(row=1, column=1, pady=10)
+clear_button.grid(row=2, column=1, pady=10)
 
 progress = ttk.Progressbar(root, orient='horizontal', length=400, mode='determinate')
-progress.grid(row=2, column=0, columnspan=2, pady=10)
+progress.grid(row=3, column=0, columnspan=3, pady=10)
 
 status_label = ttk.Label(root, text="Estado: Esperando URL del producto.")
-status_label.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+status_label.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
 
 # Ejecutar la aplicación
 root.mainloop()

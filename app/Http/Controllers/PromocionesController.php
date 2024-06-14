@@ -52,7 +52,11 @@ class PromocionesController extends Controller
     public function index()
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_promociones' , 'vc_info' => "index - promociones" ] );
-        return view('promociones');
+
+        $promociones = Promociones::where('b_status', '>', 0)->orderBy('id', 'desc')->get();
+
+        return view('promociones', compact('promociones'));
+
     }
 
 
