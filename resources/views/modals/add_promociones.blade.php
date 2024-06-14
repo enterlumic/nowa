@@ -16,15 +16,16 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-sm-12">
+                            <label for="titulo" class="form-label">Titulo</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Escribe Titulo">
+                        </div>
+                        <div class="col-sm-12">
                             <label for="fotos" class="form-label">Fotos</label>
                             <textarea class="form-control" id="fotos" name="fotos" placeholder="Escribe Fotos"></textarea>
+                            <input type="file" name="fotosUpload" data-fileuploader="fileuploader" id="fotosUpload">
                         </div>
                         <div class="col-sm-12 d-none tipo-ya-existe">
                             <span class="badge bg-danger text-uppercase">Este registro ya existe</span>
-                        </div>
-                        <div class="col-sm-12">
-                            <label for="titulo" class="form-label">Titulo</label>
-                            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Escribe Titulo">
                         </div>
                         <div class="col-sm-12">
                             <label for="descripcion" class="form-label">Descripcion</label>
@@ -53,8 +54,8 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label for="precio_anterior" class="form-label">Precio_Anterior</label>
-                            <input type="text" class="form-control" id="precio_anterior" name="precio_anterior" placeholder="Escribe precio_anterior">
+                            <label for="precio_anterior" class="form-label">Precio Anterior</label>
+                            <input type="text" class="form-control" id="precio_anterior" name="precio_anterior" placeholder="Escribe precio anterior">
                         </div>
                         <div class="col-md-3">
                             <label for="target" class="form-label">Target</label>

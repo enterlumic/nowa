@@ -158,7 +158,24 @@ class PromocionesController extends Controller
             );
             return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla promociones"));
         }
+        // Guardar Archivos
+        $fotosUpload = $request->file('fotosUpload');
+        $uploadDirectory = 'uploads/promociones/';
 
+        // Crear el directorio si no existe
+        if (!file_exists(public_path($uploadDirectory))) {
+            mkdir(public_path($uploadDirectory), 0755, true);
+        }
+
+        // Guardar las imágenes en el directorio
+        $storedFiles = [];
+        foreach ($fotosUpload as $file) {
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path($uploadDirectory), $fileName);
+            $storedFiles[] = $uploadDirectory . $fileName;
+        }
+
+        // Guardar en la bd
         $data=[ 'fotos' => isset($request->fotos)? $request->fotos:"",
                 'titulo' => isset($request->titulo)? $request->titulo: "",
                 'descripcion' => isset($request->descripcion)? $request->descripcion: "",

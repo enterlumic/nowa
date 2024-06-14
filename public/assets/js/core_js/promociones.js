@@ -3,6 +3,7 @@ let promociones = {
     init: function () {
 
         // Funciones principales
+
         promociones.fn_set_promociones();
         promociones.fn_set_python();
         promociones.fn_set_import_promociones();
@@ -18,6 +19,110 @@ let promociones = {
         promociones.fn_actualizarTablapromociones();
         promociones.fn_Catpromociones();
         promociones.fn_set_validar_existencia_promociones();
+
+        $('input[name="fotosUpload"]').fileuploader({
+            extensions: null,
+            changeInput: ' ',
+            theme: 'thumbnails',
+            enableApi: true,
+            addMore: true,
+            thumbnails: {
+                onItemShow: function(item) {
+                    // Añade el botón de ordenar al HTML del elemento
+                    item.html.find('.fileuploader-action-remove').before('<button type="button" class="fileuploader-action fileuploader-action-sort" title="Sort"><i class="fileuploader-icon-sort"></i></button>');
+                },
+                box: '<div class="fileuploader-items">' +
+                          '<ul class="fileuploader-items-list">' +
+                              '<li class="fileuploader-thumbnails-input"><div class="fileuploader-thumbnails-input-inner"><i>+</i></div></li>' +
+                          '</ul>' +
+                      '</div>',
+                item: '<li class="fileuploader-item">' +
+                           '<div class="fileuploader-item-inner">' +
+                               '<div class="type-holder">${extension}</div>' +
+                               '<div class="actions-holder">' +
+                                   '<button type="button" class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="fileuploader-icon-remove"></i></button>' +
+                               '</div>' +
+                               '<div class="thumbnail-holder">' +
+                                   '${image}' +
+                                   '<span class="fileuploader-action-popup"></span>' +
+                               '</div>' +
+                               '<div class="content-holder"><h5>${name}</h5><span>${size2}</span></div>' +
+                               '<div class="progress-holder">${progressBar}</div>' +
+                           '</div>' +
+                      '</li>',
+                item2: '<li class="fileuploader-item">' +
+                           '<div class="fileuploader-item-inner">' +
+                               '<div class="type-holder">${extension}</div>' +
+                               '<div class="actions-holder">' +
+                                   '<a href="${file}" class="fileuploader-action fileuploader-action-download" title="${captions.download}" download><i class="fileuploader-icon-download"></i></a>' +
+                                   '<button type="button" class="fileuploader-action fileuploader-action-sort" title="${captions.sort}"><i class="fileuploader-icon-sort"></i></button>' +
+                                   '<button type="button" class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="fileuploader-icon-remove"></i></button>' +
+                               '</div>' +
+                               '<div class="thumbnail-holder">' +
+                                   '${image}' +
+                                   '<span class="fileuploader-action-popup"></span>' +
+                               '</div>' +
+                               '<div class="content-holder"><h5>${name}</h5><span>${size2}</span></div>' +
+                               '<div class="progress-holder">${progressBar}</div>' +
+                           '</div>' +
+                       '</li>',
+                startImageRenderer: true,
+                canvasImage: true,
+                _selectors: {
+                    list: '.fileuploader-items-list',
+                    item: '.fileuploader-item',
+                    start: '.fileuploader-action-start',
+                    retry: '.fileuploader-action-retry',
+                    remove: '.fileuploader-action-remove',
+                    sorter: '.fileuploader-action-sort',
+                    popup: '.fileuploader-popup-preview',
+                    popup_open: '.fileuploader-action-popup'
+                },
+                onItemShow: function(item, listEl, parentEl, newInputEl, inputEl) {
+                    var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+                        api = $.fileuploader.getInstance(inputEl.get(0));
+                    
+                    plusInput.insertAfter(item.html)[api.getOptions().limit && api.getChoosedFiles().length >= api.getOptions().limit ? 'hide' : 'show']();
+                    
+                    if(item.format == 'image') {
+                        item.html.find('.fileuploader-item-icon').hide();
+                    }
+                },
+                onItemRemove: function(html, listEl, parentEl, newInputEl, inputEl) {
+                    var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+                        api = $.fileuploader.getInstance(inputEl.get(0));
+                
+                    html.children().animate({'opacity': 0}, 200, function() {
+                        html.remove();
+                        
+                        if (api.getOptions().limit && api.getChoosedFiles().length - 1 < api.getOptions().limit)
+                            plusInput.show();
+                    });
+                }
+            },
+
+            sorter: {
+                selectorExclude: null,
+                placeholder: null,
+                scrollContainer: window,
+                onSort: function(list, listEl, parentEl, newInputEl, inputEl) {
+                    // Callback cuando se realiza la ordenación
+                }
+            },
+            dragDrop: {
+                container: '.fileuploader-thumbnails-input'
+            },
+            afterRender: function(listEl, parentEl, newInputEl, inputEl) {
+                var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+                    api = $.fileuploader.getInstance(inputEl.get(0));
+            
+                plusInput.on('click', function() {
+                    api.open();
+                });
+                
+                api.getOptions().dragDrop.container = plusInput;
+            }
+        });
 
         // Funciones principales que se encuentran en controlador >> promocionesController
         // ===============================================================
@@ -313,7 +418,7 @@ fn_scroll_promociones: function() {
             this.busy = true;
 
             let url = "get_promociones_diez?id_promociones=" + encodeURIComponent(this.after || '') + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + encodeURIComponent($('meta[name="csrf-token"]').attr('content'));
-            console.log("Fetching URL:", url);  // Debugging URL fetch
+
             $http.jsonp(url).success(function(data) {
                 let items = data;
 
@@ -530,7 +635,7 @@ fn_scroll_promociones: function() {
 
     fn_modalShowpromociones: function () {
         $('#modalFormIUpromociones').on('shown.bs.modal', function (e) {
-            $('#fotos', e.target).focus();
+            $('#titulo', e.target).focus();
         });
 
         $('#modalImportFormpromociones').on('shown.bs.modal', function (e) {

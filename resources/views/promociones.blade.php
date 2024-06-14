@@ -236,5 +236,8 @@
         height: 100%;
         object-fit: cover; /* Esto asegura que la imagen cubra todo el contenedor */
     }
-
+            
+    .fileuploader {
+        max-width: 560px;
+    }
 </style>

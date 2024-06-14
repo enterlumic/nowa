@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 import os
 from PIL import Image
+from datetime import datetime
 
 default_download_folder = "/var/www/html/nowa/public/assets/images/promociones"
 
@@ -25,6 +26,7 @@ def run_script():
         messagebox.showerror("Error", "Por favor, seleccione una carpeta para descargar las imágenes.")
         return
 
+    driver = None
     try:
         status_label.config(text="Configurando Selenium...")
         options = webdriver.ChromeOptions()
@@ -52,23 +54,23 @@ def run_script():
             if src:
                 imagenes.append(src)
 
-        driver.quit()
-
         # Descargar y guardar imágenes redimensionadas
-        imagenes_urls = []
-        target_size = (320, 320)  # Tamaño objetivo
+        imagenes_nombres = []
+        target_size = (400, 400)  # Tamaño objetivo
         for i, img_url in enumerate(imagenes):
             img_data = requests.get(img_url).content
-            img_name = os.path.join(download_folder, f"imagen_{i+1}.jpg")
-            with open(img_name, 'wb') as handler:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            img_name = f"imagen_{timestamp}_{i+1}.jpg"
+            img_path = os.path.join(download_folder, img_name)
+            with open(img_path, 'wb') as handler:
                 handler.write(img_data)
             # Redimensionar la imagen
-            img = Image.open(img_name)
-            img = img.resize(target_size, Image.ANTIALIAS)
-            img.save(img_name)
-            imagenes_urls.append(img_name)
+            img = Image.open(img_path)
+            img = img.resize(target_size, Image.LANCZOS)
+            img.save(img_path)
+            imagenes_nombres.append(img_name)
 
-        imagenes_urls_str = "\n".join(imagenes_urls)
+        imagenes_nombres_str = "\n".join(imagenes_nombres)
 
         status_label.config(text="Extrayendo información de la página...")
         response = requests.get(url)
@@ -94,7 +96,7 @@ def run_script():
         cursor.execute('''
             INSERT INTO promociones (fotos, titulo, descripcion, precio, target)
             VALUES (%s, %s, %s, %s, %s)
-        ''', (imagenes_urls_str, titulo, descripcion, precio, url))
+        ''', (imagenes_nombres_str, titulo, descripcion, precio, url))
         conn.commit()
         cursor.close()
         conn.close()
@@ -109,6 +111,8 @@ def run_script():
         messagebox.showerror("Error", f"Ocurrió un error: {e}")
         status_label.config(text="Error durante el proceso")
     finally:
+        if driver:
+            driver.quit()
         progress['value'] = 0
 
 def clear_url_entry():
@@ -126,6 +130,7 @@ def select_folder():
 # Crear la ventana principal
 root = tk.Tk()
 root.title("Extractor de Información de Productos")
+root.minsize(600, 200)
 
 # Crear y colocar los widgets
 url_label = ttk.Label(root, text="URL del Producto:")
@@ -155,6 +160,9 @@ progress.grid(row=3, column=0, columnspan=3, pady=10)
 
 status_label = ttk.Label(root, text="Estado: Esperando URL del producto.")
 status_label.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
+
+close_button = ttk.Button(root, text="Cerrar", command=root.destroy)
+close_button.grid(row=5, column=1, pady=10)
 
 # Ejecutar la aplicación
 root.mainloop()

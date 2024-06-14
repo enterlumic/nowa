@@ -466,7 +466,6 @@
 <script src="assets/js/product-details.js"></script>
 <script src="assets/js/custom.js"></script>
 
-
 <!-- ===========================================================  -->
 <!-- Select -->
 <script src="assets/js/core_js/bootstrap-select.js"></script>
@@ -501,6 +500,7 @@
 <!-- File uploader -->
 <link href="assets/js/fileuploader/dist/font/font-fileuploader.css" rel="stylesheet">
 <link href="assets/js/fileuploader/dist/jquery.fileuploader.min.css" media="all" rel="stylesheet">
+<link href="assets/js/fileuploader/dist/jquery.fileuploader-theme-thumbnails.css" media="all" rel="stylesheet">
 <link href="assets/js/fileuploader/script/gallery/css/jquery.fileuploader-theme-gallery.css" media="all" rel="stylesheet">
 <link href="assets/js/fileuploader/script/gallery/css/jquery.fileuploader-theme-avatar.css" media="all" rel="stylesheet">
 <script src="assets/js/fileuploader/dist/jquery.fileuploader.min.js?{{ rand() }}"></script>
