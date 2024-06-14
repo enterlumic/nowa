@@ -11,7 +11,9 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "phpoffice/phpspreadsheet": "^2.0"
+        "phpoffice/phpspreadsheet": "^2.0",
+        "spatie/image": "^3.6",
+        "spatie/image-optimizer": "^1.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

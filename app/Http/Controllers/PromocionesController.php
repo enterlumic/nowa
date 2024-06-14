@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\promociones;
 use App\Lib\LibCore;
 use Session;
+use Spatie\Image\Image;
 
 class PromocionesController extends Controller
 {
@@ -149,55 +150,111 @@ class PromocionesController extends Controller
     */
     public function set_promociones(Request $request)
     {
-        if(!\Schema::hasTable('promociones')){
+        if (!\Schema::hasTable('promociones')) {
             Notification::route('mail', ['odin0464@gmail.com'])->notify(
                 new FnpromocionesSendMail(
-                    'Notificación no existe tabla promociones'
-                    , __DIR__ ." \ n"
+                    'Notificación no existe tabla promociones',
+                    __DIR__ . "\n"
                 )
             );
-            return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla promociones"));
-        }
-        // Guardar Archivos
-        $fotosUpload = $request->file('fotosUpload');
-        $uploadDirectory = 'uploads/promociones/';
-
-        // Crear el directorio si no existe
-        if (!file_exists(public_path($uploadDirectory))) {
-            mkdir(public_path($uploadDirectory), 0755, true);
-        }
-
-        // Guardar las imágenes en el directorio
-        $storedFiles = [];
-        foreach ($fotosUpload as $file) {
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path($uploadDirectory), $fileName);
-            $storedFiles[] = $uploadDirectory . $fileName;
+            return json_encode(array("b_status" => false, "vc_message" => "No se encontró la tabla promociones"));
         }
 
         // Guardar en la bd
-        $data=[ 'fotos' => isset($request->fotos)? $request->fotos:"",
-                'titulo' => isset($request->titulo)? $request->titulo: "",
-                'descripcion' => isset($request->descripcion)? $request->descripcion: "",
-                'precio' => $request->precio,
-                'marca' => isset($request->marca)? $request->marca: "",
-                'review' => isset($request->review)? $request->review: "",
-                'cantidad' => intval($request->cantidad),
-                'color' => isset($request->color)? $request->color: "",
-                'precio_anterior' => isset($request->precio_anterior)? $request->precio_anterior: "",
-                'target' => isset($request->target)? $request->target: "",
+        $data = [
+            'fotos' => isset($request->fotos) ? $request->fotos : "",
+            'titulo' => isset($request->titulo) ? $request->titulo : "",
+            'descripcion' => isset($request->descripcion) ? $request->descripcion : "",
+            'precio' => $request->precio,
+            'marca' => isset($request->marca) ? $request->marca : "",
+            'review' => isset($request->review) ? $request->review : "",
+            'cantidad' => intval($request->cantidad),
+            'color' => isset($request->color) ? $request->color : "",
+            'precio_anterior' => isset($request->precio_anterior) ? $request->precio_anterior : "",
+            'target' => isset($request->target) ? $request->target : "",
         ];
-        
+
         // Si ya existe solo se actualiza el registro
-        if (isset($request->id)){
+        if (isset($request->id)) {
             DB::table('promociones')->where('id', $request->id)->update($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
-        }else{ // Nuevo registro
-            DB::table('promociones')->insert($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
+            $this->fnFotosUpload($request, $request->id);
+            return json_encode(array("b_status" => true, "vc_message" => "Actualizado correctamente..."));
+        } else { // Nuevo registro
+            $id = DB::table('promociones')->insertGetId($data);
+            $this->fnFotosUpload($request, $id);
+            return json_encode(array("b_status" => true, "vc_message" => "Agregado correctamente..."));
         }
+    
+
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Validar existencia antes de crear un nuevo registro
+    |--------------------------------------------------------------------------
+    | 
+    | @return json
+    |
+    */
+    public function fnFotosUpload(Request $request, $promocionId)
+    {
+        // Verificar si hay archivos en fotosUpload
+        if ($request->hasFile('fotosUpload')) {
+            $fotosUpload = $request->file('fotosUpload');
+            $uploadDirectory = 'uploads/promociones/';
+
+            // Crear el directorio si no existe
+            if (!file_exists(public_path($uploadDirectory))) {
+                mkdir(public_path($uploadDirectory), 0755, true);
+            }
+
+            // Guardar las imágenes en el directorio
+            $storedFiles = [];
+            foreach ($fotosUpload as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                // Redimensionar y optimizar la imagen
+                $imagePath = public_path($uploadDirectory . $fileName);
+                Image::load($file->getPathname())
+                    ->width(600)
+                    ->optimize()
+                    ->save($imagePath);
+
+                $storedFiles[] = $uploadDirectory . $fileName;
+
+                // Crear diferentes tamaños
+                $sizes = [
+                    'small' => 100,
+                    'medium' => 300,
+                    'large' => 600
+                ];
+
+                foreach ($sizes as $sizeName => $size) {
+                    $resizedFileName = $sizeName . '_' . $fileName;
+                    $resizedImagePath = public_path($uploadDirectory . $resizedFileName);
+
+                    Image::load($file->getPathname())
+                        ->width($size)
+                        ->optimize()
+                        ->save($resizedImagePath);
+
+                    $data = [
+                        [
+                            'promocion_id' => $promocionId,
+                            'size' => $sizeName,
+                            'foto_url' => $resizedFileName,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]
+                    ];
+
+                    DB::table('promocion_fotos')->insert($data);
+
+                    $storedFiles[] = $uploadDirectory . $resizedFileName;
+                }
+            }
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | Validar existencia antes de crear un nuevo registro

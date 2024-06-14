@@ -48,11 +48,10 @@
                             </div>
                         </div>
 
-                        <div class="row d-noned">
+{{--                         <div class="row d-noned">
                             @foreach($promociones as $promocion)
                             @php
                                 $imagenes = explode('\n', $promocion->fotos); // Asumiendo que las imágenes están separadas por comas
-                                dd(1, $imagenes);
                                 $primeraImagen = trim($imagenes[0]); // Obtén la primera imagen y elimina espacios en blanco
                             @endphp
                             <div class="col-md-4">
@@ -76,7 +75,7 @@
                             </div>
                             @endforeach
                         </div>
-
+ --}}
                         <style type="text/css">
                         .image-container {
                             width: 100%;

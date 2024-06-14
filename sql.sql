@@ -2,4 +2,4 @@
 use nowa;
 
 
-drop table promociones;
+drop table promocion_fotos;
