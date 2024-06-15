@@ -465,10 +465,9 @@ class PromocionesController extends Controller
         $promocionId = $request->id;
 
 
-        $uploadDir = '/var/www/html/nowa/public/uploads/promociones/';
+        $uploadDir = public_path('uploads/promociones/');
         $relativeUploadDir = 'uploads/promociones/'; // Ruta relativa para usar en la URL
-
-        // Realizar la consulta a la base de datos
+        // Realizar la cosulta a la base de datos
         $fotos = DB::table('promocion_fotos')
             ->select('id', 'size', 'foto_url')
             ->where('size', 'small')
@@ -480,19 +479,23 @@ class PromocionesController extends Controller
 
         foreach ($fotos as $foto) {
             $file = $foto->foto_url;
+            $filePath = $uploadDir . $foto->foto_url;
+
             $preloadedFiles[] = array(
                 "name" => $file,
                 "type" => File::mimeType($uploadDir . $file),
                 "size" => filesize($uploadDir . $file),
-                "file" => $uploadDir . $file,
-                "local" => '../' . $uploadDir . $file, // Mismo que en form_upload.php
-                // "data" => array(
-                //     "url" => '/fileuploader/examples/preloaded-files/' . $relativeUploadDir . $file, // (opcional)
-                //     "thumbnail" => file_exists($uploadDir . $file) ? $uploadDir . 'thumbs/' . $file : null, // (opcional)
-                //     "readerForce" => true // (opcional) para prevenir caché del navegador
-                // ),
+                "file" => url($relativeUploadDir . $foto->foto_url), // Usar url() para obtener la URL completa
+                "local" => url($relativeUploadDir . $foto->foto_url), // Mismo que en form_upload.php
+                "data" => array(
+                    "url" =>  url($relativeUploadDir . $foto->foto_url), // (opcional)
+                    "thumbnail" => file_exists($uploadDir . $file) ? url($relativeUploadDir . $foto->foto_url) : null, // (opcional)
+                    "readerForce" => true // (opcional) para prevenir caché del navegador
+                ),
             );
         }
+
+        // dd($preloadedFiles);
 
         if ( $data->count() > 0 ){
             return json_encode(array("b_status"=> true, "data" => $data, "preloadedFiles" => json_encode($preloadedFiles)));
