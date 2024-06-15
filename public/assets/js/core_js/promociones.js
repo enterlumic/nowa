@@ -1009,6 +1009,10 @@ fn_scroll_promociones: function() {
 
                         if (json["b_status"]) {
                             let p = json['data'];
+
+                            $("#fotosUpload").attr('data-fileuploader-files', json['preloadedFiles'] );
+                            console.log("json['preloadedFiles']", json['preloadedFiles']);
+
                             for (let keyIni in p) {
                                 for (let key in p[0]) {
                                     if (p[0].hasOwnProperty(key)) {

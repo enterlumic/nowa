@@ -22,7 +22,7 @@
                         <div class="col-sm-12">
                             <label for="fotos" class="form-label">Fotos</label>
                             <textarea class="form-control" id="fotos" name="fotos" placeholder="Escribe Fotos"></textarea>
-                            <input type="file" name="fotosUpload" data-fileuploader="fileuploader" id="fotosUpload">
+                            <input type="file" name="fotosUpload" data-fileuploader-files='' data-fileuploader="fileuploader" id="fotosUpload">
                         </div>
                         <div class="col-sm-12 d-none tipo-ya-existe">
                             <span class="badge bg-danger text-uppercase">Este registro ya existe</span>

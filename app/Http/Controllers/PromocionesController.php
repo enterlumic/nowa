@@ -444,6 +444,7 @@ class PromocionesController extends Controller
     |--------------------------------------------------------------------------
     | 
     | @return json
+    | fn_update_promociones
     |
     */
     public function get_promociones_by_id(Request $request)
@@ -460,8 +461,41 @@ class PromocionesController extends Controller
                                     , 'target'
         )->where('id', $request->id)->get();
 
+
+        $promocionId = $request->id;
+
+
+        $uploadDir = '/var/www/html/nowa/public/uploads/promociones/';
+        $relativeUploadDir = 'uploads/promociones/'; // Ruta relativa para usar en la URL
+
+        // Realizar la consulta a la base de datos
+        $fotos = DB::table('promocion_fotos')
+            ->select('id', 'size', 'foto_url')
+            ->where('size', 'small')
+            ->where('promocion_id', $promocionId)
+            ->get();
+
+        // Construir el array de archivos pre-cargados
+        $preloadedFiles = [];
+
+        foreach ($fotos as $foto) {
+            $file = $foto->foto_url;
+            $preloadedFiles[] = array(
+                "name" => $file,
+                "type" => File::mimeType($uploadDir . $file),
+                "size" => filesize($uploadDir . $file),
+                "file" => $uploadDir . $file,
+                "local" => '../' . $uploadDir . $file, // Mismo que en form_upload.php
+                // "data" => array(
+                //     "url" => '/fileuploader/examples/preloaded-files/' . $relativeUploadDir . $file, // (opcional)
+                //     "thumbnail" => file_exists($uploadDir . $file) ? $uploadDir . 'thumbs/' . $file : null, // (opcional)
+                //     "readerForce" => true // (opcional) para prevenir caché del navegador
+                // ),
+            );
+        }
+
         if ( $data->count() > 0 ){
-            return json_encode(array("b_status"=> true, "data" => $data));
+            return json_encode(array("b_status"=> true, "data" => $data, "preloadedFiles" => json_encode($preloadedFiles)));
         }else{
             return json_encode(array("b_status"=> false, "data" => 'sin resultados'));
         }
