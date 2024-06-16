@@ -39,7 +39,7 @@
                 <div class="tab-content text-muted">
                     <div class="tab-pane active" id="tab-datatable" role="tabpanel">
 
-                        <div class=" d-flex align-items-center">
+                        <div class=" d-flex align-items-center d-none">
                             <h5 class="mb-0 flex-grow-1"></h5>
                             <div>
                                 <button id="refresh_promociones" class="btn btn-success" onclick="promociones.fn_actualizarTablapromociones()">Actualizar</button>

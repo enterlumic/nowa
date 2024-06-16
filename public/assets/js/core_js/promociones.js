@@ -474,20 +474,15 @@ fn_scroll_promociones: function() {
 
     initializeFileUploader: function (preloadedFiles) {
 
-            // preloadedFiles si me trae el resultado
-            // (2) [{…}, {…}]
-            // 0
-            // : 
-            // {name: 'small_1718468478_10958608_1604955529728399_2130393354_n.jpg', type: 'image/jpeg', size: 3896, file: '/var/www/html/nowa/public/uploads/promociones/smal…468478_10958608_1604955529728399_2130393354_n.jpg', local: '/var/www/html/nowa/public/uploads/promociones/smal…468478_10958608_1604955529728399_2130393354_n.jpg', …}
-            // 1
-            // : 
-            // {name: 'small_1718468478_10731612_457504157720843_305745936_n.jpg', type: 'image/jpeg', size: 4262, file: '/var/www/html/nowa/public/uploads/promociones/smal…18468478_10731612_457504157720843_305745936_n.jpg', local: '/var/www/html/nowa/public/uploads/promociones/smal…18468478_10731612_457504157720843_305745936_n.jpg', …}
-            // length
-            // : 
-            // 2
-            // [[Prototype]]
-            // : 
-            // Array(0)
+        var preloadedFilesParsed = [];
+        
+        try {
+            if (preloadedFiles) {
+                preloadedFilesParsed = JSON.parse(preloadedFiles);
+            }
+        } catch (e) {
+            console.error("Invalid JSON: ", preloadedFiles);
+        }
 
         $('input[name="fotosUpload"]').fileuploader({
             extensions: null,
@@ -495,7 +490,7 @@ fn_scroll_promociones: function() {
             theme: 'thumbnails',
             enableApi: true,
             addMore: true,
-            files: preloadedFiles ? JSON.parse(preloadedFiles) : [],
+            files: preloadedFilesParsed,
             thumbnails: {
                 onItemShow: function(item) {
                     // Añade el botón de ordenar al HTML del elemento
@@ -506,7 +501,7 @@ fn_scroll_promociones: function() {
                               '<li class="fileuploader-thumbnails-input"><div class="fileuploader-thumbnails-input-inner"><i>+</i></div></li>' +
                           '</ul>' +
                       '</div>',
-                item: '<li class="fileuploader-item">' +
+                item: '<li class="fileuploader-item qwe1">' +
                            '<div class="fileuploader-item-inner">' +
                                '<div class="type-holder">${extension}</div>' +
                                '<div class="actions-holder">' +
@@ -520,7 +515,7 @@ fn_scroll_promociones: function() {
                                '<div class="progress-holder">${progressBar}</div>' +
                            '</div>' +
                       '</li>',
-                item2: '<li class="fileuploader-item">' +
+                item2: '<li class="fileuploader-item qwe2">' +
                            '<div class="fileuploader-item-inner">' +
                                '<div class="type-holder">${extension}</div>' +
                                '<div class="actions-holder">' +
@@ -551,9 +546,7 @@ fn_scroll_promociones: function() {
                 onItemShow: function(item, listEl, parentEl, newInputEl, inputEl) {
                     var plusInput = listEl.find('.fileuploader-thumbnails-input'),
                         api = $.fileuploader.getInstance(inputEl.get(0));
-                    
-                    plusInput.insertAfter(item.html)[api.getOptions().limit && api.getChoosedFiles().length >= api.getOptions().limit ? 'hide' : 'show']();
-                    
+
                     if(item.format == 'image') {
                         item.html.find('.fileuploader-item-icon').hide();
                     }
@@ -561,10 +554,10 @@ fn_scroll_promociones: function() {
                 onItemRemove: function(html, listEl, parentEl, newInputEl, inputEl) {
                     var plusInput = listEl.find('.fileuploader-thumbnails-input'),
                         api = $.fileuploader.getInstance(inputEl.get(0));
-                
+
                     html.children().animate({'opacity': 0}, 200, function() {
                         html.remove();
-                        
+
                         if (api.getOptions().limit && api.getChoosedFiles().length - 1 < api.getOptions().limit)
                             plusInput.show();
                     });
@@ -585,11 +578,11 @@ fn_scroll_promociones: function() {
             afterRender: function(listEl, parentEl, newInputEl, inputEl) {
                 var plusInput = listEl.find('.fileuploader-thumbnails-input'),
                     api = $.fileuploader.getInstance(inputEl.get(0));
-            
+
                 plusInput.on('click', function() {
                     api.open();
                 });
-                
+
                 api.getOptions().dragDrop.container = plusInput;
             }
         });
@@ -656,6 +649,7 @@ fn_scroll_promociones: function() {
     fn_modalShowpromociones: function () {
         $('#modalFormIUpromociones').on('shown.bs.modal', function (e) {
             $('#titulo', e.target).focus();
+            // promociones.initializeFileUploader('');
         });
 
         $('#modalImportFormpromociones').on('shown.bs.modal', function (e) {
@@ -1033,9 +1027,6 @@ fn_scroll_promociones: function() {
                             let preloadedFiles = json['preloadedFiles'];
                             promociones.initializeFileUploader(preloadedFiles);
 
-                            // console.log(preloadedFiles);
-
-
                             for (let keyIni in p) {
                                 for (let key in p[0]) {
                                     if (p[0].hasOwnProperty(key)) {
@@ -1085,6 +1076,7 @@ fn_scroll_promociones: function() {
                         $loading.waitMe('hide');
                     }
             });
+
         });
     },
 

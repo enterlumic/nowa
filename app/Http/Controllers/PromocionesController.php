@@ -470,7 +470,7 @@ class PromocionesController extends Controller
         // Realizar la cosulta a la base de datos
         $fotos = DB::table('promocion_fotos')
             ->select('id', 'size', 'foto_url')
-            ->where('size', 'small')
+            ->where('size', 'medium')
             ->where('promocion_id', $promocionId)
             ->get();
 
@@ -496,6 +496,7 @@ class PromocionesController extends Controller
         }
 
         // dd($preloadedFiles);
+        // dd(json_encode($preloadedFiles));
 
         if ( $data->count() > 0 ){
             return json_encode(array("b_status"=> true, "data" => $data, "preloadedFiles" => json_encode($preloadedFiles)));
