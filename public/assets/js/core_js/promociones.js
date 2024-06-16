@@ -6,10 +6,8 @@ let promociones = {
 
         promociones.fn_set_promociones();
         promociones.fn_set_python();
-        promociones.fn_set_import_promociones();
         promociones.fn_datatable_promociones(rango_fecha='');
         promociones.fn_scroll_promociones();
-        promociones.fn_importar_excel_promociones();
         promociones.deleteProduct();
 
         // Funciones para eventos
@@ -17,50 +15,11 @@ let promociones = {
         promociones.fn_modalHidepromociones();
         promociones.fn_AgregarNuevopromociones();
         promociones.fn_actualizarTablapromociones();
-        promociones.fn_Catpromociones();
         promociones.fn_set_validar_existencia_promociones();
-
-        // Funciones principales que se encuentran en controlador >> promocionesController
-        // ===============================================================
-
-        // Store procedure
-        // sp_get_promociones
-        // sp_set_promociones
-        // sp_get_by_id_promociones
-
-        // Llenar la tabla
-        // get_promociones_datatable 
-
-        // Agregar o actualizar un registro
-        // set_promociones 
-
-        // Importar registros
-        // set_import_promociones
-
-        // Truncate table útil para hacer pruebas
-        // truncate_promociones
-        // truncate_sps_promociones
-
-        // Trar una lista por si se ocupa como un catalogo util para llenar un combo
-        // get_cat_promociones
-
-        // Útil para validar si ya existe un registro en la bd 
-        // validar_existencia_promociones
-
-        // Obtener un registro por id se usa cuando se intenta actualizar un registro
-        // get_promociones_by_id
-
-        // Se utiliza para eliminar un registro en la tabla
-        // delete_promociones
-
-        // FIN Funciones principales que se encuentran en los controladores
-
-        // ===============================================================
     },
 
     fn_datatable_promociones: function (rango_fecha) {
 
-        // let columna = 
         let table = $('#get_promociones_datatable').DataTable({
             "stateSave": false,
             "serverSide": true,
@@ -287,19 +246,19 @@ let promociones = {
         promociones.fn_delete_promociones();
     },
 
-fn_scroll_promociones: function() {
-    let AppScroll = angular.module('app-scroll-promociones', ['infinite-scroll']);
-    AppScroll.controller('ControllerScroll', function($scope, Reddit) {
-        $scope.reddit = new Reddit();
-        $scope.noMoreItems = false;  // Flag to indicate no more items
-    });
+    fn_scroll_promociones: function() {
+        let AppScroll = angular.module('app-scroll-promociones', ['infinite-scroll']);
+        AppScroll.controller('ControllerScroll', function($scope, Reddit) {
+            $scope.reddit = new Reddit();
+            $scope.noMoreItems = false;  // Flag to indicate no more items
+        });
 
-    AppScroll.factory('Reddit', function($http) {
-        let Reddit = function() {
-            this.items = [];
-            this.busy = false;
-            this.after = '';  // Inicializa this.after como una cadena vacía
-            this.allItemsLoaded = false;  // Flag to indicate all items are loaded
+        AppScroll.factory('Reddit', function($http) {
+            let Reddit = function() {
+                this.items = [];
+                this.busy = false;
+                this.after = '';  // Inicializa this.after como una cadena vacía
+                this.allItemsLoaded = false;  // Flag to indicate all items are loaded
         };
 
         Reddit.prototype.nextPage = function() {
@@ -361,8 +320,7 @@ fn_scroll_promociones: function() {
 
         return Reddit;
     });
-},
-
+    },
 
     fn_copyToClipboardpromociones: function(text) {
         // Crear un elemento temporal de input
@@ -472,184 +430,99 @@ fn_scroll_promociones: function() {
         });
     },
 
-    initializeFileUploader: function (preloadedFiles) {
+    fnShowbyIDPromocion: function(){
+        let element_by_id= 'form_promociones';
+        let message=  'Cargando...' ;
+        let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
+        let id= 0;
 
-        var preloadedFilesParsed = [];
-        
-        try {
-            if (preloadedFiles) {
-                preloadedFilesParsed = JSON.parse(preloadedFiles);
-            }
-        } catch (e) {
-            console.error("Invalid JSON: ", preloadedFiles);
+        if ( $('#form_promociones #id').length ){
+            id= $('#form_promociones #id').val();
         }
 
-        $('input[name="fotosUpload"]').fileuploader({
-            extensions: null,
-            changeInput: ' ',
-            theme: 'thumbnails',
-            enableApi: true,
-            addMore: true,
-            files: preloadedFilesParsed,
-            thumbnails: {
-                onItemShow: function(item) {
-                    // Añade el botón de ordenar al HTML del elemento
-                    item.html.find('.fileuploader-action-remove').before('<button type="button" class="fileuploader-action fileuploader-action-sort" title="Sort"><i class="fileuploader-icon-sort"></i></button>');
-                },
-                box: '<div class="fileuploader-items">' +
-                          '<ul class="fileuploader-items-list">' +
-                              '<li class="fileuploader-thumbnails-input"><div class="fileuploader-thumbnails-input-inner"><i>+</i></div></li>' +
-                          '</ul>' +
-                      '</div>',
-                item: '<li class="fileuploader-item qwe1">' +
-                           '<div class="fileuploader-item-inner">' +
-                               '<div class="type-holder">${extension}</div>' +
-                               '<div class="actions-holder">' +
-                                   '<button type="button" class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="fileuploader-icon-remove"></i></button>' +
-                               '</div>' +
-                               '<div class="thumbnail-holder">' +
-                                   '${image}' +
-                                   '<span class="fileuploader-action-popup"></span>' +
-                               '</div>' +
-                               '<div class="content-holder"><h5>${name}</h5><span>${size2}</span></div>' +
-                               '<div class="progress-holder">${progressBar}</div>' +
-                           '</div>' +
-                      '</li>',
-                item2: '<li class="fileuploader-item qwe2">' +
-                           '<div class="fileuploader-item-inner">' +
-                               '<div class="type-holder">${extension}</div>' +
-                               '<div class="actions-holder">' +
-                                   '<a href="${file}" class="fileuploader-action fileuploader-action-download" title="${captions.download}" download><i class="fileuploader-icon-download"></i></a>' +
-                                   '<button type="button" class="fileuploader-action fileuploader-action-sort" title="${captions.sort}"><i class="fileuploader-icon-sort"></i></button>' +
-                                   '<button type="button" class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="fileuploader-icon-remove"></i></button>' +
-                               '</div>' +
-                               '<div class="thumbnail-holder">' +
-                                   '${image}' +
-                                   '<span class="fileuploader-action-popup"></span>' +
-                               '</div>' +
-                               '<div class="content-holder"><h5>${name}</h5><span>${size2}</span></div>' +
-                               '<div class="progress-holder">${progressBar}</div>' +
-                           '</div>' +
-                       '</li>',
-                startImageRenderer: true,
-                canvasImage: true,
-                _selectors: {
-                    list: '.fileuploader-items-list',
-                    item: '.fileuploader-item',
-                    start: '.fileuploader-action-start',
-                    retry: '.fileuploader-action-retry',
-                    remove: '.fileuploader-action-remove',
-                    sorter: '.fileuploader-action-sort',
-                    popup: '.fileuploader-popup-preview',
-                    popup_open: '.fileuploader-action-popup'
-                },
-                onItemShow: function(item, listEl, parentEl, newInputEl, inputEl) {
-                    var plusInput = listEl.find('.fileuploader-thumbnails-input'),
-                        api = $.fileuploader.getInstance(inputEl.get(0));
+        $.ajax({
+            url:"get_promociones_by_id",
+            data: {id: id},
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            success: function(response)
+            {
+                $loading.waitMe('hide');
 
-                    if(item.format == 'image') {
-                        item.html.find('.fileuploader-item-icon').hide();
-                    }
-                },
-                onItemRemove: function(html, listEl, parentEl, newInputEl, inputEl) {
-                    var plusInput = listEl.find('.fileuploader-thumbnails-input'),
-                        api = $.fileuploader.getInstance(inputEl.get(0));
-
-                    html.children().animate({'opacity': 0}, 200, function() {
-                        html.remove();
-
-                        if (api.getOptions().limit && api.getChoosedFiles().length - 1 < api.getOptions().limit)
-                            plusInput.show();
-                    });
+                let json='';
+                try {
+                    json = JSON.parse(response);
+                } catch (e) {
+                    console.log(response);
                 }
-            },
 
-            sorter: {
-                selectorExclude: null,
-                placeholder: null,
-                scrollContainer: window,
-                onSort: function(list, listEl, parentEl, newInputEl, inputEl) {
-                    // Callback cuando se realiza la ordenación
-                }
-            },
-            dragDrop: {
-                container: '.fileuploader-thumbnails-input'
-            },
-            afterRender: function(listEl, parentEl, newInputEl, inputEl) {
-                var plusInput = listEl.find('.fileuploader-thumbnails-input'),
-                    api = $.fileuploader.getInstance(inputEl.get(0));
+                if (json["b_status"]) {
+                    let p = json['data'];
+                    let preloadedFiles = json['preloadedFiles'];
 
-                plusInput.on('click', function() {
-                    api.open();
-                });
+                    // Inicializar de nuevo el fileuploader con archivos pre-cargados
+                    promociones.initializeFileUploader(preloadedFiles);
 
-                api.getOptions().dragDrop.container = plusInput;
-            }
-        });
+                    for (let keyIni in p) {
+                        for (let key in p[0]) {
+                            if (p[0].hasOwnProperty(key)) {
+                                if (p[0][key] !== "") {
+                                    $("#" + key).addClass("fill");
 
-    },
+                                    if ($("#" + key).prop('type') == "text" ||
+                                        $("#" + key).prop('type') == "textarea" ||
+                                        $("#" + key).prop('type') == "email" ||
+                                        $("#" + key).prop('type') == "number" ||
+                                        $("#" + key).prop('type') == "url" ||
+                                        $("#" + key).prop('type') == "tel") {
+                                        $("#" + key).val(p[0][key]);
+                                    }
 
-    fn_set_import_promociones: function () {
-        $("#form_import_promociones").validate({
-            submitHandler: function (form) {
-                let get_form = document.getElementById("form_import_promociones");
-                let postData = new FormData(get_form);
+                                    if ($("#" + key).prop('type') == "file") {
+                                        if (p[0][key] !== "") {
+                                            $("#" + key).attr("required", false);
+                                        }
 
-                let element_by_id= 'form_import_promociones';
-                let message=  'Cargando...' ;
-                let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
+                                        if (p[0][key] !== null) {
+                                            let filename = p[0][key].replace(/^.*[\\\/]/, '')
+                                                $("#" + key).after("<a href=\"" + p[0][key] + "\" target=\"_blank\" class=\"external_link  abrir-" + key + " \"> " + filename.substr(0, 15) + " </a>");
+                                        }
+                                    }
 
-                $.ajax({
-                    url: "set_import_promociones",
-                    data: postData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type: 'POST',
-                    success: function (response) {
-                        
-                        $loading.waitMe('hide');
-
-                        let json ='';
-                        try {
-                            json = JSON.parse(response);
-                        } catch (e) {
-                            alert(response);
-                            return;
+                                    if ($("#" + key).prop('nodeName') == "SELECT") {
+                                        $('#' + key + ' option[value="' + p[0][key] + '"]').prop('selected', true);
+                                    }
+                                }
+                            }
                         }
-
-                        if (json["b_status"]) {
-                            $('#get_promociones_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_import_promociones").reset();
-                            $('#modalImportFormpromociones').modal('hide');
-                        } else {
-                            alert(json);
-                        }
-                    },
-                    error: function (response) {
-                        $loading.waitMe('hide');
-                        alert(response);
                     }
-                });
-            }
-            , rules: {
-              fotos: {
-                required: true
-              }
-            }
-            , messages: {
-                fotos: {
-                    minlength: "Mensaje personalizado fotos"
+                } else {
+                    alert("Revisar console para mas detalle");
+                    console.log(json);
                 }
-              }
+            },
+            error: function(response)
+            {
+                $loading.waitMe('hide');
+            }
         });
     },
 
     fn_modalShowpromociones: function () {
         $('#modalFormIUpromociones').on('shown.bs.modal', function (e) {
             $('#titulo', e.target).focus();
+
             // promociones.initializeFileUploader('');
+
+            if (!$('#form_promociones #id').length) {
+                promociones.initializeFileUploader('');
+                console.log("no existe");
+            } else {
+                console.log("si existe");
+                promociones.fnShowbyIDPromocion();
+            }
+
         });
 
         $('#modalImportFormpromociones').on('shown.bs.modal', function (e) {
@@ -711,21 +584,6 @@ fn_scroll_promociones: function() {
         });
     },
 
-    fn_truncateSPSpromociones: function () {
-        $.ajax({
-            url:"truncate_sps_promociones",
-            cache: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            success: function(response)
-            {
-                if ($("#get_promociones_datatable").length){
-                    $('#get_promociones_datatable').DataTable().ajax.reload();
-                }
-            }
-        });
-    },
-
     fn_truncatepromociones: function () {
         $.ajax({
             url:"truncate_promociones",
@@ -737,203 +595,6 @@ fn_scroll_promociones: function() {
                 if ($("#get_promociones_datatable").length){
                     $('#get_promociones_datatable').DataTable().ajax.reload();
                 }
-            }
-        });
-    },
-
-    fn_importar_excel_promociones: function() {
-
-        // si no existe el elemento terminar...
-        if (! $('#FormImportarpromociones').length)
-            return;
-
-        let $form = $('#FormImportarpromociones');
-
-        $form.find('input:file').fileuploader({
-            addMore: true,
-            changeInput: '<div class="fileuploader-input">' +
-                '<div class="fileuploader-input-inner">' +
-                '<div>${captions.feedback} ${captions.or} <span>${captions.button}</span></div>' +
-                '</div>' +
-                '</div>',
-            theme: 'dropin',
-            upload: true,
-            enableApi: true,
-            onSelect: function(item) {
-                item.upload = null;
-                $(".btn-importar").removeClass('btn-disabled disabled');
-                $(".btn-importar").removeAttr('disabled');            
-            },
-            onRemove: function(item) {
-                if (item.data.uploaded)
-                    $.post('files/assets/js/lumic/fileuploader-2.2/examples/drag-drop-form/php/ajax_remove_file_promociones.php', {
-                        file: item.name
-                    }, function(data) {
-                        // if (data)
-                            // $(".text-success").html("");
-                    });
-            },
-            captions: $.extend(true, {}, $.fn.fileuploader.languages['en'], {
-                feedback: 'Arrastra y suelta aquí',
-                or: 'ó <br>',
-                button: 'Buscar archivo'
-            })
-          });
-
-        // form submit
-        $form.on('submit', function(e) {
-            e.preventDefault();
-            let formData = new FormData(),
-                _fileuploaderFields = [];
-
-            // append inputs to FormData
-            $.each($form.serializeArray(), function(key, field) {
-                formData.append(field.name, field.value);
-            });
-            // append file inputs to FormData
-            $.each($form.find("input:file"), function(index, input) {
-                let $input = $(input),
-                    name = $input.attr('name'),
-                    files = $input.prop('files'),
-                    api = $.fileuploader.getInstance($input);
-
-                // add fileuploader files to the formdata
-                if (api) {
-                    if ($.inArray(name, _fileuploaderFields) > -1)
-                        return;
-                    files = api.getChoosedFiles();
-                    _fileuploaderFields.push($input);
-                }
-
-                for (let i = 0; i < files.length; i++) {
-                    formData.append(name, (files[i].file ? files[i].file : files[i]), (files[i].name ? files[i].name : false));
-                }
-            });
-
-            let element_by_id= 'FormImportarpromociones';
-            let message=  'Importando archivo...' ;
-            let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
-
-            $.ajax({
-                url: $form.attr('action') || '#',
-                data: formData,
-                type: $form.attr('method') || 'POST',
-                enctype: $form.attr('enctype') || 'multipart/form-data',
-                cache: false,
-                contentType: false,
-                processData: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                beforeSend: function() {
-                    $form.find('.form-status').html('<div class="progressbar-holder"><div class="progressbar"></div></div>');
-                    $form.find('input[type="submit"]').attr('disabled', 'disabled');
-                },
-                xhr: function() {
-                    let xhr = $.ajaxSettings.xhr();
-
-                    if (xhr.upload) {
-                        xhr.upload.addEventListener("progress", this.progress, false);
-                    }
-
-                    return xhr;
-                },
-                success: function(result, textStatus, jqXHR) {
-                    // update input values
-                    try {
-                        let data = JSON.parse(result);
-
-                        for (let key in data) {
-                            let field = data[key],
-                                api;
-
-                            // if fileuploader input
-                            if (field.files) {
-                                let input = _fileuploaderFields.filter(function(element) {
-                                        return key == element.attr('name').replace('[]', '');
-                                    }).shift(),
-                                    api = input ? $.fileuploader.getInstance(input) : null;
-
-                                if (field.hasWarnings) {
-                                    for (let warning in field.warnings) {
-                                        alert(field.warnings[warning]);
-                                    }
-
-                                    return this.error ? this.error(jqXHR, textStatus, field.warnings) : null;
-                                }
-
-                                if (api) {
-                                    // update the fileuploader's file names
-                                    for (let i = 0; i < field.files.length; i++) {
-                                        $.each(api.getChoosedFiles(), function(index, item) {
-                                            if (field.files[i].old_name == item.name) {
-                                                item.name = field.files[i].name;
-                                                item.html.find('.column-title > div:first-child').text(field.files[i].name).attr('title', field.files[0].name);
-                                            }
-                                            item.data.uploaded = true;
-                                        });
-                                    }
-
-                                    api.updateFileList();
-                                }
-                            } else {
-                                $form.find('[name="' + key + '"]:input').val(field);
-                            }
-                        }
-                    } catch (e) {}
-
-                    document.getElementById("FormImportarpromociones").reset();
-                    $form.find('input[type="submit"]').removeAttr('disabled');
-                    $loading.waitMe('hide');
-
-                    $("#modalImportFormpromociones").modal("hide");
-                    $('#get_promociones_datatable').DataTable().ajax.reload();
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    $form.find('.form-status').html('<p class="text-error">Error!</p>');
-                    $form.find('input[type="submit"]').removeAttr('disabled');
-                    $(".btn-importar").removeClass('btn-disabled disabled');
-                    $(".btn-importar").removeAttr('disabled');                     
-
-                    $loading.waitMe('hide');
-                },
-                progress: function(e) {
-                    if (e.lengthComputable) {
-                        let t = Math.round(e.loaded * 100 / e.total).toString();
-
-                        $form.find('.form-status .progressbar').css('width', t + '%');
-                    }
-                }
-            });
-        });
-    },
-
-    fn_Catpromociones: function(){
-
-        $.ajax({
-            url:"get_cat_promociones",
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            success: function(response)
-            {
-                let json= '';
-                try {
-                    json= JSON.parse(response);
-                } catch (e) {
-                    console.log(response);
-                }
-                
-                if (json["b_status"])
-                {
-                    $(json['data']).each(function(i, j){
-                        // Agregar este id en el select by id y luego borrar este comentario 
-                        // #id_cat_promociones' 
-
-                        if ($("#id_cat_promociones").length){
-                            $("#id_cat_promociones").append("<option value="+j['id']+"> "+j['fotos']+" </option>");
-                        }
-                    });
-                }
-
             }
         });
     },
@@ -1000,84 +661,137 @@ fn_scroll_promociones: function() {
 
             $("#modalFormIUpromociones .modal-title").html("Editar");
 
-            let element_by_id= 'form_promociones';
-            let message=  'Cargando...' ;
-            let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
-
-            $.ajax({
-                url:"get_promociones_by_id",
-                data: {id: id},
-                cache: false,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                    success: function(response)
-                    {
-                        $loading.waitMe('hide');
-
-                        let json='';
-                        try {
-                            json = JSON.parse(response);
-                        } catch (e) {
-                            console.log(response);
-                        }
-
-                        if (json["b_status"]) {
-                            let p = json['data'];
-
-                            let preloadedFiles = json['preloadedFiles'];
-                            promociones.initializeFileUploader(preloadedFiles);
-
-                            for (let keyIni in p) {
-                                for (let key in p[0]) {
-                                    if (p[0].hasOwnProperty(key)) {
-                                        if (p[0][key] !== "") {
-                                            $("#" + key).addClass("fill");
-
-                                            if ($("#" + key).prop('type') == "text" ||
-                                                $("#" + key).prop('type') == "textarea" ||
-                                                $("#" + key).prop('type') == "email" ||
-                                                $("#" + key).prop('type') == "number" ||
-                                                $("#" + key).prop('type') == "url" ||
-                                                $("#" + key).prop(
-
-                                                    'type') == "tel"
-                                            ) {
-                                                $("#" + key).val(p[0][key]);
-                                            }
-
-                                            if ($("#" + key).prop('type') == "file") {
-                                                if (p[0][key] !== "") {
-                                                    $("#" + key).attr("required", false);
-                                                }
-
-                                                if (p[0][key] !== null) {
-                                                    let filename = p[0][key].replace(/^.*[\\\/]/, '')
-                                                        $("#" + key).after("<a href=\"" + p[0][key] + "\" target=\"_blank\" class=\"external_link  abrir-" + key + " \"> " + filename.substr(0, 15) + " </a>");
-                                                }
-                                            }
-
-                                            if ($("#" + key).prop('nodeName') == "SELECT") {
-                                                $('#' + key + ' option[value="' + p[0][key] + '"]').prop('selected', true);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                        } 
-                        else 
-                        {
-                            alert("Revisar console para mas detalle");
-                            console.log(json);
-                        }
-                    },
-                    error: function(response)
-                    {
-                        $loading.waitMe('hide');
-                    }
-            });
-
         });
+    },
+
+    initializeFileUploader: function(preloadedFiles) {
+        // Destruir la instancia anterior del fileuploader si existe
+        if (window.api && typeof window.api.destroy === 'function') {
+            window.api.destroy();
+            window.api = null; // Asegurarse de limpiar la referencia
+            console.log("FileUploader destruido");
+        } else {
+            console.log("No se encontró una instancia previa de FileUploader para destruir");
+        }
+
+        // Limpiar el contenedor del fileuploader
+        $('#fileUploaderContainer').html('<input type="file" name="fotosUpload">');
+
+        var preloadedFilesParsed = [];
+
+        try {
+            if (preloadedFiles) {
+                preloadedFilesParsed = JSON.parse(preloadedFiles);
+            }
+        } catch (e) {
+            console.error("Invalid JSON: ", preloadedFiles);
+        }
+
+        var input = $('input[name="fotosUpload"]').fileuploader({
+            extensions: null,
+            changeInput: ' ',
+            theme: 'thumbnails',
+            enableApi: true,
+            addMore: true,
+            files: preloadedFilesParsed,
+            thumbnails: {
+                onItemShow: function(item) {
+                    item.html.find('.fileuploader-action-remove').before('<button type="button" class="fileuploader-action fileuploader-action-sort" title="Sort"><i class="fileuploader-icon-sort"></i></button>');
+                },
+                box: '<div class="fileuploader-items">' +
+                          '<ul class="fileuploader-items-list">' +
+                              '<li class="fileuploader-thumbnails-input"><div class="fileuploader-thumbnails-input-inner"><i>+</i></div></li>' +
+                          '</ul>' +
+                      '</div>',
+                item: '<li class="fileuploader-item">' +
+                           '<div class="fileuploader-item-inner">' +
+                               '<div class="type-holder">${extension}</div>' +
+                               '<div class="actions-holder">' +
+                                   '<button type="button" class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="fileuploader-icon-remove"></i></button>' +
+                               '</div>' +
+                               '<div class="thumbnail-holder">' +
+                                   '${image}' +
+                                   '<span class="fileuploader-action-popup"></span>' +
+                               '</div>' +
+                               '<div class="content-holder"><h5>${name}</h5><span>${size2}</span></div>' +
+                               '<div class="progress-holder">${progressBar}</div>' +
+                           '</div>' +
+                      '</li>',
+                item2: '<li class="fileuploader-item">' +
+                           '<div class="fileuploader-item-inner">' +
+                               '<div class="type-holder">${extension}</div>' +
+                               '<div class="actions-holder">' +
+                                   '<a href="${file}" class="fileuploader-action fileuploader-action-download" title="${captions.download}" download><i class="fileuploader-icon-download"></i></a>' +
+                                   '<button type="button" class="fileuploader-action fileuploader-action-sort" title="${captions.sort}"><i class="fileuploader-icon-sort"></i></button>' +
+                                   '<button type="button" class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="fileuploader-icon-remove"></i></button>' +
+                               '</div>' +
+                               '<div class="thumbnail-holder">' +
+                                   '<img src="${data.url}" alt="${name}" class="fileuploader-thumbnail-preview">' +
+                                   '<span class="fileuploader-action-popup"></span>' +
+                               '</div>' +
+                               '<div class="content-holder"><h5>${name}</h5><span>${size2}</span></div>' +
+                               '<div class="progress-holder">${progressBar}</div>' +
+                           '</div>' +
+                       '</li>',
+                startImageRenderer: true,
+                canvasImage: true,
+                _selectors: {
+                    list: '.fileuploader-items-list',
+                    item: '.fileuploader-item',
+                    start: '.fileuploader-action-start',
+                    retry: '.fileuploader-action-retry',
+                    remove: '.fileuploader-action-remove',
+                    sorter: '.fileuploader-action-sort',
+                    popup: '.fileuploader-popup-preview',
+                    popup_open: '.fileuploader-action-popup'
+                },
+                onItemShow: function(item, listEl, parentEl, newInputEl, inputEl) {
+                    var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+                        api = $.fileuploader.getInstance(inputEl.get(0));
+
+                    if (item.format == 'image') {
+                        item.html.find('.fileuploader-item-icon').hide();
+                    }
+                },
+                onItemRemove: function(html, listEl, parentEl, newInputEl, inputEl) {
+                    var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+                        api = $.fileuploader.getInstance(inputEl.get(0));
+
+                    html.children().animate({'opacity': 0}, 200, function() {
+                        html.remove();
+
+                        if (api.getOptions().limit && api.getChoosedFiles().length - 1 < api.getOptions().limit)
+                            plusInput.show();
+                    });
+                }
+            },
+
+            sorter: {
+                selectorExclude: null,
+                placeholder: null,
+                scrollContainer: window,
+                onSort: function(list, listEl, parentEl, newInputEl, inputEl) {
+                    // Callback cuando se realiza la ordenación
+                }
+            },
+            dragDrop: {
+                container: '.fileuploader-thumbnails-input'
+            },
+            afterRender: function(listEl, parentEl, newInputEl, inputEl) {
+                var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+                    api = $.fileuploader.getInstance(inputEl.get(0));
+
+                plusInput.on('click', function() {
+                    api.open();
+                });
+
+                api.getOptions().dragDrop.container = plusInput;
+            }
+        });
+
+        // Guardar la nueva instancia del fileuploader en window.api
+        window.api = $.fileuploader.getInstance(input);
+        console.log("api", window.api);
     },
 
     fn_delete_promociones: function(){
@@ -1160,13 +874,9 @@ fn_scroll_promociones: function() {
     },
 
     deleteProduct: function(){
-
-
         $(document).on('click', '.eliminarProducto', function () {
 
-            var productId = $(this).data('id'); // Get data-id attribute
-            // var productItem = $(this).closest('li'); // Find the closest <li> element
-            // productItem.remove(); // Remove the product item from the DOM
+            var productId = $(this).data('id'); 
 
             $.ajax({
                 url:"delete_promociones",

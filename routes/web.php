@@ -69,7 +69,6 @@ Route::post('delete_promociones', [PromocionesController::class, 'delete_promoci
 Route::post('undo_delete_promociones', [PromocionesController::class, 'undo_delete_promociones']);
 Route::get('get_promociones_datatable', [PromocionesController::class, 'get_promociones_datatable']);
 Route::post('truncate_promociones', [PromocionesController::class, 'truncate_promociones']);
-Route::post('truncate_sps_promociones', [PromocionesController::class, 'truncate_sps_promociones']);
 Route::post('form_importar_promociones', [PromocionesController::class, 'form_importar_promociones']);
 Route::get('export_excel_promociones', [PromocionesController::class, 'export_excel_promociones']);
 Route::post('get_cat_promociones', [PromocionesController::class, 'get_cat_promociones']);

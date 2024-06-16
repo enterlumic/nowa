@@ -274,6 +274,7 @@ class PromocionesController extends Controller
         }else{
             $data= promociones::select('fotos')
             ->where('fotos' ,'=', trim($request->fotos))
+            ->where('b_status' ,'>', 0)
             ->get();
         }
 
@@ -785,20 +786,6 @@ class PromocionesController extends Controller
     public function truncate_promociones()
     {
         promociones::where('b_status', 1)->update(['b_status' => 0]);        
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Eliminar Store procedures
-    |--------------------------------------------------------------------------
-    | 
-    | @return id
-    |
-    */
-    public function truncate_sps_promociones()
-    {
-        // Eliminar el SP
-        DB::unprepared('DROP PROCEDURE IF EXISTS `sp_get_promociones` ');
     }
 
     public function runPythonScript(Request $request)
