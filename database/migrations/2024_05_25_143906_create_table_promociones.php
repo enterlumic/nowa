@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('cantidad')->nullable(); // Cantidad asociada con la promoción
             $table->string('color', 30)->nullable(); // Color asociado con la promoción
             $table->string('precio_anterior')->nullable(); // Precio anterior, con 8 dígitos en total y 2 decimales
+            $table->integer('tiempo_trabajador')->nullable(); // Tiempo que lleva un trabajador en terminar su trabajo (en minutos, horas, etc.)
             $table->text('target')->nullable(); // Target asociado con la promoción, incrementado a 100 caracteres
 
             $table->timestamps(); // created_at y updated_at automáticos

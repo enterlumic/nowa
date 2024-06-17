@@ -172,6 +172,7 @@ class PromocionesController extends Controller
             'color' => isset($request->color) ? $request->color : "",
             'precio_anterior' => isset($request->precio_anterior) ? $request->precio_anterior : "",
             'target' => isset($request->target) ? $request->target : "",
+            'tiempo_trabajador' => isset($request->tiempo_trabajador) ? $request->tiempo_trabajador : 0,
         ];
 
         // Si ya existe solo se actualiza el registro
@@ -219,6 +220,19 @@ class PromocionesController extends Controller
                     ->width(600)
                     ->optimize()
                     ->save($imagePath);
+
+                // Original
+                $data = [
+                    [
+                        'promocion_id' => $promocionId,
+                        'size' => 'original',
+                        'foto_url' => $fileName,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                ];
+
+                DB::table('promocion_fotos')->insert($data);
 
                 $storedFiles[] = $uploadDirectory . $fileName;
 
@@ -471,7 +485,7 @@ class PromocionesController extends Controller
         // Realizar la cosulta a la base de datos
         $fotos = DB::table('promocion_fotos')
             ->select('id', 'size', 'foto_url')
-            ->where('size', 'medium')
+            ->where('size', 'small')
             ->where('promocion_id', $promocionId)
             ->get();
 
@@ -756,7 +770,30 @@ class PromocionesController extends Controller
     public function delete_promociones(Request $request)
     {
         $id=$request->id;
+
+        $promocionFotos = DB::table('promocion_fotos')
+                           ->select('foto_url')
+                           ->where('promocion_id', $id)
+                           ->get();
+
+        if (!$promocionFotos->isEmpty()){
+            foreach ($promocionFotos as $key => $value) {
+                $filePath = public_path('uploads/promociones/'.$value->foto_url);
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+        }
+
+        // Actualizo status
         promociones::where('id', $id)->update(['b_status' => 0]);
+
+        // Borro registros no tiene caso (borro imagenes para liberar espacio)
+        DB::table('promocion_fotos')
+            ->where('promocion_id', $id)
+            ->delete();
+
         return $id;
     }
 
@@ -771,6 +808,7 @@ class PromocionesController extends Controller
     public function undo_delete_promociones(Request $request)
     {
         $id=$request->id;
+
         promociones::where('id', $id)->update(['b_status' => 1]);        
         return $id;
     }
