@@ -101,7 +101,6 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%">id</th>
-                                                <th >Fotos</th>
                                                 <th >Titulo</th>
                                                 <th >Descripcion</th>
                                                 <th >Precio</th>
@@ -117,7 +116,6 @@
                                         <thead class="d-none">
                                             <tr>
                                                 <th></th>
-                                                <th class="fotos"><input type="text" id="buscar_fotos" placeholder="Buscar por fotos"></th>
                                                 <th class="titulo"><input type="text" id="buscar_titulo" placeholder="Buscar por titulo"></th>
                                                 <th class="descripcion"><input type="text" id="buscar_descripcion" placeholder="Buscar por descripcion"></th>
                                                 <th class="precio"><input type="text" id="buscar_precio" placeholder="Buscar por precio"></th>

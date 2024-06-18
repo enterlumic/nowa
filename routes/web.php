@@ -77,6 +77,7 @@ Route::get('get_promociones_diez', [PromocionesController::class, 'get_promocion
 Route::get('descargar_plantilla_promociones', [PromocionesController::class, 'descargar_plantilla_promociones']);
 Route::get('validar_existencia_promociones', [PromocionesController::class, 'validar_existencia_promociones']);
 Route::post('/set_python', [PromocionesController::class, 'runPythonScript'])->name('set_python');
+Route::post('ajax_remove_file', [PromocionesController::class, 'ajax_remove_file']);
 
 use App\Http\Controllers\DetalleController;
 Route::get('detalle', [DetalleController::class, 'index'])->middleware('auth') ;

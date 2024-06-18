@@ -32,7 +32,6 @@ let promociones = {
                 "url": "get_promociones_datatable",
                 "type": "GET",
                 "data": function(d) {
-                    d.buscar_fotos = $('#buscar_fotos').val();
                     d.buscar_titulo = $('#buscar_titulo').val();
                     d.buscar_descripcion = $('#buscar_descripcion').val();
                     d.buscar_precio = $('#buscar_precio').val();
@@ -97,7 +96,6 @@ let promociones = {
 
             "columns": [
                 { "data": "id", visible: true},
-                { "data": "fotos", class: "fotos", visible: true },
                 { "data": "titulo", class: "titulo", visible: true },
                 { "data": "descripcion", class: "descripcion", visible: false },
                 { "data": "precio", class: "precio", visible: true },
@@ -111,7 +109,7 @@ let promociones = {
 
             "columnDefs": [
                 {
-                    "targets": 11,
+                    "targets": 10,
                     "render": function (data, type, row, meta) {
                         return '<div>\
                                     <ul class="list-inline mb-0 font-size-16">\
@@ -127,15 +125,6 @@ let promociones = {
                     "class": "text-center"
                 }
             ]
-        });
-
-        // Evento de clic en las filas de la tabla
-        $('#get_promociones_datatable tbody').on('click', 'tr .fotos', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.fotos);
         });
 
         $('#get_promociones_datatable tbody').on('click', 'tr .titulo', function () {
@@ -773,6 +762,38 @@ let promociones = {
                 onSort: function(list, listEl, parentEl, newInputEl, inputEl) {
                     // Callback cuando se realiza la ordenación
                 }
+            },
+            onRemove: function(item) {
+
+                ////////////////////////////////////////////////////
+                /////////////////////INIT TEST//////////////////////
+                ////////////////////////////////////////////////////
+
+
+                $.ajax({
+                    url: "ajax_remove_file",
+                    data: {file: item.name },
+                    cache: false,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: 'POST',
+                    success: function (response) {
+                        console.log("response", response);
+
+
+                    },
+                    error: function (response) {
+                        $loading.waitMe('hide');
+                    }
+                });
+
+                ////////////////////////////////////////////////////
+                /////////////////////END TEST//////////////////////
+                ////////////////////////////////////////////////////
+
+
+
+
+
             },
             dragDrop: {
                 container: '.fileuploader-thumbnails-input'

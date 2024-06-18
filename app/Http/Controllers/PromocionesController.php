@@ -75,8 +75,7 @@ class PromocionesController extends Controller
             return json_encode(array("data"=>"" ));
         }
 
-        if (   ( isset($request->buscar_fotos) && !empty($request->buscar_fotos) )
-            || ( isset($request->buscar_titulo) && !empty($request->buscar_titulo) )
+        if (   ( isset($request->buscar_titulo) && !empty($request->buscar_titulo) )
             || ( isset($request->buscar_descripcion) && !empty($request->buscar_descripcion) )
             || ( isset($request->buscar_precio) && !empty($request->buscar_precio) )
             || ( isset($request->buscar_marca) && !empty($request->buscar_marca) )
@@ -92,7 +91,6 @@ class PromocionesController extends Controller
         }
 
         $request->search= isset($request->search["value"]) ? $request->search["value"] : '';
-        $buscar_fotos= isset($request->buscar_fotos) ? $request->buscar_fotos :'';
         $buscar_titulo= isset($request->buscar_titulo) ? $request->buscar_titulo :'';
         $buscar_descripcion= isset($request->buscar_descripcion) ? $request->buscar_descripcion :'';
         $buscar_precio= isset($request->buscar_precio) ? $request->buscar_precio :'';
@@ -111,7 +109,6 @@ class PromocionesController extends Controller
         $sql= 'CALL sp_get_promociones(
                '.$buscar.'
             , "'.$request->search.'"
-            , "'.$buscar_fotos.'"
             , "'.$buscar_titulo.'"
             , "'.$buscar_descripcion.'"
             , "'.$buscar_precio.'"
@@ -162,7 +159,6 @@ class PromocionesController extends Controller
 
         // Guardar en la bd
         $data = [
-            'fotos' => isset($request->fotos) ? $request->fotos : "",
             'titulo' => isset($request->titulo) ? $request->titulo : "",
             'descripcion' => isset($request->descripcion) ? $request->descripcion : "",
             'precio' => $request->precio,
@@ -211,8 +207,9 @@ class PromocionesController extends Controller
 
             // Guardar las imágenes en el directorio
             $storedFiles = [];
-            foreach ($fotosUpload as $file) {
-                $fileName = time() . '_' . $file->getClientOriginalName();
+            foreach ($fotosUpload as $fotoInicial => $file) {
+                $conjunto = time();
+                $fileName = $conjunto . '_' . $file->getClientOriginalName();
 
                 // Redimensionar y optimizar la imagen
                 $imagePath = public_path($uploadDirectory . $fileName);
@@ -225,6 +222,8 @@ class PromocionesController extends Controller
                 $data = [
                     [
                         'promocion_id' => $promocionId,
+                        'conjunto' => $conjunto,
+                        'order' => $fotoInicial,
                         'size' => 'original',
                         'foto_url' => $fileName,
                         'created_at' => now(),
@@ -243,6 +242,7 @@ class PromocionesController extends Controller
                     'large' => 600
                 ];
 
+                $order_n = 1;
                 foreach ($sizes as $sizeName => $size) {
                     $resizedFileName = $sizeName . '_' . $fileName;
                     $resizedImagePath = public_path($uploadDirectory . $resizedFileName);
@@ -255,12 +255,16 @@ class PromocionesController extends Controller
                     $data = [
                         [
                             'promocion_id' => $promocionId,
+                            'conjunto' => $conjunto,
+                            'order' => $order_n,
                             'size' => $sizeName,
                             'foto_url' => $resizedFileName,
                             'created_at' => now(),
                             'updated_at' => now()
                         ]
                     ];
+
+                    $order_n ++ ;
 
                     DB::table('promocion_fotos')->insert($data);
 
@@ -280,14 +284,14 @@ class PromocionesController extends Controller
     public function validar_existencia_promociones(Request $request)
     {
         if ( isset($request->id) && $request->id > 0){
-            $data= promociones::select('fotos')
-            ->where('fotos' ,'=', trim($request->fotos))
+            $data= promociones::select('titulo')
+            ->where('titulo' ,'=', trim($request->titulo))
             ->where('id' ,'<>', $request->id)
             ->where('b_status' ,'>', 0)
             ->get();
         }else{
-            $data= promociones::select('fotos')
-            ->where('fotos' ,'=', trim($request->fotos))
+            $data= promociones::select('titulo')
+            ->where('titulo' ,'=', trim($request->titulo))
             ->where('b_status' ,'>', 0)
             ->get();
         }
@@ -320,7 +324,7 @@ class PromocionesController extends Controller
            $line = $arr[$i];
 
             if (!empty($line)){
-                $data[]=  ['fotos'=> trim($line)] ;
+                $data[]=  ['titulo'=> trim($line)] ;
             }
         }
 
@@ -338,16 +342,16 @@ class PromocionesController extends Controller
 
         $results = DB::table('promociones')
             ->Where('id', ' > ', 0)
-            ->OrWhere('fotos', 'LIKE', '%' . $buscarPor . '%')
+            ->OrWhere('descripcion', 'LIKE', '%' . $buscarPor . '%')
             ->select('id'
-                , DB::raw('CONCAT(id, " ", fotos, " ", titulo ) as fotos')
+                , DB::raw('CONCAT(id, " ", descripcion, " ", titulo ) as titulo')
             )
             ->limit(10)
             ->get();
 
         // Formatea los resultados para el selectpicker
         $options = $results->map(function ($item) {
-            return ['id' => $item->id, 'fotos' =>Str::headline($item->fotos) ];
+            return ['id' => $item->id, 'titulo' =>Str::headline($item->titulo) ];
         });
 
         return response()->json($options);
@@ -388,8 +392,7 @@ class PromocionesController extends Controller
 
             foreach ($sheetData as $key => $t) {
 
-                $data_insert[]=  array(  "fotos"  =>  isset($t[0]) ? $t[0] : ''
-                                        ,"titulo"  =>  isset($t[1]) ? $t[1] : ''
+                $data_insert[]=  array(  "titulo"  =>  isset($t[1]) ? $t[1] : ''
                                         ,"descripcion"  =>  isset($t[2]) ? $t[2] : ''
                                         ,"precio"  =>  isset($t[3]) ? $t[3] : ''
                                         ,"marca"  =>  isset($t[4]) ? $t[4] : ''
@@ -424,8 +427,7 @@ class PromocionesController extends Controller
     {
             $nombre_archivo= 'plantilla_promociones.xlsx';
 
-            $title[]= [  "Fotos"
-                        ,"Titulo"
+            $title[]= [  "Titulo"
                         ,"Descripcion"
                         ,"Precio"
                         ,"Marca"
@@ -464,8 +466,7 @@ class PromocionesController extends Controller
     */
     public function get_promociones_by_id(Request $request)
     {
-        $data= promociones::select('fotos'
-                                    , 'titulo'
+        $data= promociones::select(   'titulo'
                                     , 'descripcion'
                                     , 'precio'
                                     , 'marca'
@@ -473,6 +474,7 @@ class PromocionesController extends Controller
                                     , 'cantidad'
                                     , 'color'
                                     , 'precio_anterior'
+                                    , 'tiempo_trabajador'
                                     , 'target'
         )->where('id', $request->id)->get();
 
@@ -531,7 +533,6 @@ class PromocionesController extends Controller
     public function get_cat_promociones(Request $request)
     {
         $data= promociones::select(  'id'
-                                    , 'fotos'
                                     , 'titulo'
                                     , 'descripcion'
                                     , 'precio'
@@ -584,7 +585,6 @@ class PromocionesController extends Controller
 
         $data= DB::table("promociones")
         ->select("id"
-            , "fotos"
             , "titulo"
             , "descripcion"
             , "precio"
@@ -610,7 +610,6 @@ class PromocionesController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    'id'=> $value->id
-                                , 'fotos'=>$value->fotos
                                 , 'titulo'=>$value->titulo
                                 , 'descripcion'=>$value->descripcion
                                 , 'precio'=>$value->precio
@@ -646,7 +645,6 @@ class PromocionesController extends Controller
         }
 
         $data= promociones::select(  "id"
-                                    , "fotos"
                                     , "titulo"
                                     , "descripcion"
                                     , "precio"
@@ -663,7 +661,6 @@ class PromocionesController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    $value->id
-                                , $value->fotos
                                 , $value->titulo
                                 , $value->descripcion
                                 , $value->precio
@@ -695,8 +692,7 @@ class PromocionesController extends Controller
             return json_encode(array("data"=>"" ));
         }
 
-        $data= promociones::select("id"
-                                    , "fotos"
+        $data= promociones::select(   "id"
                                     , "titulo"
                                     , "descripcion"
                                     , "precio"
@@ -713,7 +709,6 @@ class PromocionesController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr_data[]= array(   $value->id
-                                    , $value->fotos
                                     , $value->titulo
                                     , $value->descripcion
                                     , $value->precio
@@ -729,7 +724,6 @@ class PromocionesController extends Controller
             $nombre_archivo= 'Reporte_de_promociones.xlsx';
 
             $title[]= [  "id"
-                        ,"Fotos"
                         ,"Titulo"
                         ,"Descripcion"
                         ,"Precio"
@@ -847,5 +841,45 @@ class PromocionesController extends Controller
         $output = $process->getOutput();
 
 
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Eliminar Foto
+    |--------------------------------------------------------------------------
+    | 
+    | @return id
+    |
+    */
+    public function ajax_remove_file(Request $request){
+      
+        // Ejecutar la consulta
+        $resultados = DB::table('promocion_fotos as pf')
+            ->leftJoin('promocion_fotos as pf2', 'pf2.conjunto', '=', 'pf.conjunto')
+            ->where('pf.foto_url', $request->file)
+            ->select('pf2.conjunto', 'pf2.foto_url')
+            ->get();
+
+        // Validar si la consulta devolvió filas
+        if ($resultados->isNotEmpty()) {
+
+            $uploadDirectory = 'uploads/promociones/';
+
+            // Iterar sobre los resultados
+            foreach ($resultados as $resultado) {
+                // Eliminar fotos
+                unlink( public_path($uploadDirectory . $resultado->foto_url) );
+
+                // Eliminar registro
+                DB::table('promocion_fotos')
+                ->where('conjunto', $resultado->conjunto)
+                ->delete();
+
+            }
+            return 'Eliminado';
+        } else {
+            return 'No se encontraron resultados.';
+        }      
     }
 }

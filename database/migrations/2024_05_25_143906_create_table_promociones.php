@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::connection('mysql')->create('promociones', function (Blueprint $table) {
             $table->id();
-            $table->text('fotos')->nullable(); // Descripción más larga de la promoción            
             $table->string('titulo', 800)->nullable(); // Título de la promoción, incrementado a 100 caracteres
             $table->text('descripcion')->nullable(); // Descripción más larga de la promoción
             $table->string('precio')->nullable(); // Precio actual, con 8 dígitos en total y 2 decimales

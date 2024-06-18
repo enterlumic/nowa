@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::connection('mysql')->getConnection()->statement('
             CREATE PROCEDURE sp_get_promociones(   b_filtro_like bool
                                                     , vc_string_filtro varchar(100)
-                                                    , buscar_fotos varchar(100)
                                                     , buscar_titulo varchar(100)
                                                     , buscar_descripcion varchar(100)
                                                     , buscar_precio varchar(100)
@@ -37,21 +36,19 @@ return new class extends Migration
 
                 SET vc_column_order=CASE 
                                     WHEN i_colum_order=0 THEN CONCAT(" ORDER BY id ",vc_order_direct)
-                                    WHEN i_colum_order=1 THEN CONCAT(" ORDER BY fotos ",vc_order_direct)
-                                    WHEN i_colum_order=2 THEN CONCAT(" ORDER BY titulo ",vc_order_direct)
-                                    WHEN i_colum_order=3 THEN CONCAT(" ORDER BY descripcion ",vc_order_direct)
-                                    WHEN i_colum_order=4 THEN CONCAT(" ORDER BY precio ",vc_order_direct)
-                                    WHEN i_colum_order=5 THEN CONCAT(" ORDER BY marca ",vc_order_direct)
-                                    WHEN i_colum_order=6 THEN CONCAT(" ORDER BY review ",vc_order_direct)
-                                    WHEN i_colum_order=7 THEN CONCAT(" ORDER BY cantidad ",vc_order_direct)
-                                    WHEN i_colum_order=8 THEN CONCAT(" ORDER BY color ",vc_order_direct)
-                                    WHEN i_colum_order=9 THEN CONCAT(" ORDER BY precio_anterior ",vc_order_direct)
-                                    WHEN i_colum_order=10 THEN CONCAT(" ORDER BY target ",vc_order_direct)
+                                    WHEN i_colum_order=1 THEN CONCAT(" ORDER BY titulo ",vc_order_direct)
+                                    WHEN i_colum_order=2 THEN CONCAT(" ORDER BY descripcion ",vc_order_direct)
+                                    WHEN i_colum_order=3 THEN CONCAT(" ORDER BY precio ",vc_order_direct)
+                                    WHEN i_colum_order=4 THEN CONCAT(" ORDER BY marca ",vc_order_direct)
+                                    WHEN i_colum_order=5 THEN CONCAT(" ORDER BY review ",vc_order_direct)
+                                    WHEN i_colum_order=6 THEN CONCAT(" ORDER BY cantidad ",vc_order_direct)
+                                    WHEN i_colum_order=7 THEN CONCAT(" ORDER BY color ",vc_order_direct)
+                                    WHEN i_colum_order=8 THEN CONCAT(" ORDER BY precio_anterior ",vc_order_direct)
+                                    WHEN i_colum_order=9 THEN CONCAT(" ORDER BY target ",vc_order_direct)
                                     ELSE ""
                 END;
 
                 SET @_QUERY:=CONCAT("SELECT   id
-                                            , fotos
                                             , titulo
                                             , descripcion
                                             , precio
@@ -67,8 +64,7 @@ return new class extends Migration
 
                 IF(b_filtro_like=true) THEN BEGIN
 
-                    SET @_QUERY:=CONCAT(@_QUERY, " AND (fotos LIKE \'%",TRIM(vc_string_filtro),"%\'");
-                    SET @_QUERY:=CONCAT(@_QUERY, " OR  titulo LIKE \'%",TRIM(vc_string_filtro),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " AND (titulo LIKE \'%",TRIM(vc_string_filtro),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " OR  descripcion LIKE \'%",TRIM(vc_string_filtro),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " OR  precio LIKE \'%",TRIM(vc_string_filtro),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " OR  marca LIKE \'%",TRIM(vc_string_filtro),"%\'");
@@ -83,7 +79,6 @@ return new class extends Migration
 
                 IF(b_filtro_like = false) THEN BEGIN
 
-                    SET @_QUERY:=CONCAT(@_QUERY, " AND (fotos LIKE \'%",TRIM(buscar_fotos),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " AND  titulo LIKE \'%",TRIM(buscar_titulo),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " AND  descripcion LIKE \'%",TRIM(buscar_descripcion),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " AND  precio LIKE \'%",TRIM(buscar_precio),"%\'");
