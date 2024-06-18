@@ -760,16 +760,33 @@ let promociones = {
                 placeholder: null,
                 scrollContainer: window,
                 onSort: function(list, listEl, parentEl, newInputEl, inputEl) {
-                    // Callback cuando se realiza la ordenación
+                    var api = $.fileuploader.getInstance(inputEl.get(0)),
+                        fileList = api.getFileList(),
+                        _list = [];
+                    
+                    $.each(fileList, function(i, item) {
+                        _list.push({
+                            name: item.name,
+                            index: item.index
+                        });
+                    });
+                    
+                    $.ajax({
+                        url: "ajax_sort_files",
+                        data: {_list: JSON.stringify(_list)},
+                        cache: false,
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        type: 'POST',
+                        success: function (response) {
+                            console.log("response", response);
+                        },
+                        error: function (response) {
+                            $loading.waitMe('hide');
+                        }
+                    });
                 }
             },
             onRemove: function(item) {
-
-                ////////////////////////////////////////////////////
-                /////////////////////INIT TEST//////////////////////
-                ////////////////////////////////////////////////////
-
-
                 $.ajax({
                     url: "ajax_remove_file",
                     data: {file: item.name },
@@ -785,15 +802,6 @@ let promociones = {
                         $loading.waitMe('hide');
                     }
                 });
-
-                ////////////////////////////////////////////////////
-                /////////////////////END TEST//////////////////////
-                ////////////////////////////////////////////////////
-
-
-
-
-
             },
             dragDrop: {
                 container: '.fileuploader-thumbnails-input'

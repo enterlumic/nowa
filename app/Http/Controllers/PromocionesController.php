@@ -207,8 +207,10 @@ class PromocionesController extends Controller
 
             // Guardar las imágenes en el directorio
             $storedFiles = [];
+            $_index= 0;
             foreach ($fotosUpload as $fotoInicial => $file) {
-                $conjunto = time();
+                $_index ++;
+                $conjunto = time() .'_'.$_index ;
                 $fileName = $conjunto . '_' . $file->getClientOriginalName();
 
                 // Redimensionar y optimizar la imagen
@@ -487,8 +489,9 @@ class PromocionesController extends Controller
         // Realizar la cosulta a la base de datos
         $fotos = DB::table('promocion_fotos')
             ->select('id', 'size', 'foto_url')
-            ->where('size', 'small')
+            ->where('size', 'original')
             ->where('promocion_id', $promocionId)
+            ->orderBy('order', 'ASC')
             ->get();
 
         // Construir el array de archivos pre-cargados
@@ -881,5 +884,47 @@ class PromocionesController extends Controller
         } else {
             return 'No se encontraron resultados.';
         }      
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ordenar Foto
+    |--------------------------------------------------------------------------
+    | 
+    | @return id
+    |
+    */
+    public function ajax_sort_files(Request $request){
+
+        $imgs= json_decode($request->_list, true);
+
+        foreach ($imgs as $key => $value) {
+
+            $imagen= $value['name'];
+            $index= $value['index'];
+
+            $resultados = DB::table('promocion_fotos as pf')
+                ->leftJoin('promocion_fotos as pf2', 'pf2.conjunto', '=', 'pf.conjunto')
+                ->where('pf.foto_url', $imagen)
+                ->select('pf2.conjunto', 'pf2.foto_url')
+                ->get();
+
+            // Validar si la consulta devolvió filas
+            if ($resultados->isNotEmpty()) {
+
+                // Iterar sobre los resultados
+                foreach ($resultados as $resultado) {
+
+                    $updated = DB::table('promocion_fotos')
+                        ->where('conjunto', $resultado->conjunto)
+                        ->update(['order' => $index]);
+
+                }
+
+            } else {
+                return 'No se encontraron resultados.';
+            } 
+        }
+
     }
 }
