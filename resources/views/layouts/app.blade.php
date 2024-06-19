@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{{ config('app.name', 'Laravel') }}</title>
@@ -36,7 +37,7 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" >
 
         <!-- //////////////////////////////////////////////////////////////////////////////////// -->
         <!-- //////////////////////////////////////////////////////////////////////////////////// -->
@@ -45,34 +46,34 @@
         <!-- flatpickr js -->
         <script src="assets/js/core_js/flatpickr.min.js?{{ rand() }}"></script>
         <script src="assets/js/core_js/es.js"></script>
-        <link href="assets/js/core_js/flatpickr.css" rel="stylesheet" type="text/css" />
+        <link href="assets/js/core_js/flatpickr.css" rel="stylesheet" type="text/css" >
         <!-- Noty -->
         <script src="assets/js/core_js/noty.min.js"></script>
         <link rel="stylesheet" href="//cdn.rawgit.com/needim/noty/77268c46/lib/noty.css">
         <!-- Datatables -->
-        <link href="assets/js/core_js/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/js/core_js/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/js/core_js/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />     
-        <link href="assets/js/core_js/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/js/core_js/select.dataTables.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/js/core_js/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/js/core_js/select.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/js/core_js/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/js/core_js/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/js/core_js/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">     
+        <link href="assets/js/core_js/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/js/core_js/select.dataTables.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/js/core_js/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/js/core_js/select.dataTables.min.css" rel="stylesheet" type="text/css">
         <!-- Responsive Table css -->
-        <link href="assets/js/core_js/admin-resources/rwd-table/rwd-table.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/js/core_js/datatable-fixed.css" rel="stylesheet" type="text/css" />
+        <link href="assets/js/core_js/admin-resources/rwd-table/rwd-table.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/js/core_js/datatable-fixed.css" rel="stylesheet" type="text/css">
         <!-- Validate js -->
         <script src="assets/js/core_js/jquery.validate.js?{{ rand() }}"></script>
         <script src="assets/js/core_js/bootstrap-notify.min.js"></script>
         <!-- Cargando en formularios-->
         <script src="assets/js/core_js/waitMe.js"></script>
-        <link href="assets/js/core_js/waitMe.css?{{ rand() }}" rel="stylesheet" type="text/css" />
-        <link href="assets/js/core_js/core.css?{{ rand() }}" rel="stylesheet" type="text/css" />
+        <link href="assets/js/core_js/waitMe.css?{{ rand() }}" rel="stylesheet" type="text/css">
+        <link href="assets/js/core_js/core.css?{{ rand() }}" rel="stylesheet" type="text/css">
         <!-- Sweet Alert-->
-        <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
         <!-- Sweet Alerts js -->
         <script src="assets/js/core_js/sweetalert2.min.js"></script>
         <!-- choices css -->
-        <link href="assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
         <!-- choices js -->
         <script src="assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
         <!-- Libretia General-->
@@ -82,19 +83,41 @@
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        @include('layouts.header')
-            <!-- main-content -->
+    <body >
+
+        @include('layouts.switcher')
+
+        @include('layouts.loader')
+
+        <div class="page">
+            @include('layouts.header')
+
+            @include('layouts.sidebar')
+
             <div class="main-content app-content">
-                <!-- container -->
+
                 <div class="main-container container-fluid">
-                    <main>
-                        {{ $slot }}
-                    </main>
+                        <main>
+                            {{ $slot }}
+                        </main>
                 </div>
                 <!-- Container closed -->
             </div>
             <!-- main-content closed -->
-        @include('layouts.footer')
+
+            @include('layouts.footer')
+
+        </div>
+
+        <!-- Scroll To Top -->
+        <div class="scrollToTop">
+            <span class="arrow"><i class="ri-arrow-up-s-fill fs-20"></i></span>
+        </div>
+        <div id="responsive-overlay"></div>
+        <!-- Scroll To Top -->
+
+
+        @include('layouts.scripts')
+
     </body>
 </html>

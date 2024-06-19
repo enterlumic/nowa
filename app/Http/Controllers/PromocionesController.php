@@ -602,11 +602,6 @@ class PromocionesController extends Controller
         ->orderBy("promociones.id","desc")
         ->get();
 
-
-// file_put_contents(storage_path('logs/laravel.log'), json_encode(DB::getQueryLog()) . "\n\n\n", FILE_APPEND);        
-
-// dd(DB::getQueryLog());
-
         $total= $data->count();
 
         if($total > 0){
