@@ -98,7 +98,7 @@ let promociones = {
                 { "data": "id", visible: true},
                 { "data": "titulo", class: "titulo", visible: true },
                 { "data": "descripcion", class: "descripcion", visible: false },
-                { "data": "precio", class: "precio", visible: true },
+                { "data": "precio", class: "precio", visible: false },
                 { "data": "marca", class: "marca", visible: false },
                 { "data": "review", class: "review", visible: false },
                 { "data": "cantidad", class: "cantidad", visible: false },
@@ -108,6 +108,27 @@ let promociones = {
             ],
 
             "columnDefs": [
+                {
+                    "targets": 1,
+                    "render": function (data, type, row, meta) {
+
+                        return '<div class="media">\
+                                    <div class="card-aside-img">\
+                                        <img src="uploads/promociones/'+row.foto+'" alt="img" class="h-60 w-60">\
+                                    </div>\
+                                    <div class="media-body">\
+                                        <div class="card-item-desc mt-0">\
+                                            <h6 class="fw-semibold mt-0 text-uppercase">'+row.titulo+'</h6>\
+                                            <dl class="card-item-desc-1">\
+                                              <dt>Precio: </dt>\
+                                              <dd>'+row.precio+'</dd>\
+                                            </dl>\
+                                        </div>\
+                                    </div>\
+                                </div>\
+                        ';
+                    }
+                },
                 {
                     "targets": 10,
                     "render": function (data, type, row, meta) {

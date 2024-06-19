@@ -96,7 +96,7 @@
 
                         <div class="card-body ">
                             <div class="table-rep-plugin">
-                                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <div class="product-details table-responsive text-nowrap" data-pattern="priority-columns">
                                     <table id="get_promociones_datatable" class="table table-striped" style="width:100%">
                                         <thead>
                                             <tr>
