@@ -1,15 +1,20 @@
 <x-app-layout>
-    <div class="container mt-5">
-        <div class="d-flex justify-content-end mb-3">
-            <button id="grid-view" class="btn btn-primary">Grid View</button>
-            <button id="list-view" class="btn btn-secondary ml-2">List View</button>
+    
+    <div class="breadcrumb-header justify-content-between">
+        <div class="left-content">
+            <span class="main-content-title mg-b-0 mg-b-lg-1">Productos</span>
         </div>
-        <div id="product-list" class="row">
-            @include('productos.partials.productos-grid')
-        </div>
-        <div class="spinner text-center mt-3">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+            <div id="product-list" class="row row-sm mt-3 ">
+                @include('promociones.partials.promociones-grid', ['promociones' => $promociones])
+            </div>
+            <div class="spinner text-center mt-3 d-none">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
         </div>
     </div>
@@ -36,19 +41,19 @@
             $('#list-view').click(function() {
                 layout = 'list';
                 $('#product-list').html('');
-                page = 1;	
+                page = 1;
                 loadMoreData(page, layout);
             });
 
             function loadMoreData(page, layout) {
                 $.ajax({
-                    url: '/productos/fetch?page=' + page + '&layout=' + layout,
+                    url: '/promociones/fetch?page=' + page + '&layout=' + layout,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
                     beforeSend: function() {
-                        $('.spinner').show();
+                        $('.spinner').removeClass('d-none');
                     }
                 })
                 .done(function(data) {
@@ -56,7 +61,7 @@
                         $('.spinner').html("No more records found");
                         return;
                     }
-                    $('.spinner').hide();
+                    $('.spinner').addClass('d-none');
                     $("#product-list").append(data);
                 })
                 .fail(function(jqXHR, ajaxOptions, thrownError) {
@@ -65,4 +70,45 @@
             }
         });
     </script>
+
 </x-app-layout>
+
+<style type="text/css">
+    .product-grid6 {
+/*        display: flex;*/
+        justify-content: center;
+    }
+
+    .product-image {
+        align-items: center;
+        position: relative;
+/*        overflow: hidden;*/
+        width: 50%;
+        padding-top: 50%; /* Esto crea un contenedor cuadrado */
+    }
+
+    .product-image img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        height: 100%;
+        width: auto;
+        transform: translate(-50%, -50%);
+    }
+
+    .product-image img.pic-2 {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .product-image:hover img.pic-2 {
+        opacity: 1;
+    }
+
+    .card-body.h-100.product-grid6 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

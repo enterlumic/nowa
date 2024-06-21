@@ -209,7 +209,6 @@ class PromocionesController extends Controller
             $storedFiles = [];
             $_index= 0;
             foreach ($fotosUpload as $fotoInicial => $file) {
-                $_index ++;
                 $conjunto = time() .'_'.$_index ;
                 $fileName = $conjunto . '_' . $file->getClientOriginalName();
 
@@ -225,7 +224,7 @@ class PromocionesController extends Controller
                     [
                         'promocion_id' => $promocionId,
                         'conjunto' => $conjunto,
-                        'order' => $fotoInicial,
+                        'order' => $_index,
                         'size' => 'original',
                         'foto_url' => $fileName,
                         'created_at' => now(),
@@ -258,7 +257,7 @@ class PromocionesController extends Controller
                         [
                             'promocion_id' => $promocionId,
                             'conjunto' => $conjunto,
-                            'order' => $order_n,
+                            'order' => $_index,
                             'size' => $sizeName,
                             'foto_url' => $resizedFileName,
                             'created_at' => now(),
@@ -272,6 +271,7 @@ class PromocionesController extends Controller
 
                     $storedFiles[] = $uploadDirectory . $resizedFileName;
                 }
+                $_index ++;
             }
         }
     }
