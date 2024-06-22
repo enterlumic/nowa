@@ -145,3 +145,5 @@ Route::get('get_logss_diez', [LogssController::class, 'get_logss_diez']);
 Route::get('descargar_plantilla_logss', [LogssController::class, 'descargar_plantilla_logss']);
 Route::get('validar_existencia_logss', [LogssController::class, 'validar_existencia_logss']);
 
+
+
