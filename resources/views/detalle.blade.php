@@ -1,17 +1,4 @@
 <x-app-layout>
-    <!-- breadcrumb -->
-    <div class="breadcrumb-header justify-content-between">
-        <div class="left-content">
-            <span class="main-content-title mg-b-0 mg-b-lg-1">Detalle</span>
-        </div>
-        <div class="justify-content-center mt-2">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item fs-15"><a href="javascript:void(0);">Pages</a></li>
-            </ol>
-        </div>
-    </div>
-    <!-- /breadcrumb -->
-
     <!-- row -->
     <div class="row row-sm">
         <div class="col-xxl-12">
@@ -52,8 +39,10 @@
                                                 @endphp
                                                 @foreach ($fotos as $foto)
                                                     @if ($foto->size == 'original')
-                                                        <div class="carousel-item {{ $slideIndex == 0 ? 'active' : '' }}">
-                                                            <img src="{{ asset('uploads/promociones/'.$foto->foto_url) }}" alt="img" class="img-fluid mx-auto d-block img-custom-size">
+                                                        <div class="carousel-item carousel-item-hover {{ $slideIndex == 0 ? 'active' : '' }}">
+                                                            <div class="img-container">
+                                                                <img src="{{ asset('uploads/promociones/'.$foto->foto_url) }}" alt="img" class="img-fluid mx-auto d-block img-custom-size" id="mainImage">
+                                                            </div>
                                                             <div class="text-center mt-5 mb-5 btn-list">
                                                             </div>
                                                         </div>
@@ -76,6 +65,7 @@
                             <h4 class="product-title mb-1">Jyothi Fashion Women's Fit & Flare Knee Length Western Frock</h4>
                             <p class="text-muted fs-13 mb-1">women red & Grey Checked Casual frock</p>
                             <div class="rating mb-1">
+                            <div id="zoomContainer"></div>
                                 <div class="stars">
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star checked"></span>
@@ -139,32 +129,127 @@
             </div>
         </div>
     </div>
-
-    <!-- row closed -->
-    <div class="div-modals">
-
-        {{-- Modal para Agregar o modificar un nuevo registro  --}}
-        {{-- add_detalle // en sublime F12 te lleva al .blade --}}
-        @include('modals.add_detalle')
-
-        {{-- Modal para descargar platilla, importar desde un excel, o pegar una lista de registro en text area  --}}
-        {{-- import_detalle // en sublime F12 te lleva al .blade --}}
-        @include('modals.import_detalle')
-
-    </div>
-    <!-- .div-modals -->
 </x-app-layout>
 
 <style type="text/css">
     .ui-pdp-description__content {
         font-size: 17px;
-        font-weight: 400;
+        font-weight: 424;
         word-wrap: break-word;
     }
     .img-custom-size {
-        max-width: 45%;
+        max-width: 100%;
         height: auto;
         object-fit: cover; /* Ajusta la imagen para cubrir el contenedor manteniendo la proporción */
     }
+    .img-container {
+        position: relative;
+    }
+    #zoomContainer {
+        position: absolute;
+        top: 4%;
+        left: 50%;
+        width: 424px;
+        height: 424px;
+        overflow: hidden;
+        border: 1px solid #000;
+        display: none;
+        z-index: 10; /* Asegura que el contenedor de zoom esté por encima de otros elementos */
+    }
+    #zoomContainer img {
+        position: absolute;
+        width: auto;
+        height: auto;
+        max-width: none;
+    }
+    @media (min-width: 768px) {
+        #zoomContainer {
+            width: 150px;
+            height: 150px;
+        }
+    }
+    @media (min-width: 1200px) {
+        #zoomContainer {
+            width: 424px;
+            height: 424px;
+        }
+    }
+
 </style>
 <script src="assets/js/core_js/detalle.js?{{ rand() }}"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function () {
+    var thumbs = document.querySelectorAll('.thumb');
+    var carouselElement = document.getElementById('Slider');
+    var carousel = new bootstrap.Carousel(carouselElement, {
+        interval: false
+    });
+
+    var zoomContainer = document.getElementById('zoomContainer');
+
+    function setupZoom(image) {
+        image.addEventListener('mouseover', function () {
+            zoomContainer.style.display = 'block';
+            var zoomImage = document.createElement('img');
+            zoomImage.src = image.src;
+            zoomContainer.appendChild(zoomImage);
+
+            image.addEventListener('mousemove', function (e) {
+                var rect = image.getBoundingClientRect();
+                var x = e.clientX - rect.left;
+                var y = e.clientY - rect.top;
+
+                var zoomWidth = zoomContainer.offsetWidth;
+                var zoomHeight = zoomContainer.offsetHeight;
+
+                var imgWidth = image.offsetWidth;
+                var imgHeight = image.offsetHeight;
+
+                var zoomX = x * (zoomImage.naturalWidth / imgWidth) - (zoomWidth / 2);
+                var zoomY = y * (zoomImage.naturalHeight / imgHeight) - (zoomHeight / 2);
+
+                // Limita la posición de zoomX y zoomY para que no salga del contenedor de zoom
+                zoomX = Math.max(0, Math.min(zoomX, zoomImage.naturalWidth - zoomWidth));
+                zoomY = Math.max(0, Math.min(zoomY, zoomImage.naturalHeight - zoomHeight));
+
+                zoomImage.style.left = -zoomX + 'px';
+                zoomImage.style.top = -zoomY + 'px';
+            });
+
+            image.addEventListener('mouseout', function () {
+                zoomContainer.style.display = 'none';
+                zoomContainer.innerHTML = '';
+            });
+        });
+    }
+
+    // Initial setup for the first visible image
+    var initialImage = document.querySelector('.carousel-item.active img.img-custom-size');
+    setupZoom(initialImage);
+
+    thumbs.forEach(function (thumb) {
+        thumb.addEventListener('mouseover', function () {
+            if (!this.classList.contains('active')) {
+                thumbs.forEach(function (el) {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                var targetIndex = this.getAttribute('data-bs-slide-to');
+                carousel.to(targetIndex);
+
+                // Apply zoom effect to the new visible image
+                var newActiveImage = document.querySelector('.carousel-item.active img.img-custom-size');
+                setupZoom(newActiveImage);
+            }
+        });
+    });
+
+    carouselElement.addEventListener('slid.bs.carousel', function () {
+        var activeImage = document.querySelector('.carousel-item.active img.img-custom-size');
+        setupZoom(activeImage);
+    });
+});
+
+
+</script>

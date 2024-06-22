@@ -49,12 +49,11 @@ class DetalleController extends Controller
     | Todo es controlado por JS detalle.js
     |
     */
-    public function index()
+    public function index(Request $request)
     {
         $this->LibCore->setSkynet(['vc_evento' => 'index_detalle', 'vc_info' => "index - detalle"]);
 
-        // Obtener las fotos de la base de datos
-        $promocion_id = 9; // Puedes cambiar esto dinámicamente según tus necesidades
+        $promocion_id = Crypt::decrypt($request->id);
         $fotos = DB::table('promocion_fotos')
             ->select('size', 'foto_url')
             ->where('promocion_id', $promocion_id)
