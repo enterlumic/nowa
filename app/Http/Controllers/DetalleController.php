@@ -51,27 +51,23 @@ class DetalleController extends Controller
     */
     public function index()
     {
-        $this->LibCore->setSkynet( ['vc_evento'=> 'index_detalle' , 'vc_info' => "index - detalle" ] );
+        $this->LibCore->setSkynet(['vc_evento' => 'index_detalle', 'vc_info' => "index - detalle"]);
 
-        $fotos = promociones::all()->map(function($producto) {
-            $producto->fotos_array = explode("\n", trim($producto->fotos));
-            
-            // Añadir otros campos que se necesiten en la vista
-            $producto->titulo = $producto->titulo;
-            $producto->descripcion = $producto->descripcion;
-            $producto->precio = $producto->precio;
-            $producto->color = $producto->color;
-            $producto->precio_anterior = $producto->precio_anterior;
-            $producto->target = $producto->target;
+        // Obtener las fotos de la base de datos
+        $promocion_id = 9; // Puedes cambiar esto dinámicamente según tus necesidades
+        $fotos = DB::table('promocion_fotos')
+            ->select('size', 'foto_url')
+            ->where('promocion_id', $promocion_id)
+            ->whereIn('size', ['original', 'small'])
+            ->get();
 
-            return $producto;
-        });
-
-        return view('detalle', compact('fotos'));
+        return view('detalle', ['fotos' => $fotos]);
     }
 
     public function get_data_by_id($id)
     {
+        $id = Crypt::decrypt($id);
+
         $producto = promociones::find($id);
 
         if ($producto) {

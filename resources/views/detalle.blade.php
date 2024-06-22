@@ -13,7 +13,94 @@
     <!-- /breadcrumb -->
 
     <!-- row -->
-    <div id="product-container"></div>
+    <div class="row row-sm">
+        <div class="col-xxl-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row row-sm">
+                        <div class="col-xxl-6 col-lg-12 col-md-12">
+                            <div class="row">
+                                <div class="col-xxl-2 col-xl-2 col-md-2 col-sm-3">
+                                    <div class="clearfix carousel-slider">
+                                        <div id="thumbcarousel" class="carousel slide" data-bs-interval="false">
+                                            <div class="carousel-inner">
+                                                @php
+                                                    $thumbIndex = 0;
+                                                @endphp
+                                                <ul class="carousel-item active">
+                                                    @foreach ($fotos as $foto)
+                                                        @if ($foto->size == 'small')
+                                                            <li data-bs-target="#Slider" data-bs-slide-to="{{ $thumbIndex }}" class="thumb {{ $thumbIndex == 0 ? 'active' : '' }} my-sm-2 m-2 mx-sm-0">
+                                                                <img src="{{ asset('uploads/promociones/'.$foto->foto_url) }}" alt="img" class="img-thumbnail">
+                                                            </li>
+                                                            @php
+                                                                $thumbIndex++;
+                                                            @endphp
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-9">
+                                    <div class="product-carousel border br-5">
+                                        <div id="Slider" class="carousel slide" data-bs-ride="false">
+                                            <div class="carousel-inner">
+                                                @php
+                                                    $slideIndex = 0;
+                                                @endphp
+                                                @foreach ($fotos as $foto)
+                                                    @if ($foto->size == 'original')
+                                                        <div class="carousel-item {{ $slideIndex == 0 ? 'active' : '' }}">
+                                                            <img src="{{ asset('uploads/promociones/'.$foto->foto_url) }}" alt="img" class="img-fluid mx-auto d-block img-custom-size">
+                                                            <div class="text-center mt-5 mb-5 btn-list">
+                                                            </div>
+                                                        </div>
+                                                        @php
+                                                            $slideIndex++;
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-4 btn-list">
+                                        <a href="product-cart.html" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"> </i> Add to cart</a>
+                                        <a href="check-out.html" class="btn ripple btn-secondary"><i class="fe fe-credit-card"> </i> Buy Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details col-xxl-6 col-lg-12 col-md-12 mt-4">
+                            <h4 class="product-title mb-1">Jyothi Fashion Women's Fit & Flare Knee Length Western Frock</h4>
+                            <p class="text-muted fs-13 mb-1">women red & Grey Checked Casual frock</p>
+                            <div class="rating mb-1">
+                                <div class="stars">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star text-muted"></span>
+                                    <span class="fa fa-star text-muted"></span>
+                                </div>
+                                <span class="review-no">41 reviews</span>
+                            </div>
+                            <h6 class="price">current price: <span class="h3 ms-2">$253</span></h6>
+                            <p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87 votes)</strong></p>
+                            <div class="mb-3">
+                                <div class="">
+                                    <p class="font-weight-normal"><span class="h4">Hurry Up!</span> Sold: <span class="text-primary h5">110/150</span> products in stock.<p>
+                                </div>
+                                <div class="progress ht-10 mt-0">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row row-sm">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -53,7 +140,6 @@
         </div>
     </div>
 
-
     <!-- row closed -->
     <div class="div-modals">
 
@@ -70,11 +156,15 @@
 </x-app-layout>
 
 <style type="text/css">
-    .ui-pdp-description__content{
+    .ui-pdp-description__content {
         font-size: 17px;
-        font-weight:400;
+        font-weight: 400;
         word-wrap: break-word;
     }
-
+    .img-custom-size {
+        max-width: 45%;
+        height: auto;
+        object-fit: cover; /* Ajusta la imagen para cubrir el contenedor manteniendo la proporción */
+    }
 </style>
 <script src="assets/js/core_js/detalle.js?{{ rand() }}"></script>

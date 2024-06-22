@@ -4,7 +4,6 @@ let detalle = {
 
         // Funciones principales
         detalle.fn_set_detalle();
-        detalle.fn_get_by_id();
         detalle.fn_scroll_detalle();
         detalle.fn_importar_excel_detalle();
 
@@ -165,104 +164,6 @@ let detalle = {
               }
         });
     },
-
-fn_get_by_id: function () {
-    var productId = detalle.fn_get_id();
-    $.ajax({
-        url: '/producto/' + productId,
-        method: 'GET',
-        success: function(data) {
-            if (Array.isArray(data.fotos_array) && data.fotos_array.length > 0) {
-                var thumbHtml = data.fotos_array.map((foto, index) => `
-                    <li data-bs-target="#Slider" data-bs-slide-to="${index}" class="thumb ${index === 0 ? 'active' : ''} my-sm-2 m-2 mx-sm-0">
-                        <img src="${foto.trim()}" alt="img">
-                    </li>
-                `).join('');
-
-                var sliderHtml = data.fotos_array.map((foto, index) => `
-                    <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                        <img src="${foto.trim()}" alt="img" class="img-fluid mx-auto d-block">
-                        <div class="text-center mt-5 mb-5 btn-list">
-                            <!-- Aquí puedes añadir botones u otros elementos -->
-                        </div>
-                    </div>
-                `).join('');
-
-                var productHtml = `
-                    <div class="row row-sm">
-                        <div class="col-xxl-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row row-sm">
-                                        <div class="col-xxl-6 col-lg-12 col-md-12">
-                                            <div class="row">
-                                                <div class="col-xxl-2 col-xl-2 col-md-2 col-sm-3">
-                                                    <div class="clearfix carousel-slider">
-                                                        <div id="thumbcarousel" class="carousel slide" data-bs-interval="t">
-                                                            <div class="carousel-inner">
-                                                                <ul class="carousel-item active">
-                                                                    ${thumbHtml}
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-9">
-                                                    <div class="product-carousel border br-5">
-                                                        <div id="Slider" class="carousel slide" data-bs-ride="false">
-                                                            <div class="carousel-inner">
-                                                                ${sliderHtml}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="details col-xxl-6 col-lg-12 col-md-12 mt-4">
-                                            <h4 class="product-title mb-1">${data.titulo}</h4>
-                                            <h6 class="price">Precio: <span class="h3 ms-2">${data.precio}</span></h6>
-                                            <h5>Descripción</h5>
-                                            <pre class="styled-pre">${data.descripcion.trim()}</pre>
-                                            <div class="mt-4 btn-list">
-                                                <a href="javascript:void(0);" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"></i> Agregar al carrito</a>
-                                                <a href="check_out?id=${data.id}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"></i> Comprar ahora</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-                $('#product-container').html(productHtml);
-
-                // Adding event listeners for thumbs after the HTML is updated
-                var thumbs = document.querySelectorAll('.thumb');
-                thumbs.forEach(function (thumb) {
-                    thumb.addEventListener('click', function () {
-                        // Check if the clicked element does not have the 'active' class
-                        if (!this.classList.contains('active')) {
-                            // Remove the 'active' class from all elements with the class 'thumb'
-                            thumbs.forEach(function (el) {
-                                el.classList.remove('active');
-                            });
-                            // Add the 'active' class to the clicked element
-                            this.classList.add('active');
-                        }
-                    });
-                });
-
-
-
-            } else {
-                $('#product-container').html('<p>No hay fotos disponibles para este producto.</p>');
-            }
-        },
-        error: function(error) {
-            console.log('Error:', error);
-        }
-    });
-},
-
 
     fn_get_id: function () {
         // Get the URL
