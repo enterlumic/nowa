@@ -62,29 +62,12 @@
                             </div>
                         </div>
                         <div class="details col-xxl-6 col-lg-12 col-md-12 mt-4">
-                            <h4 class="product-title mb-1">Jyothi Fashion Women's Fit & Flare Knee Length Western Frock</h4>
-                            <p class="text-muted fs-13 mb-1">women red & Grey Checked Casual frock</p>
+                            <h4 class="product-title mb-1">{{ $promocion->titulo }}</h4>
+                            <p class="text-muted fs-13 mb-1">{{ $promocion->descripcion }}</p>
                             <div class="rating mb-1">
-                            <div id="zoomContainer"></div>
-                                <div class="stars">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star text-muted"></span>
-                                    <span class="fa fa-star text-muted"></span>
-                                </div>
-                                <span class="review-no">41 reviews</span>
+                                <div id="zoomContainer"></div>
                             </div>
-                            <h6 class="price">current price: <span class="h3 ms-2">$253</span></h6>
-                            <p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87 votes)</strong></p>
-                            <div class="mb-3">
-                                <div class="">
-                                    <p class="font-weight-normal"><span class="h4">Hurry Up!</span> Sold: <span class="text-primary h5">110/150</span> products in stock.<p>
-                                </div>
-                                <div class="progress ht-10 mt-0">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 60%"></div>
-                                </div>
-                            </div>
+                            <h6 class="price">Precio: <span class="h3 ms-2">${{ $promocion->precio }}</span></h6>
                         </div>
                     </div>
                 </div>
@@ -107,7 +90,7 @@
                                 <div class="mb-3 fw-semibold">Dirección de Correo Electrónico</div>
                                 <input class="form-control" placeholder="Dirección de Correo Electrónico" type="text">
                             </div>
-                        </div>
+                        </div>zoom
                     </div>
                     <span class="star-rating">
                         <a href="javascript:void(0);"><i class="icofont-ui-rating icofont-2x"></i></a>

@@ -60,7 +60,12 @@ class DetalleController extends Controller
             ->whereIn('size', ['original', 'small'])
             ->get();
 
-        return view('detalle', ['fotos' => $fotos]);
+        $promocion = DB::table('promociones')
+            ->select('id', 'titulo', 'descripcion', 'precio', 'marca', 'tiempo_trabajador')
+            ->where('id', $promocion_id)
+            ->first();
+
+        return view('detalle', ['fotos' => $fotos, 'promocion' => $promocion]);
     }
 
     public function get_data_by_id($id)
