@@ -11,7 +11,6 @@ let checkOut = {
         $('#id_producto').val(id);
 
         // Funciones principales
-        checkOut.fn_get();
         checkOut.fn_calendario();
         checkOut.fn_customerConnekta();
         checkOut.fn_fnCreateOrder();
@@ -96,74 +95,6 @@ let checkOut = {
                 });
             }
         });
-    },
-
-    fn_get: function () {
-
-        // Obtener la URL actual
-        const urlParams = new URLSearchParams(window.location.search);
-
-        // Obtener el valor del parámetro 'id'
-        const id = urlParams.get('id');
-
-        // Verificar si se obtuvo el parámetro correctamente
-        if (id) {
-
-            $.ajax({
-                url:"get_check_out_by_id",
-                data: {id: id},
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type: 'POST',
-                success: function(data)
-                {
-                    const promocionHTML = `
-                        <table class="table table-borderless align-middle mb-0">
-                            <thead class="table-light text-muted">
-                                <tr>
-                                    <th style="width: 90px;" scope="col">Producto</th>
-                                    <th scope="col">Información del Producto</th>
-                                    <th scope="col" class="text-end">Precio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="avatar-md bg-light rounded p-1">
-                                            <img src="${data.fotos}" alt="${data.titulo}" class="img-fluid d-block rounded-3">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <h5 class="fs-14"><a href="javascript:void(0);" class="text-body">${data.titulo}</a></h5>
-                                        <p class="text-muted mb-0">$${data.precio} x 1</p>
-                                    </td>
-                                    <td class="text-end">$${data.precio}</td>
-                                </tr>
-                                <tr class="fw-semibold" colspan="2">
-                                    <td>Subtotal :</td>
-                                    <td class="text-end">$${data.precio}</td>
-                                </tr>
-                                <tr class="table-active">
-                                    <th colspan="2">Total (MXN) :</th>
-                                    <td class="text-end">
-                                        <span class="fw-semibold">$${data.precio}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    `;
-
-                    // Insertar el contenido HTML en el contenedor
-                    $('#promocion-container').html(promocionHTML);
-
-                    // Actualizar el subtotal con el precio
-                    $('#promocion-precio').text(`$${data.precio}`);            
-                },
-                error: function(response)
-                {
-                    console.log("response", response);
-                }
-            });            
-        }
     },
 
     fn_fnCreateOrder: function () {

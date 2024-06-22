@@ -54,10 +54,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="text-center mt-4 btn-list">
-                                        <a href="product-cart.html" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"> </i> Add to cart</a>
-                                        <a href="check-out.html" class="btn ripple btn-secondary"><i class="fe fe-credit-card"> </i> Buy Now</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -68,6 +64,10 @@
                                 <div id="zoomContainer"></div>
                             </div>
                             <h6 class="price">Precio: <span class="h3 ms-2">${{ $promocion->precio }}</span></h6>
+                            <div class="text-center mt-4 btn-list">
+                                <a href="product-cart.html" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"> </i> Añadir al carrito</a>
+                                <a href="check_out?id={{$_REQUEST['id']}}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"> </i> Comprar ahora</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,43 +75,6 @@
         </div>
     </div>
 
-    <div class="row row-sm">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
-                <div class="ps-4 pe-4 pb-2 pt-4">
-                    <h5 class="mb-4">Escribir Reseña</h5>
-                    <div class="mb-1">
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <div class="mb-3 fw-semibold">Tu Nombre</div>
-                                <input class="form-control" placeholder="Tu Nombre" type="text">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <div class="mb-3 fw-semibold">Dirección de Correo Electrónico</div>
-                                <input class="form-control" placeholder="Dirección de Correo Electrónico" type="text">
-                            </div>
-                        </div>zoom
-                    </div>
-                    <span class="star-rating">
-                        <a href="javascript:void(0);"><i class="icofont-ui-rating icofont-2x"></i></a>
-                        <a href="javascript:void(0);"><i class="icofont-ui-rating icofont-2x"></i></a>
-                        <a href="javascript:void(0);"><i class="icofont-ui-rating icofont-2x"></i></a>
-                        <a href="javascript:void(0);"><i class="icofont-ui-rating icofont-2x"></i></a>
-                        <a href="javascript:void(0);"><i class="icofont-ui-rating icofont-2x"></i></a>
-                    </span>
-                    <form>
-                        <div class="form-group">
-                            <div class="mb-3 fw-semibold">Tu Comentario</div>
-                            <textarea class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary mt-3 mb-0" type="button">Publicar tu reseña</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 </x-app-layout>
 
 <style type="text/css">

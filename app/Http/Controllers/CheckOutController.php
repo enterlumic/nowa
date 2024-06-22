@@ -52,12 +52,23 @@ class CheckOutController extends Controller
     | Todo es controlado por JS check_out.js
     |
     */
-    public function index()
+    public function index(Request $request)
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_check_out' , 'vc_info' => "index - check_out" ] );
 
+        // Recuperar los datos de la tabla promociones
+        $promociones = DB::table('promociones as p')
+            ->join('promocion_fotos as pf', function ($join) {
+                $join->on('pf.promocion_id', '=', 'p.id')
+                     ->where('pf.size', '=', 'small')
+                     ->where('pf.order', '=', 0);
+            })
+            ->where('p.b_status', '>', 0)
+            ->orderBy('pf.order', 'asc')
+            ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
+            ->get();
         // Pasar los datos a la vista
-        return view('check_out');
+        return view('check_out', compact('promociones'));
 
     }
 
