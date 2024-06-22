@@ -55,22 +55,28 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%">id</th>
+                                                <th >Logo</th>
                                                 <th >Nombre</th>
                                                 <th >Descripcion</th>
                                                 <th >Telefono</th>
                                                 <th >Whatsapp</th>
                                                 <th >Ubicacion</th>
+                                                <th >Longitud</th>
+                                                <th >Latitud</th>
                                                 <th style="width: 9%">Acción</th>
                                             </tr>
                                         </thead>
                                         <thead>
                                             <tr>
                                                 <th></th>
+                                                <th class="logo"><input type="text" id="buscar_logo" placeholder="Buscar por logo"></th>
                                                 <th class="nombre"><input type="text" id="buscar_nombre" placeholder="Buscar por nombre"></th>
                                                 <th class="descripcion"><input type="text" id="buscar_descripcion" placeholder="Buscar por descripcion"></th>
                                                 <th class="telefono"><input type="text" id="buscar_telefono" placeholder="Buscar por telefono"></th>
                                                 <th class="whatsapp"><input type="text" id="buscar_whatsapp" placeholder="Buscar por whatsapp"></th>
                                                 <th class="ubicacion"><input type="text" id="buscar_ubicacion" placeholder="Buscar por ubicacion"></th>
+                                                <th class="longitud"><input type="text" id="buscar_longitud" placeholder="Buscar por longitud"></th>
+                                                <th class="latitud"><input type="text" id="buscar_latitud" placeholder="Buscar por latitud"></th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -87,7 +93,7 @@
                                     <ul class="list-group">
                                         <div ng-repeat='item in reddit.items' class="col-xl-3 col-md-3 col-sm-3 col-xs-3">
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                @{{item.nombre }} <span class="badge bg-success">@{{item.id}}</span>
+                                                @{{item.logo }} <span class="badge bg-success">@{{item.id}}</span>
                                             </li>
                                         </div>
                                     </ul>

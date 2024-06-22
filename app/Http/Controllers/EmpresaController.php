@@ -70,11 +70,14 @@ class EmpresaController extends Controller
             return json_encode(array("data"=>"" ));
         }
 
-        if (   ( isset($request->buscar_nombre) && !empty($request->buscar_nombre) )
+        if (   ( isset($request->buscar_logo) && !empty($request->buscar_logo) )
+            || ( isset($request->buscar_nombre) && !empty($request->buscar_nombre) )
             || ( isset($request->buscar_descripcion) && !empty($request->buscar_descripcion) )
             || ( isset($request->buscar_telefono) && !empty($request->buscar_telefono) )
             || ( isset($request->buscar_whatsapp) && !empty($request->buscar_whatsapp) )
             || ( isset($request->buscar_ubicacion) && !empty($request->buscar_ubicacion) )
+            || ( isset($request->buscar_longitud) && !empty($request->buscar_longitud) )
+            || ( isset($request->buscar_latitud) && !empty($request->buscar_latitud) )
         ){
             $buscar= 0;
         }else{
@@ -82,11 +85,14 @@ class EmpresaController extends Controller
         }
 
         $request->search= isset($request->search["value"]) ? $request->search["value"] : '';
+        $buscar_logo= isset($request->buscar_logo) ? $request->buscar_logo :'';
         $buscar_nombre= isset($request->buscar_nombre) ? $request->buscar_nombre :'';
         $buscar_descripcion= isset($request->buscar_descripcion) ? $request->buscar_descripcion :'';
         $buscar_telefono= isset($request->buscar_telefono) ? $request->buscar_telefono :'';
         $buscar_whatsapp= isset($request->buscar_whatsapp) ? $request->buscar_whatsapp :'';
         $buscar_ubicacion= isset($request->buscar_ubicacion) ? $request->buscar_ubicacion :'';
+        $buscar_longitud= isset($request->buscar_longitud) ? $request->buscar_longitud :'';
+        $buscar_latitud= isset($request->buscar_latitud) ? $request->buscar_latitud :'';
         $request->start = isset($request->start) ? $request->start : intval(0);
         $request->length= isset( $request->length) ? $request->length : intval(10);
         $request->column= isset( $request->order[0]['column']) ? $request->order[0]['column'] : intval(0);
@@ -96,11 +102,14 @@ class EmpresaController extends Controller
         $sql= 'CALL sp_get_empresa(
                '.$buscar.'
             , "'.$request->search.'"
+            , "'.$buscar_logo.'"
             , "'.$buscar_nombre.'"
             , "'.$buscar_descripcion.'"
             , "'.$buscar_telefono.'"
             , "'.$buscar_whatsapp.'"
             , "'.$buscar_ubicacion.'"
+            , "'.$buscar_longitud.'"
+            , "'.$buscar_latitud.'"
             ,  '.$request->start.'
             ,  '.$request->length.'
             ,  '.$request->column.'
@@ -130,8 +139,6 @@ class EmpresaController extends Controller
     */
     public function set_empresa(Request $request)
     {
-
-        dd($request->all());
         if(!\Schema::hasTable('empresa')){
             Notification::route('mail', ['odin0464@gmail.com'])->notify(
                 new FnempresaSendMail(
@@ -142,11 +149,14 @@ class EmpresaController extends Controller
             return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla empresa"));
         }
 
-        $data=[ 'nombre' => isset($request->nombre)? $request->nombre:"",
+        $data=[ 'logo' => isset($request->logo)? $request->logo:"",
+                'nombre' => isset($request->nombre)? $request->nombre: "",
                 'descripcion' => isset($request->descripcion)? $request->descripcion: "",
                 'telefono' => isset($request->telefono)? $request->telefono: "",
                 'whatsapp' => isset($request->whatsapp)? $request->whatsapp: "",
                 'ubicacion' => isset($request->ubicacion)? $request->ubicacion: "",
+                'longitud' => isset($request->longitud)? $request->longitud: "",
+                'latitud' => isset($request->latitud)? $request->latitud: "",
         ];
 
         // Si ya existe solo se actualiza el registro
@@ -170,14 +180,14 @@ class EmpresaController extends Controller
     public function validar_existencia_empresa(Request $request)
     {
         if ( isset($request->id) && $request->id > 0){
-            $data= empresa::select('nombre')
-            ->where('nombre' ,'=', trim($request->nombre))
+            $data= empresa::select('logo')
+            ->where('logo' ,'=', trim($request->logo))
             ->where('id' ,'<>', $request->id)
             ->where('b_status' ,'>', 0)
             ->get();
         }else{
-            $data= empresa::select('nombre')
-            ->where('nombre' ,'=', trim($request->nombre))
+            $data= empresa::select('logo')
+            ->where('logo' ,'=', trim($request->logo))
             ->get();
         }
 
@@ -209,7 +219,7 @@ class EmpresaController extends Controller
            $line = $arr[$i];
 
             if (!empty($line)){
-                $data[]=  ['nombre'=> trim($line)] ;
+                $data[]=  ['logo'=> trim($line)] ;
             }
         }
 
@@ -227,16 +237,16 @@ class EmpresaController extends Controller
 
         $results = DB::table('empresa')
             ->Where('id', ' > ', 0)
-            ->OrWhere('nombre', 'LIKE', '%' . $buscarPor . '%')
+            ->OrWhere('logo', 'LIKE', '%' . $buscarPor . '%')
             ->select('id'
-                , DB::raw('CONCAT(id, " ", nombre, " ", descripcion ) as nombre')
+                , DB::raw('CONCAT(id, " ", logo, " ", nombre ) as logo')
             )
             ->limit(10)
             ->get();
 
         // Formatea los resultados para el selectpicker
         $options = $results->map(function ($item) {
-            return ['id' => $item->id, 'nombre' =>Str::headline($item->nombre) ];
+            return ['id' => $item->id, 'logo' =>Str::headline($item->logo) ];
         });
 
         return response()->json($options);
@@ -277,11 +287,14 @@ class EmpresaController extends Controller
 
             foreach ($sheetData as $key => $t) {
 
-                $data_insert[]=  array(  "nombre"  =>  isset($t[0]) ? $t[0] : ''
-                                        ,"descripcion"  =>  isset($t[1]) ? $t[1] : ''
-                                        ,"telefono"  =>  isset($t[2]) ? $t[2] : ''
-                                        ,"whatsapp"  =>  isset($t[3]) ? $t[3] : ''
-                                        ,"ubicacion"  =>  isset($t[4]) ? $t[4] : ''
+                $data_insert[]=  array(  "logo"  =>  isset($t[0]) ? $t[0] : ''
+                                        ,"nombre"  =>  isset($t[1]) ? $t[1] : ''
+                                        ,"descripcion"  =>  isset($t[2]) ? $t[2] : ''
+                                        ,"telefono"  =>  isset($t[3]) ? $t[3] : ''
+                                        ,"whatsapp"  =>  isset($t[4]) ? $t[4] : ''
+                                        ,"ubicacion"  =>  isset($t[5]) ? $t[5] : ''
+                                        ,"longitud"  =>  isset($t[6]) ? $t[6] : ''
+                                        ,"latitud"  =>  isset($t[7]) ? $t[7] : ''
                 );
             }
 
@@ -308,11 +321,14 @@ class EmpresaController extends Controller
     {
             $nombre_archivo= 'plantilla_empresa.xlsx';
 
-            $title[]= [  "Nombre"
+            $title[]= [  "Logo"
+                        ,"Nombre"
                         ,"Descripcion"
                         ,"Telefono"
                         ,"Whatsapp"
                         ,"Ubicacion"
+                        ,"Longitud"
+                        ,"Latitud"
                     ];
 
             $arr_data= $title;
@@ -342,11 +358,14 @@ class EmpresaController extends Controller
     */
     public function get_empresa_by_id(Request $request)
     {
-        $data= empresa::select('nombre'
+        $data= empresa::select('logo'
+                                    , 'nombre'
                                     , 'descripcion'
                                     , 'telefono'
                                     , 'whatsapp'
                                     , 'ubicacion'
+                                    , 'longitud'
+                                    , 'latitud'
         )->where('id', $request->id)->get();
 
         if ( $data->count() > 0 ){
@@ -367,10 +386,10 @@ class EmpresaController extends Controller
     public function get_cat_empresa(Request $request)
     {
         $data= empresa::select(  'id'
+                                    , 'logo'
                                     , 'nombre'
                                     , 'descripcion'
                                     , 'telefono'
-                                    , 'whatsapp'
                                 )->where('b_status', 1)->get();
 
         if ( $data->count() > 0 ){
@@ -396,11 +415,13 @@ class EmpresaController extends Controller
 
         $data= DB::table("empresa")
         ->select("id"
+            , "logo"
             , "nombre"
             , "descripcion"
             , "telefono"
             , "whatsapp"
             , "ubicacion"
+            , "longitud"
         )
         ->where("empresa.b_status", ">", 0)
         ->limit(50)
@@ -413,11 +434,13 @@ class EmpresaController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    'id'=> $value->id
+                                , 'logo'=>$value->logo
                                 , 'nombre'=>$value->nombre
                                 , 'descripcion'=>$value->descripcion
                                 , 'telefono'=>$value->telefono
                                 , 'whatsapp'=>$value->whatsapp
                                 , 'ubicacion'=>$value->ubicacion
+                                , 'longitud'=>$value->longitud
                 );
             }
 
@@ -445,11 +468,14 @@ class EmpresaController extends Controller
         }
 
         $data= empresa::select(  "id"
+                                    , "logo"
                                     , "nombre"
                                     , "descripcion"
                                     , "telefono"
                                     , "whatsapp"
                                     , "ubicacion"
+                                    , "longitud"
+                                    , "latitud"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -457,11 +483,14 @@ class EmpresaController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    $value->id
+                                , $value->logo
                                 , $value->nombre
                                 , $value->descripcion
                                 , $value->telefono
                                 , $value->whatsapp
                                 , $value->ubicacion
+                                , $value->longitud
+                                , $value->latitud
                 );
             }
             return json_encode(array("b_status"=> true, "data" => $arr ));
@@ -485,11 +514,14 @@ class EmpresaController extends Controller
         }
 
         $data= empresa::select("id"
+                                    , "logo"
                                     , "nombre"
                                     , "descripcion"
                                     , "telefono"
                                     , "whatsapp"
                                     , "ubicacion"
+                                    , "longitud"
+                                    , "latitud"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
 
@@ -497,22 +529,28 @@ class EmpresaController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr_data[]= array(   $value->id
+                                    , $value->logo
                                     , $value->nombre
                                     , $value->descripcion
                                     , $value->telefono
                                     , $value->whatsapp
                                     , $value->ubicacion
+                                    , $value->longitud
+                                    , $value->latitud
                 );
             }
 
             $nombre_archivo= 'Reporte_de_empresa.xlsx';
 
             $title[]= [  "id"
+                        ,"Logo"
                         ,"Nombre"
                         ,"Descripcion"
                         ,"Telefono"
                         ,"Whatsapp"
                         ,"Ubicacion"
+                        ,"Longitud"
+                        ,"Latitud"
                     ];
 
             $arr_data= array_merge($title, $arr_data);

@@ -16,17 +16,21 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-sm-12">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Escribe Nombre">
+                            <label for="logo" class="form-label">Logo</label>
+                            <input type="text" class="form-control" id="logo" name="logo" placeholder="Escribe Logo">
                         </div>
                         <div class="col-sm-12 d-none tipo-ya-existe">
                             <span class="badge bg-danger text-uppercase">Este registro ya existe</span>
                         </div>
                         <div class="col-sm-12">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Escribe Nombre">
+                        </div>
+                        <div class="col-sm-12">
                             <label for="descripcion" class="form-label">Descripcion</label>
                             <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Escribe Descripcion">
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <label for="telefono" class="form-label">Telefono</label>
                             <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Escribe Telefono">
                         </div>
@@ -35,7 +39,7 @@
                             <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="Escribe Whatsapp">
                         </div>
                         <div class="col-12">
-                            <label for="whatsapp" class="form-label">Ubicacion</label>
+                            <label for="Ubicacion" class="form-label">Ubicacion</label>
                             
                             <div class="form-group form-float">
                                 <div class="form-line">
@@ -43,8 +47,8 @@
                                 </div>
                             </div>
 
-                            <input type="text" name="longitude" id="longitude">
-                            <input type="text" name="latitude" id="latitude">
+                            <input type="hidden" name="longitude" id="longitude">
+                            <input type="hidden" name="latitude" id="latitude">
                             <div class="location-map" id="location-map">
                                 <div style="width: 600px; height: 400px;" id="map_canvas"></div>
                             </div>

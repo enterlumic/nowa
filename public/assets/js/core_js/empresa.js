@@ -70,11 +70,14 @@ let empresa = {
                 "url": "get_empresa_datatable",
                 "type": "GET",
                 "data": function(d) {
+                    d.buscar_logo = $('#buscar_logo').val();
                     d.buscar_nombre = $('#buscar_nombre').val();
                     d.buscar_descripcion = $('#buscar_descripcion').val();
                     d.buscar_telefono = $('#buscar_telefono').val();
                     d.buscar_whatsapp = $('#buscar_whatsapp').val();
                     d.buscar_ubicacion = $('#buscar_ubicacion').val();
+                    d.buscar_longitud = $('#buscar_longitud').val();
+                    d.buscar_latitud = $('#buscar_latitud').val();
                     // Añade aquí más datos de búsqueda si es necesario
                 },
                 "headers": {
@@ -151,16 +154,19 @@ let empresa = {
 
             "columns": [
                 { "data": "id", visible: true},
+                { "data": "logo", class: "logo", visible: true },
                 { "data": "nombre", class: "nombre", visible: true },
                 { "data": "descripcion", class: "descripcion", visible: true },
                 { "data": "telefono", class: "telefono", visible: true },
                 { "data": "whatsapp", class: "whatsapp", visible: true },
                 { "data": "ubicacion", class: "ubicacion", visible: true },
+                { "data": "longitud", class: "longitud", visible: true },
+                { "data": "latitud", class: "latitud", visible: true },
             ],
 
             "columnDefs": [
                 {
-                    "targets": 6,
+                    "targets": 9,
                     "render": function (data, type, row, meta) {
                         return '<div>\
                                     <ul class="list-inline mb-0 font-size-16">\
@@ -179,6 +185,14 @@ let empresa = {
         });
 
         // Evento de clic en las filas de la tabla
+        $('#get_empresa_datatable tbody').on('click', 'tr .logo', function () {
+            // Obtener los datos de la fila en la que se hizo clic
+            let data = table.row(this).data();
+
+            // Copiar el valor del email al portapapeles
+            empresa.fn_copyToClipboardempresa(data.logo);
+        });
+
         $('#get_empresa_datatable tbody').on('click', 'tr .nombre', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
@@ -217,6 +231,22 @@ let empresa = {
 
             // Copiar el valor del email al portapapeles
             empresa.fn_copyToClipboardempresa(data.ubicacion);
+        });
+
+        $('#get_empresa_datatable tbody').on('click', 'tr .longitud', function () {
+            // Obtener los datos de la fila en la que se hizo clic
+            let data = table.row(this).data();
+
+            // Copiar el valor del email al portapapeles
+            empresa.fn_copyToClipboardempresa(data.longitud);
+        });
+
+        $('#get_empresa_datatable tbody').on('click', 'tr .latitud', function () {
+            // Obtener los datos de la fila en la que se hizo clic
+            let data = table.row(this).data();
+
+            // Copiar el valor del email al portapapeles
+            empresa.fn_copyToClipboardempresa(data.latitud);
         });
 
         // FIN Evento de clic en las filas de la tabla
@@ -358,13 +388,13 @@ let empresa = {
                 });
             }
             , rules: {
-              nombre: {
+              logo: {
                 required: true
               }
             }
             , messages: {
-                nombre: {
-                    minlength: "El nombre es requerido"
+                logo: {
+                    minlength: "El logo es requerido"
                 }
               }
         });
@@ -415,13 +445,13 @@ let empresa = {
                 });
             }
             , rules: {
-              nombre: {
+              logo: {
                 required: true
               }
             }
             , messages: {
-                nombre: {
-                    minlength: "Mensaje personalizado nombre"
+                logo: {
+                    minlength: "Mensaje personalizado logo"
                 }
               }
         });
@@ -429,12 +459,13 @@ let empresa = {
 
     fn_modalShowempresa: function () {
         $('#modalFormIUempresa').on('shown.bs.modal', function (e) {
-            $('#nombre', e.target).focus();
+            $('#logo', e.target).focus();
 
             var button = $(event.relatedTarget);
             empresa.googleMaps();
             $("#location-map").css("width", "100%");
             $("#map_canvas").css("width", "100%");
+
 
         });
 
@@ -715,7 +746,7 @@ let empresa = {
                         // #id_cat_empresa' 
 
                         if ($("#id_cat_empresa").length){
-                            $("#id_cat_empresa").append("<option value="+j['id']+"> "+j['nombre']+" </option>");
+                            $("#id_cat_empresa").append("<option value="+j['id']+"> "+j['logo']+" </option>");
                         }
                     });
                 }
@@ -726,7 +757,7 @@ let empresa = {
 
     fn_set_validar_existencia_empresa: function(){
 
-        $( "#nombre" ).keyup(function( event ) {
+        $( "#logo" ).keyup(function( event ) {
 
             var id=0;
             // Si se esta editando return
@@ -734,18 +765,18 @@ let empresa = {
                 id= $("#modalFormIUempresa #id").val();
             }
 
-            let nombre= this.value;
+            let logo= this.value;
 
-            if(nombre ==""){
+            if(logo ==""){
                 $("#modalFormIUempresa .btn-action-form").attr("disabled",false);
-                $("#nombre").removeClass("border-danger").removeClass("text-danger");
+                $("#logo").removeClass("border-danger").removeClass("text-danger");
                 $(".tipo-ya-existe").addClass("d-none");
                 return;
             }
 
             $.ajax({
                 url: "validar_existencia_empresa",
-                data: { nombre: nombre, id: id},
+                data: { logo: logo, id: id},
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type: 'GET',
                 contentType: "application/json",
@@ -755,11 +786,11 @@ let empresa = {
 
                     if (json['b_status']) {
                         $("#modalFormIUempresa .btn-action-form").attr("disabled",true);
-                        $("#nombre").addClass("border-danger").addClass("text-danger");
+                        $("#logo").addClass("border-danger").addClass("text-danger");
                         $(".tipo-ya-existe").removeClass("d-none");
                     } else {
                         $("#modalFormIUempresa .btn-action-form").attr("disabled",false);
-                        $("#nombre").removeClass("border-danger").removeClass("text-danger");
+                        $("#logo").removeClass("border-danger").removeClass("text-danger");
                         $(".tipo-ya-existe").addClass("d-none");
                     }
                 },
@@ -938,37 +969,36 @@ let empresa = {
         });  
     },
 
-    fn_eventos_extra_empresa: function(){
-    },
-
     googleMaps: function()
     {
-        setTimeout(function(){
-
+        setTimeout(function() {
             var input = document.getElementById('target');
             var searchBox = new google.maps.places.SearchBox(input);
             var markers = [];
 
-            let v_verificar_lat= $("#latitude").val();
-            let v_lat= $("#latitude").val();
-            let v_lng= $("#longitude").val();
+            let v_verificar_lat = $("#latitude").val();
+            let v_lat = $("#latitude").val();
+            let v_lng = $("#longitude").val();
 
-            v_lat= v_lat=='' ? 25.68  : parseFloat(v_lat);
-            v_lng= v_lng=='' ? -100.33: parseFloat(v_lng);
+            v_lat = v_lat === '' ? 25.68 : parseFloat(v_lat);
+            v_lng = v_lng === '' ? -100.33 : parseFloat(v_lng);
 
-            if ( $("#form_empresa" ).length){
-
+            if ($("#form_empresa").length) {
                 const map = new google.maps.Map(document.getElementById("map_canvas"), {
-                zoom: 15,
-                center: { lat: v_lat, lng: v_lng },
+                    zoom: 15,
+                    center: { lat: v_lat, lng: v_lng },
                 });
 
-                marker = new google.maps.Marker({
-                map,
-                draggable: true,
-                animation: google.maps.Animation.DROP,
-                position: { lat: v_lat, lng: v_lng },
+                var marker = new google.maps.Marker({
+                    map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    position: { lat: v_lat, lng: v_lng },
                 });
+
+                // Actualiza latitud y longitud después de cargar el mapa
+                $("#latitude").val(v_lat.toFixed(6));
+                $("#longitude").val(v_lng.toFixed(6));
 
                 marker.addListener("dragend", function(evt) {
                     $("#latitude").val(evt.latLng.lat().toFixed(6));
@@ -977,64 +1007,65 @@ let empresa = {
                 });
 
                 google.maps.event.addListener(searchBox, 'places_changed', function() {
+                    var places = searchBox.getPlaces();
 
-                  var places = searchBox.getPlaces();
+                    for (var i = 0, marker; marker = markers[i]; i++) {
+                        marker.setMap(null);
+                    }
 
-                  for (var i = 0, marker; marker = markers[i]; i++) {
-                    marker.setMap(null);
-                  }
+                    markers = [];
+                    var bounds = new google.maps.LatLngBounds();
+                    for (var i = 0, place; place = places[i]; i++) {
+                        var image = {
+                            url: place.icon,
+                            size: new google.maps.Size(71, 71),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(17, 34),
+                            scaledSize: new google.maps.Size(25, 25)
+                        };
 
-                  markers = [];
-                  var bounds = new google.maps.LatLngBounds();
-                  for (var i = 0, place; place = places[i]; i++) {
-                    var image = {
-                      url: place.icon,
-                      size: new google.maps.Size(71, 71),
-                      origin: new google.maps.Point(0, 0),
-                      anchor: new google.maps.Point(17, 34),
-                      scaledSize: new google.maps.Size(25, 25)
-                    };
+                        var marker = new google.maps.Marker({
+                            map,
+                            draggable: true,
+                            animation: google.maps.Animation.DROP,
+                            position: place.geometry.location
+                        });
 
-                    var marker = new google.maps.Marker({
-                      map,
-                      draggable: true,
-                      animation: google.maps.Animation.DROP,
-                      position: place.geometry.location
-                    });
+                        marker.addListener("dragend", function(evt) {
+                            $("#latitude").val(evt.latLng.lat().toFixed(6));
+                            $("#longitude").val(evt.latLng.lng().toFixed(6));
+                        });
 
-                    marker.addListener("dragend", function(evt) {
-                          $("#latitude").val(evt.latLng.lat().toFixed(6));
-                          $("#longitude").val(evt.latLng.lng().toFixed(6));
-                    });
+                        markers.push(marker);
 
-                    markers.push(marker);
+                        bounds.extend(place.geometry.location);
+                    }
+                    map.fitBounds(bounds);
 
-                    bounds.extend(place.geometry.location);
-                  }
-                  map.fitBounds(bounds);
+                    let v_lo = bounds.getCenter().lng();
+                    let v_la = bounds.getCenter().lat();
 
-                  let v_lo= bounds['Ra']['lo'];
-                  let v_la= bounds['vb']['lo'];
-
-                  $("#latitude").val(v_la.toFixed(6));
-                  $("#longitude").val(v_lo.toFixed(6));
-
+                    $("#latitude").val(v_la.toFixed(6));
+                    $("#longitude").val(v_lo.toFixed(6));
                 });
             }
 
-            if (v_verificar_lat!==''){
-
+            if (v_verificar_lat !== '') {
                 const map = new google.maps.Map(document.getElementById("map_canvas"), {
-                  zoom: 15,
-                  center: { lat: v_lat, lng: v_lng },
+                    zoom: 15,
+                    center: { lat: v_lat, lng: v_lng },
                 });
 
-                marker = new google.maps.Marker({
-                map,
-                draggable: true,
-                animation: google.maps.Animation.DROP,
-                position: { lat: v_lat, lng: v_lng },
+                var marker = new google.maps.Marker({
+                    map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    position: { lat: v_lat, lng: v_lng },
                 });
+
+                // Actualiza latitud y longitud después de cargar el mapa
+                $("#latitude").val(v_lat.toFixed(6));
+                $("#longitude").val(v_lng.toFixed(6));
 
                 marker.addListener("dragend", function(evt) {
                     $("#latitude").val(evt.latLng.lat().toFixed(6));
@@ -1042,58 +1073,54 @@ let empresa = {
                 });
 
                 google.maps.event.addListener(searchBox, 'places_changed', function() {
+                    var places = searchBox.getPlaces();
 
-                var places = searchBox.getPlaces();
+                    for (var i = 0, marker; marker = markers[i]; i++) {
+                        marker.setMap(null);
+                    }
 
-                for (var i = 0, marker; marker = markers[i]; i++) {
-                  marker.setMap(null);
-                }
+                    markers = [];
+                    var bounds = new google.maps.LatLngBounds();
+                    for (var i = 0, place; place = places[i]; i++) {
+                        var image = {
+                            url: place.icon,
+                            size: new google.maps.Size(71, 71),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(17, 34),
+                            scaledSize: new google.maps.Size(25, 25)
+                        };
 
-                markers = [];
-                var bounds = new google.maps.LatLngBounds();
-                for (var i = 0, place; place = places[i]; i++) {
-                  var image = {
-                    url: place.icon,
-                    size: new google.maps.Size(71, 71),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(25, 25)
-                  };
+                        var marker = new google.maps.Marker({
+                            map,
+                            draggable: true,
+                            animation: google.maps.Animation.DROP,
+                            position: place.geometry.location
+                        });
 
-                  var marker = new google.maps.Marker({
-                    map,
-                    draggable: true,
-                    animation: google.maps.Animation.DROP,
-                    position: place.geometry.location
-                  });
+                        marker.addListener("dragend", function(evt) {
+                            $("#latitude").val(evt.latLng.lat().toFixed(6));
+                            $("#longitude").val(evt.latLng.lng().toFixed(6));
+                        });
 
-                  marker.addListener("dragend", function(evt) {
-                        $("#latitude").val(evt.latLng.lat().toFixed(6));
-                        $("#longitude").val(evt.latLng.lng().toFixed(6));
-                  });
+                        markers.push(marker);
 
-                  markers.push(marker);
+                        bounds.extend(place.geometry.location);
+                    }
+                    map.fitBounds(bounds);
 
-                  bounds.extend(place.geometry.location);
-                }
-                map.fitBounds(bounds);
+                    let v_lo = bounds.getCenter().lng();
+                    let v_la = bounds.getCenter().lat();
 
-                if (v_lat=='' && v_lng==''){
-                    let v_lo= v_lat;
-                    let v_la= v_lng;
-                }else{
-                    let v_lo= bounds['Ra']['lo'];
-                    let v_la= bounds['vb']['lo'];
-                }
-
-                $("#latitude").val(v_la);
-                $("#longitude").val(v_lo);
-
-              });
+                    $("#latitude").val(v_la.toFixed(6));
+                    $("#longitude").val(v_lo.toFixed(6));
+                });
             }
-
-        },1000);
+        }, 1000);
     },
+
+    fn_eventos_extra_empresa: function(){
+    },
+
 
 
 };

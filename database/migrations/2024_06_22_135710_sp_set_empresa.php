@@ -15,21 +15,27 @@ return new class extends Migration
     {
         Schema::connection('mysql')->getConnection()->statement('
             CREATE PROCEDURE sp_set_empresa(IN `v_id` BIGINT(20)
-                                                              , IN `v_nombre` VARCHAR(200)
-                                                              , IN `v_descripcion` VARCHAR(210)
-                                                              , IN `v_telefono` VARCHAR(220)
-                                                              , IN `v_whatsapp` VARCHAR(230)
-                                                              , IN `v_ubicacion` VARCHAR(240)
+                                                              , IN `v_logo` VARCHAR(200)
+                                                              , IN `v_nombre` VARCHAR(210)
+                                                              , IN `v_descripcion` VARCHAR(220)
+                                                              , IN `v_telefono` VARCHAR(230)
+                                                              , IN `v_whatsapp` VARCHAR(240)
+                                                              , IN `v_ubicacion` VARCHAR(250)
+                                                              , IN `v_longitud` VARCHAR(260)
+                                                              , IN `v_latitud` VARCHAR(270)
                                                               , OUT `v_i_response` INTEGER)
             BEGIN
                 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
                 UPDATE empresa 
-                  SET nombre   = v_nombre
+                  SET logo   = v_logo
+                    , nombre   = v_nombre
                     , descripcion   = v_descripcion
                     , telefono   = v_telefono
                     , whatsapp   = v_whatsapp
                     , ubicacion   = v_ubicacion
+                    , longitud   = v_longitud
+                    , latitud   = v_latitud
                 WHERE id= v_id ;
                 SET v_i_response := LAST_INSERT_ID();            
             END
