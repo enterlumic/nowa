@@ -147,3 +147,23 @@ Route::get('validar_existencia_logss', [LogssController::class, 'validar_existen
 
 
 
+
+
+use App\Http\Controllers\EmpresaController;
+Route::get('empresa', [EmpresaController::class, 'index'])->middleware('auth') ;
+Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);
+Route::post('set_import_empresa', [EmpresaController::class, 'set_import_empresa']);
+Route::post('get_empresa_by_id', [EmpresaController::class, 'get_empresa_by_id']);
+Route::post('delete_empresa', [EmpresaController::class, 'delete_empresa']);
+Route::post('undo_delete_empresa', [EmpresaController::class, 'undo_delete_empresa']);
+Route::get('get_empresa_datatable', [EmpresaController::class, 'get_empresa_datatable']);
+Route::post('truncate_empresa', [EmpresaController::class, 'truncate_empresa']);
+Route::post('truncate_sps_empresa', [EmpresaController::class, 'truncate_sps_empresa']);
+Route::post('form_importar_empresa', [EmpresaController::class, 'form_importar_empresa']);
+Route::get('export_excel_empresa', [EmpresaController::class, 'export_excel_empresa']);
+Route::post('get_cat_empresa', [EmpresaController::class, 'get_cat_empresa']);
+Route::post('get_empresa_by_list', [EmpresaController::class, 'get_empresa_by_list']);
+Route::get('get_empresa_diez', [EmpresaController::class, 'get_empresa_diez']);
+Route::get('descargar_plantilla_empresa', [EmpresaController::class, 'descargar_plantilla_empresa']);
+Route::get('validar_existencia_empresa', [EmpresaController::class, 'validar_existencia_empresa']);
+
