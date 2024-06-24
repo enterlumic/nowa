@@ -345,59 +345,118 @@ let empresa = {
     },
 
     fn_set_empresa: function () {
-        $("#form_empresa").validate({
-            submitHandler: function (form) {
-                let get_form = document.getElementById("form_empresa");
-                let postData = new FormData(get_form);
 
-                let element_by_id= 'form_empresa';
-                let message=  'Cargando...' ;
-                let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
-
-                $.ajax({
-                    url: "set_empresa",
-                    data: postData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type: 'POST',
-                    success: function (response) {
-
-                        $loading.waitMe('hide');
-
-                        let json ='';
-                        try {
-                            json = JSON.parse(response);
-                        } catch (e) {
-                            alert(response);
-                            return;
-                        }
-
-                        if (json["b_status"]) {
-                            $('#get_empresa_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_empresa").reset();
-                            $('#modalFormIUempresa').modal('hide');
-                        } else {
-                            alert(json);
-                        }
-                    },
-                    error: function (response) {
-                        $loading.waitMe('hide');
-                    }
-                });
-            }
-            , rules: {
-              logo: {
-                required: true
-              }
-            }
-            , messages: {
-                logo: {
-                    minlength: "El logo es requerido"
+            $('#smartwizardEmpresa').smartWizard({
+                selected: 0,
+                theme: 'dots',
+                justified: true,
+                toolbar: {
+                    showNextButton: true,
+                    showPreviousButton: true,
+                    position: 'bottom',
+                    extraHtml: `<button type="submit" class="btn btn-success sw-btn d-none" id="comprar-checkout">Guardar</button>`
+                },
+                lang: {
+                    next: 'Siguiente',
+                    previous: 'Atrás'
+                },
+                keyboard: {
+                    keyNavigation: false, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
+                    keyLeft: [37], // Left key code
+                    keyRight: [39] // Right key code
                 }
-              }
-        });
+            });
+
+            $("#form_empresa").validate({
+                submitHandler: function (form) {
+                    let get_form = document.getElementById("form_empresa");
+                    let postData = new FormData(get_form);
+
+                    let element_by_id= 'form_empresa';
+                    let message=  'Cargando...' ;
+                    let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
+
+                    $.ajax({
+                        url: "set_empresa",
+                        data: postData,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        type: 'POST',
+                        success: function (response) {
+
+                            $loading.waitMe('hide');
+
+                            let json ='';
+                            try {
+                                json = JSON.parse(response);
+                            } catch (e) {
+                                alert(response);
+                                return;
+                            }
+
+                            if (json["b_status"]) {
+                                $('#get_empresa_datatable').DataTable().ajax.reload();
+                                document.getElementById("form_empresa").reset();
+                                $('#modalFormIUempresa').modal('hide');
+                            } else {
+                                alert(json);
+                            }
+                        
+                        },
+                        error: function (response) {
+                            console.log("response", response);
+                            $loading.waitMe('hide');
+                        }
+                    });
+
+                },
+                rules: {
+                    nombre: {
+                        required: true
+                    },
+                    descripcion: {
+                        required: true
+                    }
+                },
+                messages: {
+                    nombre: {
+                        required: "Por favor ingrese el nombre de la empresa"
+                    },
+                    descripcion: {
+                        required: "Por favor ingrese la descripción de la empresa"
+                    }
+                },
+                ignore: "", // Esta línea asegura que los campos ocultos también se validen
+                errorPlacement: function(error, element) {
+                    // Personaliza dónde y cómo se colocan los mensajes de error
+                    error.insertAfter(element);
+                }
+            });
+
+            // Set event to validate before moving to the next step
+            $("#smartwizardEmpresa").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
+
+                if (stepDirection === 1 && $("#form_empresa").valid()) {
+                    $(".sw-toolbar-elm .sw-btn-next").addClass('d-none');
+                    $(".sw-toolbar-elm #comprar-checkout").removeClass('d-none');
+                    return $("#form_empresa").valid();
+                } else {
+                    return $("#form_empresa").valid();
+                }
+
+                return true;
+            });
+
+            // Handle navigation button clicks
+            $('.nexttab').on('click', function() {
+                $('#smartwizardEmpresa').smartWizard("next");
+            });
+
+            $('.previestab').on('click', function() {
+                $('#smartwizardEmpresa').smartWizard("prev");
+            });
     },
 
     fn_set_import_empresa: function () {

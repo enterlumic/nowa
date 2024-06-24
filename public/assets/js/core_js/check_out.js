@@ -101,7 +101,7 @@ let checkOut = {
 
         // https://techlaboratory.net/jquery-smartwizard
 
-        $('#smartwizard').smartWizard({
+        $('#smartwizardCheckOut').smartWizard({
             selected: 0,
             theme: 'dots',
             justified: true,
@@ -208,7 +208,7 @@ let checkOut = {
         });
 
         // Set event to validate before moving to the next step
-        $("#smartwizard").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
+        $("#smartwizardCheckOut").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
 
             if (stepDirection === 1) {
                 return $("#form_check_out").valid();
@@ -228,11 +228,11 @@ let checkOut = {
 
         // Handle navigation button clicks
         $('.nexttab').on('click', function() {
-            $('#smartwizard').smartWizard("next");
+            $('#smartwizardCheckOut').smartWizard("next");
         });
 
         $('.previestab').on('click', function() {
-            $('#smartwizard').smartWizard("prev");
+            $('#smartwizardCheckOut').smartWizard("prev");
         });
     },
 

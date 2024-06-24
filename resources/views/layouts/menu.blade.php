@@ -58,4 +58,10 @@
         <span class="side-menu__label">Logs</span>
     </a>
 </li>
+<li class="slide">
+    <a href="empresa" class="side-menu__item">
+        <i class="material-icons side-menu__icon">business</i>
+        <span class="side-menu__label">Empresa</span>
+    </a>
+</li>
 <!-- End::slide -->

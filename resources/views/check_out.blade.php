@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-body checkout-tab">
                     <form action="#form_check_out" id="form_check_out" method="post">
-                        <div id="smartwizard">
+                        <div id="smartwizardCheckOut">
                             <ul class="nav">
                                 <li class="nav-item">
                                     <a class="nav-link" href="#step-1">
