@@ -16,6 +16,7 @@
         <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
             <div class="card">
 
+
                 <!-- Tab panes -->
                 <div class="tab-content text-muted">
                     <div class="tab-pane active" id="tab-datatable" role="tabpanel">
@@ -45,20 +46,6 @@
                                                 <th style="width: 9%">Acción</th>
                                             </tr>
                                         </thead>
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th class="logo"><input type="text" id="buscar_logo" placeholder="Buscar por logo"></th>
-                                                <th class="nombre"><input type="text" id="buscar_nombre" placeholder="Buscar por nombre"></th>
-                                                <th class="descripcion"><input type="text" id="buscar_descripcion" placeholder="Buscar por descripcion"></th>
-                                                <th class="telefono"><input type="text" id="buscar_telefono" placeholder="Buscar por telefono"></th>
-                                                <th class="whatsapp"><input type="text" id="buscar_whatsapp" placeholder="Buscar por whatsapp"></th>
-                                                <th class="ubicacion"><input type="text" id="buscar_ubicacion" placeholder="Buscar por ubicacion"></th>
-                                                <th class="longitud"><input type="text" id="buscar_longitud" placeholder="Buscar por longitud"></th>
-                                                <th class="latitud"><input type="text" id="buscar_latitud" placeholder="Buscar por latitud"></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
                                     </table>
                                 </div>
                             </div>
@@ -82,3 +69,4 @@
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdSvVepDl30nFw15uaj_BaWQeDOR5Hfj8&libraries=places"></script>
 <script src="assets/js/core_js/empresa.js?{{ rand() }}"></script>
+{{-- <script src="https://innostudio.de/fileuploader/documentation/examples/avatar/js/custom.js"></script> --}}

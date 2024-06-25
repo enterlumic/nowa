@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\empresa;
 use App\Lib\LibCore;
+use \FileUploader;
+
 use Session;
 
 class EmpresaController extends Controller
@@ -149,6 +152,41 @@ class EmpresaController extends Controller
             return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla empresa"));
         }
 
+        // Procesar el archivo de logo
+        if ($request->has('fileuploader-list-logoUpload')) {
+            $fileUploaderList = json_decode($request->input('fileuploader-list-logoUpload'), true);
+
+            foreach ($fileUploaderList as $fileInfo) {
+                if (isset($fileInfo['editor']['crop'])) {
+                    $fileName = $fileInfo['file'];
+                    $cropData = $fileInfo['editor']['crop'];
+
+                    // Obtener el archivo del almacenamiento temporal
+                    $path = storage_path('app/public/uploads/temp/' . $fileName);
+
+                    if (file_exists($path)) {
+                        // Recortar y guardar la imagen
+                        $img = \Image::make($path);
+                        $img->crop(
+                            intval($cropData['width']),
+                            intval($cropData['height']),
+                            intval($cropData['left']),
+                            intval($cropData['top'])
+                        );
+
+                        $finalPath = 'public/uploads/empresa/logos/' . $fileName;
+                        try {
+                            Storage::put($finalPath, (string) $img->encode());
+                        } catch (\Exception $e) {
+                            return response()->json(['error' => $e->getMessage()]);
+                        }
+
+                        $request->logo = $finalPath;
+                    }
+                }
+            }
+        }
+
         $data=[ 'logo' => isset($request->logo)? $request->logo:"",
                 'nombre' => isset($request->nombre)? $request->nombre: "",
                 'descripcion' => isset($request->descripcion)? $request->descripcion: "",
@@ -167,6 +205,70 @@ class EmpresaController extends Controller
             DB::table('empresa')->insert($data);
             return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Simular upload foto
+    |--------------------------------------------------------------------------
+    | 
+    | @return json
+    |
+    */
+    public function ajax_upload_file(Request $request)
+    {
+        // Validar los datos recibidos
+        $request->validate([
+            'name' => 'required|string',
+            'logoUpload' => 'required|array',
+            'logoUpload.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:10240' // Validación básica de archivos
+        ]);
+
+        // Obtener información del archivo
+        $file = $request->file('logoUpload')[0];
+
+        // Generar un nombre único para el archivo
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        // Guardar el archivo en el almacenamiento público
+        $path = $file->storeAs('public/uploads/temp', $filename);
+
+        // Datos de la respuesta JSON
+        $data = [
+            'files' => [
+                [
+                    'title' => $file->getClientOriginalName(),
+                    'name' => $filename,
+                    'size' => $file->getSize(),
+                    'size2' => $this->formatSizeUnits($file->getSize()),
+                    'type' => $file->getMimeType(),
+                    'url' => Storage::url($path)
+                ]
+            ],
+            'isSuccess' => true
+        ];
+
+        return response()->json($data);
+
+    }
+
+    public function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824) {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        } elseif ($bytes >= 1048576) {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        } elseif ($bytes >= 1024) {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        } elseif ($bytes > 1) {
+            $bytes = $bytes . ' bytes';
+        } elseif ($bytes == 1) {
+            $bytes = $bytes . ' byte';
+        } else {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
     }
 
     /*
@@ -358,22 +460,28 @@ class EmpresaController extends Controller
     */
     public function get_empresa_by_id(Request $request)
     {
-        $data= empresa::select('logo'
-                                    , 'nombre'
-                                    , 'descripcion'
-                                    , 'telefono'
-                                    , 'whatsapp'
-                                    , 'ubicacion'
-                                    , 'longitud'
-                                    , 'latitud'
+        $data = Empresa::select(
+            'logo',
+            'nombre',
+            'descripcion',
+            'telefono',
+            'whatsapp',
+            'ubicacion',
+            'longitud',
+            'latitud'
         )->where('id', $request->id)->get();
 
-        if ( $data->count() > 0 ){
-            return json_encode(array("b_status"=> true, "data" => $data));
-        }else{
-            return json_encode(array("b_status"=> false, "data" => 'sin resultados'));
+        if ($data->count() > 0) {
+            // Agregar la URL completa del logo a cada empresa
+            foreach ($data as $empresa) {
+                $empresa->logo_url =  url(Storage::url($empresa->logo));
+            }
+            return json_encode(array("b_status" => true, "data" => $data));
+        } else {
+            return json_encode(array("b_status" => false, "data" => 'sin resultados'));
         }
     }
+
 
     /*
     |--------------------------------------------------------------------------

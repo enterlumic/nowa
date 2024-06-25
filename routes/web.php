@@ -18,7 +18,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
+use App\Http\Controllers\DashboardController;
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth') ;
+Route::post('/promociones/fetch', [DashboardController::class, 'fetch']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -142,17 +144,11 @@ Route::get('get_logss_diez', [LogssController::class, 'get_logss_diez']);
 Route::get('descargar_plantilla_logss', [LogssController::class, 'descargar_plantilla_logss']);
 Route::get('validar_existencia_logss', [LogssController::class, 'validar_existencia_logss']);
 
-
-
-
-
-
-
-
-
 use App\Http\Controllers\EmpresaController;
 Route::get('empresa', [EmpresaController::class, 'index'])->middleware('auth') ;
 Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);
+Route::post('ajax_upload_file', [EmpresaController::class, 'ajax_upload_file']);
+Route::post('ajax_remove_file', [EmpresaController::class, 'ajax_remove_file']);
 Route::post('set_import_empresa', [EmpresaController::class, 'set_import_empresa']);
 Route::post('get_empresa_by_id', [EmpresaController::class, 'get_empresa_by_id']);
 Route::post('delete_empresa', [EmpresaController::class, 'delete_empresa']);

@@ -523,13 +523,9 @@ let promociones = {
         $('#modalFormIUpromociones').on('shown.bs.modal', function (e) {
             $('#titulo', e.target).focus();
 
-            // promociones.initializeFileUploader('');
-
             if (!$('#form_promociones #id').length) {
                 promociones.initializeFileUploader('');
-                console.log("no existe");
             } else {
-                console.log("si existe");
                 promociones.fnShowbyIDPromocion();
             }
 

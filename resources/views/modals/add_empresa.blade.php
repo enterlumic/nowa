@@ -35,9 +35,12 @@
                             <div class="modal-body">
                                 <div class="row g-3">
                                     <div class="col-sm-12">
-                                        <label for="logo" class="form-label">Logo</label>
-                                        <input type="text" class="form-control" id="logo" name="logo" placeholder="Escribe Logo">
+                                        <label for="logo" class="form-label">logo</label>
+                                        <div id="fileUploaderContainer">
+                                            <input type="file" name="logoUpload" class="d-none logoUpload" id="logoUpload" data-fileuploader-default="https://innostudio.de/fileuploader/images/default-avatar.png" data-fileuploader-files=''>
+                                        </div>
                                     </div>
+                                    <input type="hidden" id="logoEmpresa">
                                     <div class="col-sm-12 d-none tipo-ya-existe">
                                         <span class="badge bg-danger text-uppercase">Este registro ya existe</span>
                                     </div>
@@ -95,5 +98,14 @@
 <!-- Include SmartWizard CSS -->
 <link href="assets/css/smart_wizard_theme_arrows.min.css" rel="stylesheet" type="text/css" />
 
+<style type="text/css">
+            .fileuploader {
+                width: 160px;
+                height: 160px;
+                margin: 15px;
+            }    
+
+</style>
 <!-- Include SmartWizard JS -->
 <script src="assets/js/core_js/jquery.smartWizard.min.js"></script>
+
