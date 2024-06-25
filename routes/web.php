@@ -145,6 +145,7 @@ Route::get('descargar_plantilla_logss', [LogssController::class, 'descargar_plan
 Route::get('validar_existencia_logss', [LogssController::class, 'validar_existencia_logss']);
 
 
+
 use App\Http\Controllers\EmpresaController;
 Route::get('empresa', [EmpresaController::class, 'index'])->middleware('auth') ;
 Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);

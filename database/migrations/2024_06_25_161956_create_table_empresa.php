@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::connection('mysql')->create('empresa', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id');
             $table->string('logo', 100)->nullable()->comment('Agregar lodo de tu empresa');
             $table->string('nombre', 60)->nullable()->comment('Nombre de la empresa');
             $table->text('descripcion')->nullable()->comment('Descripción de la empresa');
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Fecha de creación del registro');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('Fecha de actualización del registro');
             $table->boolean('b_status')->index()->default(1)->comment('Estado de la empresa (1 = Activo, 0 = Inactivo)');
+        
         });
     }
 

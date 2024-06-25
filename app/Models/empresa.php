@@ -10,6 +10,7 @@ class empresa extends Model
     public $table = "empresa";
     // protected $connection = 'other_bd'; // Descomentar esta linea y agregar la bd que se requiere...
     protected $fillable =   [     'id'
+                                , 'user_id'
                                 , 'logo'
                                 , 'nombre'
                                 , 'descripcion'

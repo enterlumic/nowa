@@ -52,7 +52,15 @@ class EmpresaController extends Controller
     public function index()
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_empresa' , 'vc_info' => "index - empresa" ] );
-        return view('empresa');
+
+        // Obtener el user_id del usuario autenticado
+        $userId = Auth::user()->id;
+
+        // Buscar la empresa por user_id
+        $empresa = Empresa::where('user_id', $userId)->first();
+        
+        // Pasar los datos a la vista
+        return view('empresa', ['empresa' => $empresa]);
     }
 
 
@@ -70,7 +78,8 @@ class EmpresaController extends Controller
             return json_encode(array("data"=>"" ));
         }
 
-        if (   ( isset($request->buscar_logo) && !empty($request->buscar_logo) )
+        if (   ( isset($request->buscar_user_id) && !empty($request->buscar_user_id) )
+            || ( isset($request->buscar_logo) && !empty($request->buscar_logo) )
             || ( isset($request->buscar_nombre) && !empty($request->buscar_nombre) )
             || ( isset($request->buscar_descripcion) && !empty($request->buscar_descripcion) )
             || ( isset($request->buscar_telefono) && !empty($request->buscar_telefono) )
@@ -85,6 +94,7 @@ class EmpresaController extends Controller
         }
 
         $request->search= isset($request->search["value"]) ? $request->search["value"] : '';
+        $buscar_user_id= isset($request->buscar_user_id) ? $request->buscar_user_id :'';
         $buscar_logo= isset($request->buscar_logo) ? $request->buscar_logo :'';
         $buscar_nombre= isset($request->buscar_nombre) ? $request->buscar_nombre :'';
         $buscar_descripcion= isset($request->buscar_descripcion) ? $request->buscar_descripcion :'';
@@ -102,6 +112,7 @@ class EmpresaController extends Controller
         $sql= 'CALL sp_get_empresa(
                '.$buscar.'
             , "'.$request->search.'"
+            , "'.$buscar_user_id.'"
             , "'.$buscar_logo.'"
             , "'.$buscar_nombre.'"
             , "'.$buscar_descripcion.'"
@@ -149,23 +160,39 @@ class EmpresaController extends Controller
             return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla empresa"));
         }
 
-        $data=[ 'logo' => isset($request->logo)? $request->logo:"",
-                'nombre' => isset($request->nombre)? $request->nombre: "",
-                'descripcion' => isset($request->descripcion)? $request->descripcion: "",
-                'telefono' => isset($request->telefono)? $request->telefono: "",
-                'whatsapp' => isset($request->whatsapp)? $request->whatsapp: "",
-                'ubicacion' => isset($request->ubicacion)? $request->ubicacion: "",
-                'longitud' => isset($request->longitud)? $request->longitud: "",
-                'latitud' => isset($request->latitud)? $request->latitud: "",
+        $data = [
+            'user_id' => Auth::user()->id,
+            'logo' => $request->logo ?? "",
+            'nombre' => $request->nombre ?? "",
+            'descripcion' => $request->descripcion ?? "",
+            'telefono' => $request->telefono ?? "",
+            'whatsapp' => $request->whatsapp ?? "",
+            'ubicacion' => $request->ubicacion ?? "",
+            'longitud' => $request->longitud ?? "",
+            'latitud' => $request->latitud ?? "",
         ];
 
-        // Si ya existe solo se actualiza el registro
-        if (isset($request->id)){
-            DB::table('empresa')->where('id', $request->id)->update($data);
+        $updateData = [
+            'logo' => $request->logo ?? "",
+            'nombre' => $request->nombre ?? "",
+            'descripcion' => $request->descripcion ?? "",
+            'telefono' => $request->telefono ?? "",
+            'whatsapp' => $request->whatsapp ?? "",
+            'ubicacion' => $request->ubicacion ?? "",
+            'longitud' => $request->longitud ?? "",
+            'latitud' => $request->latitud ?? "",
+        ];
+
+        // Usar updateOrInsert para realizar el upsert
+        $result = DB::table('empresa')->updateOrInsert(
+            ['user_id' => Auth::user()->id], // Condición para el upsert
+            $updateData // Datos para insertar o actualizar
+        );
+
+        if ($result) {
             return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
-        }else{ // Nuevo registro
-            DB::table('empresa')->insert($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
+        } else {
+            return json_encode(array("b_status"=> true, "vc_message" => "Error al realizar la operación..."));
         }
     }
 
@@ -180,14 +207,14 @@ class EmpresaController extends Controller
     public function validar_existencia_empresa(Request $request)
     {
         if ( isset($request->id) && $request->id > 0){
-            $data= empresa::select('logo')
-            ->where('logo' ,'=', trim($request->logo))
+            $data= empresa::select('user_id')
+            ->where('user_id' ,'=', trim($request->user_id))
             ->where('id' ,'<>', $request->id)
             ->where('b_status' ,'>', 0)
             ->get();
         }else{
-            $data= empresa::select('logo')
-            ->where('logo' ,'=', trim($request->logo))
+            $data= empresa::select('user_id')
+            ->where('user_id' ,'=', trim($request->user_id))
             ->get();
         }
 
@@ -219,7 +246,7 @@ class EmpresaController extends Controller
            $line = $arr[$i];
 
             if (!empty($line)){
-                $data[]=  ['logo'=> trim($line)] ;
+                $data[]=  ['user_id'=> trim($line)] ;
             }
         }
 
@@ -237,16 +264,16 @@ class EmpresaController extends Controller
 
         $results = DB::table('empresa')
             ->Where('id', ' > ', 0)
-            ->OrWhere('logo', 'LIKE', '%' . $buscarPor . '%')
+            ->OrWhere('user_id', 'LIKE', '%' . $buscarPor . '%')
             ->select('id'
-                , DB::raw('CONCAT(id, " ", logo, " ", nombre ) as logo')
+                , DB::raw('CONCAT(id, " ", user_id, " ", logo ) as user_id')
             )
             ->limit(10)
             ->get();
 
         // Formatea los resultados para el selectpicker
         $options = $results->map(function ($item) {
-            return ['id' => $item->id, 'logo' =>Str::headline($item->logo) ];
+            return ['id' => $item->id, 'user_id' =>Str::headline($item->user_id) ];
         });
 
         return response()->json($options);
@@ -287,14 +314,15 @@ class EmpresaController extends Controller
 
             foreach ($sheetData as $key => $t) {
 
-                $data_insert[]=  array(  "logo"  =>  isset($t[0]) ? $t[0] : ''
-                                        ,"nombre"  =>  isset($t[1]) ? $t[1] : ''
-                                        ,"descripcion"  =>  isset($t[2]) ? $t[2] : ''
-                                        ,"telefono"  =>  isset($t[3]) ? $t[3] : ''
-                                        ,"whatsapp"  =>  isset($t[4]) ? $t[4] : ''
-                                        ,"ubicacion"  =>  isset($t[5]) ? $t[5] : ''
-                                        ,"longitud"  =>  isset($t[6]) ? $t[6] : ''
-                                        ,"latitud"  =>  isset($t[7]) ? $t[7] : ''
+                $data_insert[]=  array(  "user_id"  =>  isset($t[0]) ? $t[0] : ''
+                                        ,"logo"  =>  isset($t[1]) ? $t[1] : ''
+                                        ,"nombre"  =>  isset($t[2]) ? $t[2] : ''
+                                        ,"descripcion"  =>  isset($t[3]) ? $t[3] : ''
+                                        ,"telefono"  =>  isset($t[4]) ? $t[4] : ''
+                                        ,"whatsapp"  =>  isset($t[5]) ? $t[5] : ''
+                                        ,"ubicacion"  =>  isset($t[6]) ? $t[6] : ''
+                                        ,"longitud"  =>  isset($t[7]) ? $t[7] : ''
+                                        ,"latitud"  =>  isset($t[8]) ? $t[8] : ''
                 );
             }
 
@@ -321,7 +349,8 @@ class EmpresaController extends Controller
     {
             $nombre_archivo= 'plantilla_empresa.xlsx';
 
-            $title[]= [  "Logo"
+            $title[]= [  "User_Id"
+                        ,"Logo"
                         ,"Nombre"
                         ,"Descripcion"
                         ,"Telefono"
@@ -358,7 +387,8 @@ class EmpresaController extends Controller
     */
     public function get_empresa_by_id(Request $request)
     {
-        $data= empresa::select('logo'
+        $data= empresa::select('user_id'
+                                    , 'logo'
                                     , 'nombre'
                                     , 'descripcion'
                                     , 'telefono'
@@ -386,10 +416,10 @@ class EmpresaController extends Controller
     public function get_cat_empresa(Request $request)
     {
         $data= empresa::select(  'id'
+                                    , 'user_id'
                                     , 'logo'
                                     , 'nombre'
                                     , 'descripcion'
-                                    , 'telefono'
                                 )->where('b_status', 1)->get();
 
         if ( $data->count() > 0 ){
@@ -415,13 +445,13 @@ class EmpresaController extends Controller
 
         $data= DB::table("empresa")
         ->select("id"
+            , "user_id"
             , "logo"
             , "nombre"
             , "descripcion"
             , "telefono"
             , "whatsapp"
             , "ubicacion"
-            , "longitud"
         )
         ->where("empresa.b_status", ">", 0)
         ->limit(50)
@@ -434,13 +464,13 @@ class EmpresaController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    'id'=> $value->id
+                                , 'user_id'=>$value->user_id
                                 , 'logo'=>$value->logo
                                 , 'nombre'=>$value->nombre
                                 , 'descripcion'=>$value->descripcion
                                 , 'telefono'=>$value->telefono
                                 , 'whatsapp'=>$value->whatsapp
                                 , 'ubicacion'=>$value->ubicacion
-                                , 'longitud'=>$value->longitud
                 );
             }
 
@@ -468,6 +498,7 @@ class EmpresaController extends Controller
         }
 
         $data= empresa::select(  "id"
+                                    , "user_id"
                                     , "logo"
                                     , "nombre"
                                     , "descripcion"
@@ -483,6 +514,7 @@ class EmpresaController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr[]= array(    $value->id
+                                , $value->user_id
                                 , $value->logo
                                 , $value->nombre
                                 , $value->descripcion
@@ -514,6 +546,7 @@ class EmpresaController extends Controller
         }
 
         $data= empresa::select("id"
+                                    , "user_id"
                                     , "logo"
                                     , "nombre"
                                     , "descripcion"
@@ -529,6 +562,7 @@ class EmpresaController extends Controller
 
             foreach ($data as $key => $value) {
                 $arr_data[]= array(   $value->id
+                                    , $value->user_id
                                     , $value->logo
                                     , $value->nombre
                                     , $value->descripcion
@@ -543,6 +577,7 @@ class EmpresaController extends Controller
             $nombre_archivo= 'Reporte_de_empresa.xlsx';
 
             $title[]= [  "id"
+                        ,"User_Id"
                         ,"Logo"
                         ,"Nombre"
                         ,"Descripcion"

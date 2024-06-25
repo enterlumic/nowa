@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::connection('mysql')->getConnection()->statement('
             CREATE PROCEDURE sp_get_empresa(   b_filtro_like bool
                                                     , vc_string_filtro varchar(100)
+                                                    , buscar_user_id varchar(100)
                                                     , buscar_logo varchar(100)
                                                     , buscar_nombre varchar(100)
                                                     , buscar_descripcion varchar(100)
@@ -35,18 +36,20 @@ return new class extends Migration
 
                 SET vc_column_order=CASE 
                                     WHEN i_colum_order=0 THEN CONCAT(" ORDER BY id ",vc_order_direct)
-                                    WHEN i_colum_order=1 THEN CONCAT(" ORDER BY logo ",vc_order_direct)
-                                    WHEN i_colum_order=2 THEN CONCAT(" ORDER BY nombre ",vc_order_direct)
-                                    WHEN i_colum_order=3 THEN CONCAT(" ORDER BY descripcion ",vc_order_direct)
-                                    WHEN i_colum_order=4 THEN CONCAT(" ORDER BY telefono ",vc_order_direct)
-                                    WHEN i_colum_order=5 THEN CONCAT(" ORDER BY whatsapp ",vc_order_direct)
-                                    WHEN i_colum_order=6 THEN CONCAT(" ORDER BY ubicacion ",vc_order_direct)
-                                    WHEN i_colum_order=7 THEN CONCAT(" ORDER BY longitud ",vc_order_direct)
-                                    WHEN i_colum_order=8 THEN CONCAT(" ORDER BY latitud ",vc_order_direct)
+                                    WHEN i_colum_order=1 THEN CONCAT(" ORDER BY user_id ",vc_order_direct)
+                                    WHEN i_colum_order=2 THEN CONCAT(" ORDER BY logo ",vc_order_direct)
+                                    WHEN i_colum_order=3 THEN CONCAT(" ORDER BY nombre ",vc_order_direct)
+                                    WHEN i_colum_order=4 THEN CONCAT(" ORDER BY descripcion ",vc_order_direct)
+                                    WHEN i_colum_order=5 THEN CONCAT(" ORDER BY telefono ",vc_order_direct)
+                                    WHEN i_colum_order=6 THEN CONCAT(" ORDER BY whatsapp ",vc_order_direct)
+                                    WHEN i_colum_order=7 THEN CONCAT(" ORDER BY ubicacion ",vc_order_direct)
+                                    WHEN i_colum_order=8 THEN CONCAT(" ORDER BY longitud ",vc_order_direct)
+                                    WHEN i_colum_order=9 THEN CONCAT(" ORDER BY latitud ",vc_order_direct)
                                     ELSE ""
                 END;
 
                 SET @_QUERY:=CONCAT("SELECT   id
+                                            , user_id
                                             , logo
                                             , nombre
                                             , descripcion
@@ -61,7 +64,8 @@ return new class extends Migration
 
                 IF(b_filtro_like=true) THEN BEGIN
 
-                    SET @_QUERY:=CONCAT(@_QUERY, " AND (logo LIKE \'%",TRIM(vc_string_filtro),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " AND (user_id LIKE \'%",TRIM(vc_string_filtro),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " OR  logo LIKE \'%",TRIM(vc_string_filtro),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " OR  nombre LIKE \'%",TRIM(vc_string_filtro),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " OR  descripcion LIKE \'%",TRIM(vc_string_filtro),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " OR  telefono LIKE \'%",TRIM(vc_string_filtro),"%\'");
@@ -75,7 +79,8 @@ return new class extends Migration
 
                 IF(b_filtro_like = false) THEN BEGIN
 
-                    SET @_QUERY:=CONCAT(@_QUERY, " AND (logo LIKE \'%",TRIM(buscar_logo),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " AND (user_id LIKE \'%",TRIM(buscar_user_id),"%\'");
+                    SET @_QUERY:=CONCAT(@_QUERY, " AND  logo LIKE \'%",TRIM(buscar_logo),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " AND  nombre LIKE \'%",TRIM(buscar_nombre),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " AND  descripcion LIKE \'%",TRIM(buscar_descripcion),"%\'");
                     SET @_QUERY:=CONCAT(@_QUERY, " AND  telefono LIKE \'%",TRIM(buscar_telefono),"%\'");
