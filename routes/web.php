@@ -148,6 +148,7 @@ Route::get('validar_existencia_logss', [LogssController::class, 'validar_existen
 
 use App\Http\Controllers\EmpresaController;
 Route::get('empresa', [EmpresaController::class, 'index'])->middleware('auth') ;
+Route::get('empresa_ubicacion', [EmpresaController::class, 'empresa_ubicacion'])->middleware('auth') ;
 Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);
 Route::post('set_import_empresa', [EmpresaController::class, 'set_import_empresa']);
 Route::post('get_empresa_by_id', [EmpresaController::class, 'get_empresa_by_id']);

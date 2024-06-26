@@ -67,6 +67,22 @@ class EmpresaController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | Mostrar ubicación mapa
+    |--------------------------------------------------------------------------
+    |
+    */
+    public function empresa_ubicacion(Request $request)
+    {
+        $this->LibCore->setSkynet( ['vc_evento'=> 'empresa_ubicacion' , 'vc_info' => "empresa_ubicacion" ] );
+
+
+        return view('empresa.empresa_ubicacion');
+        // return view('check_out', compact('promociones'));
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Datatable registro especial como se requiere en js
     |--------------------------------------------------------------------------
     | 
@@ -163,7 +179,6 @@ class EmpresaController extends Controller
 
         $data = [
             'user_id' => Auth::user()->id,
-            'logo' => $request->logo ?? "",
             'nombre' => $request->nombre ?? "",
             'descripcion' => $request->descripcion ?? "",
             'telefono' => $request->telefono ?? "",
@@ -174,7 +189,6 @@ class EmpresaController extends Controller
         ];
 
         $updateData = [
-            'logo' => $request->logo ?? "",
             'nombre' => $request->nombre ?? "",
             'descripcion' => $request->descripcion ?? "",
             'telefono' => $request->telefono ?? "",
@@ -624,15 +638,29 @@ class EmpresaController extends Controller
 
     public function ajax_upload_file_empresa(Request $request)
     {
-        // dd($request->all());
-
         // initialize FileUploader
         $FileUploader = new FileUploader('files', array(
             // options
             'limit' => 1,
-            'uploadDir' => storage_path('app/public/'),
+            'uploadDir' => public_path('uploads/empresa/logos/'),
             'title' => 'auto'
         ));
+
+        // Obtener el userId del usuario autenticado
+        $userId = Auth::user()->id;
+
+        // Obtener el logo actual del usuario
+        $currentLogo = DB::table('empresa')->where('user_id', $userId)->value('logo');
+
+        if ($currentLogo) {
+            // Construir la ruta completa del archivo actual
+            $currentLogoPath = public_path('uploads/empresa/logos/' . $currentLogo);
+
+            // Verificar si el archivo existe y eliminarlo
+            if (file_exists($currentLogoPath)) {
+                unlink($currentLogoPath);
+            }
+        }
 
         // upload
         $upload = $FileUploader->upload();  

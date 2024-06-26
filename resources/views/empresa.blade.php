@@ -18,11 +18,11 @@
         <div class="col-lg-4 col-xl-3 col-md-12 col-sm-12">
             <div class="card mg-b-20">
                 <div class="main-content-left main-content-left-mail card-body">
-                    <a class="btn btn-primary btn-compose" href="" id="btnCompose">Configurar empresa</a>
+                    <a class="btn btn-primary btn-compose" href="javascript:void(0);">Configurar empresa</a>
                     <div class="main-mail-menu">
                        <nav class="nav main-nav-column mg-b-20">
-                            <a class="nav-link thumb active" href="javascript:void(0);"><i class="far fa-building"></i> Empresa</a>
-                            <a class="nav-link thumb" href="javascript:void(0);"><i class="fas fa-map-marker-alt"></i> Ubicación </a>
+                            <a class="nav-link thumb active" href="empresa"><i class="far fa-building"></i> Empresa</a>
+                            <a class="nav-link thumb" href="empresa_ubicacion"><i class="fas fa-map-marker-alt"></i> Ubicación</a>
                         </nav>
                     </div><!-- main-mail-menu -->
                 </div>
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="custom-card" >
-                                        <input type="file" name="files" class="d-none" data-fileuploader-default="https://innostudio.de/fileuploader/images/default-avatar.png" data-fileuploader-files=''>
+                                        <input type="file" name="files" class="d-none" data-fileuploader-default="{{ !empty($empresa->logo) ? asset('uploads/empresa/logos/' . $empresa->logo) : 'https://innostudio.de/fileuploader/images/default-avatar.png' }}" data-fileuploader-files=''>
                                     </div>
                                 </div>
                             </div>
@@ -65,21 +65,10 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label class="form-label">Descripción</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Escribe Descripción" value="{{ $empresa->descripcion ?? '' }}">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
                                     <label class="form-label">Teléfono</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Escribe Teléfono" value="{{ $empresa->telefono ?? '' }}">
+                                    <input type="text" class="form-control" maxlength="15" id="telefono" name="telefono" placeholder="Escribe Teléfono" value="{{ $empresa->telefono ?? '' }}">
                                 </div>
                             </div>
                         </div>
@@ -98,36 +87,14 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label class="form-label">Ubicación</label>
+                                    <label class="form-label">Descripción</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Escribe Ubicación" value="{{ $empresa->ubicacion ?? '' }}">
+                                    <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Escribe Descripción">{{ $empresa->descripcion ?? '' }}</textarea>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label class="form-label">Longitud</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="longitud" name="longitud" placeholder="Escribe Longitud" value="{{ $empresa->longitud ?? '' }}">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label class="form-label">Latitud</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="latitud" name="latitud" placeholder="Escribe Latitud" value="{{ $empresa->latitud ?? '' }}">
-                                </div>
-                            </div>
-                        </div>
-                        
+
                         <div class="card-footer justify-content-end">
                             <div><button type="submit" class="btn btn-success btn-action-form">Guardar</button></div>
                         </div>
