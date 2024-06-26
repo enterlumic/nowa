@@ -152,6 +152,7 @@ Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);
 Route::post('set_import_empresa', [EmpresaController::class, 'set_import_empresa']);
 Route::post('get_empresa_by_id', [EmpresaController::class, 'get_empresa_by_id']);
 Route::post('delete_empresa', [EmpresaController::class, 'delete_empresa']);
+Route::post('ajax_upload_file_empresa', [EmpresaController::class, 'ajax_upload_file_empresa']);
 Route::post('undo_delete_empresa', [EmpresaController::class, 'undo_delete_empresa']);
 Route::get('get_empresa_datatable', [EmpresaController::class, 'get_empresa_datatable']);
 Route::post('truncate_empresa', [EmpresaController::class, 'truncate_empresa']);

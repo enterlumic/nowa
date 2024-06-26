@@ -2,9 +2,9 @@
     'use strict'
 
     /* dropzone */
-    let myDropzone = new Dropzone(".dropzone");
-        myDropzone.on("addedfile", file => {
-    });
+    // let myDropzone = new Dropzone(".dropzone");
+    //     myDropzone.on("addedfile", file => {
+    // });
 
     /* filepond */
     FilePond.registerPlugin(

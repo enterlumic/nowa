@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\empresa;
 use App\Lib\LibCore;
+use \FileUploader;
 use Session;
 
 class EmpresaController extends Controller
@@ -619,6 +620,49 @@ class EmpresaController extends Controller
         $id=$request->id;
         empresa::where('id', $id)->update(['b_status' => 0]);
         return $id;
+    }
+
+    public function ajax_upload_file_empresa(Request $request)
+    {
+        // dd($request->all());
+
+        // initialize FileUploader
+        $FileUploader = new FileUploader('files', array(
+            // options
+            'limit' => 1,
+            'uploadDir' => storage_path('app/public/'),
+            'title' => 'auto'
+        ));
+
+        // upload
+        $upload = $FileUploader->upload();  
+
+        $data = $upload;
+
+        // Cambiar los datos públicos del archivo
+        if (!empty($data['files'])) {
+            $item = $data['files'][0];
+            
+            $data['files'][0] = [
+                'title' => $item['title'],
+                'name' => $item['name'],
+                'size' => $item['size'],
+                'size2' => $item['size2'],
+                'file' => $item['file']
+            ];
+
+            $userId = Auth::user()->id;
+
+            // Insertar o actualizar en la base de datos usando user_id
+            DB::table('empresa')->updateOrInsert(
+                ['user_id' => $userId], // Condición para encontrar el registro
+                ['logo' => $item['name']] // Datos a insertar o actualizar
+            );
+        }
+
+        // Exportar a JS
+        return response()->json($data);
+
     }
 
     /*
