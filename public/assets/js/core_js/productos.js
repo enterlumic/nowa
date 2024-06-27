@@ -1,26 +1,26 @@
-let promociones = {
+let productos = {
 
     init: function () {
 
         // Funciones principales
 
-        promociones.fn_set_promociones();
-        promociones.fn_set_python();
-        promociones.fn_datatable_promociones(rango_fecha='');
-        promociones.fn_scroll_promociones();
-        promociones.deleteProduct();
+        productos.fn_set_productos();
+        productos.fn_set_python();
+        productos.fn_datatable_productos(rango_fecha='');
+        productos.fn_scroll_productos();
+        productos.deleteProduct();
 
         // Funciones para eventos
-        promociones.fn_modalShowpromociones();
-        promociones.fn_modalHidepromociones();
-        promociones.fn_AgregarNuevopromociones();
-        promociones.fn_actualizarTablapromociones();
-        promociones.fn_set_validar_existencia_promociones();
+        productos.fn_modalShowproductos();
+        productos.fn_modalHideproductos();
+        productos.fn_AgregarNuevoproductos();
+        productos.fn_actualizarTablaproductos();
+        productos.fn_set_validar_existencia_productos();
     },
 
-    fn_datatable_promociones: function (rango_fecha) {
+    fn_datatable_productos: function (rango_fecha) {
 
-        let table = $('#get_promociones_datatable').DataTable({
+        let table = $('#get_productos_datatable').DataTable({
             "stateSave": false,
             "serverSide": true,
             "destroy": true,
@@ -29,7 +29,7 @@ let promociones = {
             "scrollCollapse": true,
             "lengthMenu": [10, 25, 50, 75, 100],
             "ajax": {
-                "url": "get_promociones_datatable",
+                "url": "get_productos_datatable",
                 "type": "GET",
                 "data": function(d) {
                     d.buscar_titulo = $('#buscar_titulo').val();
@@ -114,7 +114,7 @@ let promociones = {
 
                         return '<div class="media">\
                                     <div class="card-aside-img">\
-                                        <img src="uploads/promociones/'+row.foto+'" alt="img" class="h-60 w-60">\
+                                        <img src="uploads/productos/'+row.foto+'" alt="img" >\
                                     </div>\
                                     <div class="media-body">\
                                         <div class="card-item-desc mt-0">\
@@ -135,10 +135,10 @@ let promociones = {
                         return '<div>\
                                     <ul class="list-inline mb-0 font-size-16">\
                                         <li class="list-inline-item">\
-                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Editar" class="text-success p-1 update-promociones"><i class="bx bxs-edit-alt"></i></a>\
+                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Editar" class="text-success p-1 update-productos"><i class="bx bxs-edit-alt"></i></a>\
                                         </li>\
                                         <li class="list-inline-item">\
-                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Eliminar" class="text-danger p-1 delete-promociones"><i class="bx bxs-trash"></i></a>\
+                                            <a href="javascript: void(0);" id="' + row.id + '" data-toggle="tooltip" title="Eliminar" class="text-danger p-1 delete-productos"><i class="bx bxs-trash"></i></a>\
                                         </li>\
                                     </ul>\
                                 </div>';
@@ -148,82 +148,82 @@ let promociones = {
             ]
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .titulo', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .titulo', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.titulo);
+            productos.fn_copyToClipboardproductos(data.titulo);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .descripcion', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .descripcion', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.descripcion);
+            productos.fn_copyToClipboardproductos(data.descripcion);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .precio', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .precio', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.precio);
+            productos.fn_copyToClipboardproductos(data.precio);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .marca', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .marca', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.marca);
+            productos.fn_copyToClipboardproductos(data.marca);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .review', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .review', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.review);
+            productos.fn_copyToClipboardproductos(data.review);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .cantidad', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .cantidad', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.cantidad);
+            productos.fn_copyToClipboardproductos(data.cantidad);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .color', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .color', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.color);
+            productos.fn_copyToClipboardproductos(data.color);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .precio_anterior', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .precio_anterior', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.precio_anterior);
+            productos.fn_copyToClipboardproductos(data.precio_anterior);
         });
 
-        $('#get_promociones_datatable tbody').on('click', 'tr .target', function () {
+        $('#get_productos_datatable tbody').on('click', 'tr .target', function () {
             // Obtener los datos de la fila en la que se hizo clic
             let data = table.row(this).data();
 
             // Copiar el valor del email al portapapeles
-            promociones.fn_copyToClipboardpromociones(data.target);
+            productos.fn_copyToClipboardproductos(data.target);
         });
         // FIN Evento de clic en las filas de la tabla
         //////////////////////////////////////////////////////////////////////
 
        // Aplicar la búsqueda
-        $("#get_promociones_datatable thead tr:eq(1) th").each(function (i) {
+        $("#get_productos_datatable thead tr:eq(1) th").each(function (i) {
             $('input', this).on('keyup change', function () {
                 if (table.column(i).search() !== this.value) {
                     table
@@ -252,12 +252,12 @@ let promociones = {
         //     table.ajax.reload( null, false );
         // }, 5000 );
 
-        promociones.fn_update_promociones();
-        promociones.fn_delete_promociones();
+        productos.fn_update_productos();
+        productos.fn_delete_productos();
     },
 
-    fn_scroll_promociones: function() {
-        let AppScroll = angular.module('app-scroll-promociones', ['infinite-scroll']);
+    fn_scroll_productos: function() {
+        let AppScroll = angular.module('app-scroll-productos', ['infinite-scroll']);
         AppScroll.controller('ControllerScroll', function($scope, Reddit) {
             $scope.reddit = new Reddit();
             $scope.noMoreItems = false;  // Flag to indicate no more items
@@ -282,7 +282,7 @@ let promociones = {
 
             this.busy = true;
 
-            let url = "get_promociones_diez?id_promociones=" + encodeURIComponent(this.after || '') + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + encodeURIComponent($('meta[name="csrf-token"]').attr('content'));
+            let url = "get_productos_diez?id_productos=" + encodeURIComponent(this.after || '') + "&callback=JSON_CALLBACK&X-CSRF-TOKEN=" + encodeURIComponent($('meta[name="csrf-token"]').attr('content'));
 
             $http.jsonp(url).success(function(data) {
                 let items = data;
@@ -332,7 +332,7 @@ let promociones = {
     });
     },
 
-    fn_copyToClipboardpromociones: function(text) {
+    fn_copyToClipboardproductos: function(text) {
         // Crear un elemento temporal de input
         var tempInput = document.createElement("input");
         tempInput.style = "position: absolute; left: -1000px; top: -1000px";
@@ -343,18 +343,18 @@ let promociones = {
         document.body.removeChild(tempInput);
     },
 
-    fn_set_promociones: function () {
-        $("#form_promociones").validate({
+    fn_set_productos: function () {
+        $("#form_productos").validate({
             submitHandler: function (form) {
-                let get_form = document.getElementById("form_promociones");
+                let get_form = document.getElementById("form_productos");
                 let postData = new FormData(get_form);
 
-                let element_by_id= 'form_promociones';
+                let element_by_id= 'form_productos';
                 let message=  'Cargando...' ;
                 let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
                 $.ajax({
-                    url: "set_promociones",
+                    url: "set_productos",
                     data: postData,
                     cache: false,
                     processData: false,
@@ -374,9 +374,9 @@ let promociones = {
                         }
 
                         if (json["b_status"]) {
-                            $('#get_promociones_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_promociones").reset();
-                            $('#modalFormIUpromociones').modal('hide');
+                            $('#get_productos_datatable').DataTable().ajax.reload();
+                            document.getElementById("form_productos").reset();
+                            $('#modalFormIUproductos').modal('hide');
                         } else {
                             alert(json);
                         }
@@ -441,17 +441,17 @@ let promociones = {
     },
 
     fnShowbyIDPromocion: function(){
-        let element_by_id= 'form_promociones';
+        let element_by_id= 'form_productos';
         let message=  'Cargando...' ;
         let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
         let id= 0;
 
-        if ( $('#form_promociones #id').length ){
-            id= $('#form_promociones #id').val();
+        if ( $('#form_productos #id').length ){
+            id= $('#form_productos #id').val();
         }
 
         $.ajax({
-            url:"get_promociones_by_id",
+            url:"get_productos_by_id",
             data: {id: id},
             cache: false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -472,7 +472,7 @@ let promociones = {
                     let preloadedFiles = json['preloadedFiles'];
 
                     // Inicializar de nuevo el fileuploader con archivos pre-cargados
-                    promociones.initializeFileUploader(preloadedFiles);
+                    productos.initializeFileUploader(preloadedFiles);
 
                     for (let keyIni in p) {
                         for (let key in p[0]) {
@@ -519,26 +519,26 @@ let promociones = {
         });
     },
 
-    fn_modalShowpromociones: function () {
-        $('#modalFormIUpromociones').on('shown.bs.modal', function (e) {
+    fn_modalShowproductos: function () {
+        $('#modalFormIUproductos').on('shown.bs.modal', function (e) {
             $('#titulo', e.target).focus();
 
-            if (!$('#form_promociones #id').length) {
-                promociones.initializeFileUploader('');
+            if (!$('#form_productos #id').length) {
+                productos.initializeFileUploader('');
             } else {
-                promociones.fnShowbyIDPromocion();
+                productos.fnShowbyIDPromocion();
             }
 
         });
 
-        $('#modalImportFormpromociones').on('shown.bs.modal', function (e) {
+        $('#modalImportFormproductos').on('shown.bs.modal', function (e) {
             $('#vc_importar', e.target).focus();
         });
     },
 
-    fn_modalHidepromociones: function () {
+    fn_modalHideproductos: function () {
 
-        $('#modalFormIUpromociones').on('hidden.bs.modal', function (e) {
+        $('#modalFormIUproductos').on('hidden.bs.modal', function (e) {
 
             if ( $(".tipo-ya-existe").length ){
                 $(".tipo-ya-existe").addClass("d-none");
@@ -548,11 +548,11 @@ let promociones = {
                 $("#vCampo1_pruebas").removeClass("border-danger text-danger");
             }
 
-            if ( $("#form_promociones").length ){
-                $("#form_promociones input").removeClass("border-danger").removeClass("text-danger");
+            if ( $("#form_productos").length ){
+                $("#form_productos input").removeClass("border-danger").removeClass("text-danger");
             }
 
-            let validator = $("#form_promociones").validate();
+            let validator = $("#form_productos").validate();
 
             validator.resetForm();
             $("label.error").hide();
@@ -563,69 +563,69 @@ let promociones = {
                 $("#id").remove();
             }
             
-            if ($("#form_promociones").length){
-                document.getElementById("form_promociones").reset();
+            if ($("#form_productos").length){
+                document.getElementById("form_productos").reset();
             }
 
-            if ($("#form_import_promociones").length){
-                document.getElementById("form_import_promociones").reset();
+            if ($("#form_import_productos").length){
+                document.getElementById("form_import_productos").reset();
             }
         });
     },
 
-    fn_AgregarNuevopromociones: function () {
-        $(document).on("click", "#add_new_promociones", function () {
-            document.getElementById("form_promociones").reset();            
-            $("#modalFormIUpromociones .modal-title").html("Nuevo");
+    fn_AgregarNuevoproductos: function () {
+        $(document).on("click", "#add_new_productos", function () {
+            document.getElementById("form_productos").reset();            
+            $("#modalFormIUproductos .modal-title").html("Nuevo");
         });
     },
 
-    fn_actualizarTablapromociones: function () {
-        $(document).on("click", "#refresh_promociones", function () {
+    fn_actualizarTablaproductos: function () {
+        $(document).on("click", "#refresh_productos", function () {
 
-            if ($("#get_promociones_datatable").length){
-                $('#get_promociones_datatable').DataTable().ajax.reload();
+            if ($("#get_productos_datatable").length){
+                $('#get_productos_datatable').DataTable().ajax.reload();
             }
 
         });
     },
 
-    fn_truncatepromociones: function () {
+    fn_truncateproductos: function () {
         $.ajax({
-            url:"truncate_promociones",
+            url:"truncate_productos",
             cache: false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             success: function(response)
             {
-                if ($("#get_promociones_datatable").length){
-                    $('#get_promociones_datatable').DataTable().ajax.reload();
+                if ($("#get_productos_datatable").length){
+                    $('#get_productos_datatable').DataTable().ajax.reload();
                 }
             }
         });
     },
 
-    fn_set_validar_existencia_promociones: function(){
+    fn_set_validar_existencia_productos: function(){
 
         $( "#fotos" ).keyup(function( event ) {
 
             var id=0;
             // Si se esta editando return
-            if ( $("#modalFormIUpromociones #id").length ){
-                id= $("#modalFormIUpromociones #id").val();
+            if ( $("#modalFormIUproductos #id").length ){
+                id= $("#modalFormIUproductos #id").val();
             }
 
             let fotos= this.value;
 
             if(fotos ==""){
-                $("#modalFormIUpromociones .btn-action-form").attr("disabled",false);
+                $("#modalFormIUproductos .btn-action-form").attr("disabled",false);
                 $("#fotos").removeClass("border-danger").removeClass("text-danger");
                 $(".tipo-ya-existe").addClass("d-none");
                 return;
             }
 
             $.ajax({
-                url: "validar_existencia_promociones",
+                url: "validar_existencia_productos",
                 data: { fotos: fotos, id: id},
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type: 'GET',
@@ -635,11 +635,11 @@ let promociones = {
                     var json = JSON.parse(response);
 
                     if (json['b_status']) {
-                        $("#modalFormIUpromociones .btn-action-form").attr("disabled",true);
+                        $("#modalFormIUproductos .btn-action-form").attr("disabled",true);
                         $("#fotos").addClass("border-danger").addClass("text-danger");
                         $(".tipo-ya-existe").removeClass("d-none");
                     } else {
-                        $("#modalFormIUpromociones .btn-action-form").attr("disabled",false);
+                        $("#modalFormIUproductos .btn-action-form").attr("disabled",false);
                         $("#fotos").removeClass("border-danger").removeClass("text-danger");
                         $(".tipo-ya-existe").addClass("d-none");
                     }
@@ -649,23 +649,23 @@ let promociones = {
         });
     },
 
-    fn_update_promociones: function(){
+    fn_update_productos: function(){
 
-        $('#get_promociones_datatable tbody').on('click', '.update-promociones', function () {
+        $('#get_productos_datatable tbody').on('click', '.update-productos', function () {
             // Abrir modal!
-            $('#modalFormIUpromociones').modal('show');
+            $('#modalFormIUproductos').modal('show');
 
             let id = this.id;
-            document.getElementById("form_promociones").reset();
+            document.getElementById("form_productos").reset();
 
             if ($("#id").length)
             {
                 $("#id").remove();
             }
 
-            $("#form_promociones").prepend('<input type="hidden" name="id" id="id" value=" '+ id +' ">');
+            $("#form_productos").prepend('<input type="hidden" name="id" id="id" value=" '+ id +' ">');
 
-            $("#modalFormIUpromociones .modal-title").html("Editar");
+            $("#modalFormIUproductos .modal-title").html("Editar");
 
         });
     },
@@ -840,20 +840,20 @@ let promociones = {
         console.log("api", window.api);
     },
 
-    fn_delete_promociones: function(){
-        $('#get_promociones_datatable tbody').on('click', '.delete-promociones', function () {
+    fn_delete_productos: function(){
+        $('#get_productos_datatable tbody').on('click', '.delete-productos', function () {
 
-            document.getElementById("form_promociones").reset();
+            document.getElementById("form_productos").reset();
             $("label.error").hide();
             $(".error").removeClass("error");
 
             let id = this.id;
-            let element_by_id= 'form_promociones';
+            let element_by_id= 'form_productos';
             let message=  'Eliminando...' ;
             let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
 
             $.ajax({
-                url:"delete_promociones",
+                url:"delete_productos",
                 data: {"id": id},
                 cache: false,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -861,8 +861,8 @@ let promociones = {
                     success: function(response)
                     {
 
-                        $('#get_promociones_datatable').DataTable().ajax.reload();
-                        $('#modalFormIUpromociones').modal('hide');
+                        $('#get_productos_datatable').DataTable().ajax.reload();
+                        $('#modalFormIUproductos').modal('hide');
                         $loading.waitMe('hide');
 
                         let n = new Noty({
@@ -874,7 +874,7 @@ let promociones = {
                                 buttons: [
                                   Noty.button('Deshacer', 'btn btn-success btn-sm', function () {
                                         $.ajax({
-                                            url:"undo_delete_promociones",
+                                            url:"undo_delete_productos",
                                             data: {"id" : id},
                                             cache: false,
                                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -882,7 +882,7 @@ let promociones = {
                                                 success: function(response)
                                                 {
                                                     n.close();
-                                                    $('#get_promociones_datatable').DataTable().ajax.reload();
+                                                    $('#get_productos_datatable').DataTable().ajax.reload();
 
                                                     new Noty({
                                                         text: 'Se ha deshecho la acción.',
@@ -925,7 +925,7 @@ let promociones = {
             var productId = $(this).data('id'); 
 
             $.ajax({
-                url:"delete_promociones",
+                url:"delete_productos",
                 data: {"id": productId},
                 cache: false,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -946,4 +946,4 @@ let promociones = {
 
 };
 
-promociones.init();
+productos.init();

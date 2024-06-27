@@ -56,8 +56,8 @@ class CheckOutController extends Controller
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_check_out' , 'vc_info' => "index - check_out" ] );
 
-        // Recuperar los datos de la tabla promociones
-        $promociones = DB::table('promociones as p')
+        // Recuperar los datos de la tabla productos
+        $productos = DB::table('productos as p')
             ->join('promocion_fotos as pf', function ($join) {
                 $join->on('pf.promocion_id', '=', 'p.id')
                      ->where('pf.size', '=', 'small')
@@ -68,7 +68,7 @@ class CheckOutController extends Controller
             ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
             ->get();
         // Pasar los datos a la vista
-        return view('check_out', compact('promociones'));
+        return view('check_out', compact('productos'));
 
     }
 
@@ -192,7 +192,7 @@ class CheckOutController extends Controller
     */
     public function get_check_out_by_id(Request $request)
     {
-        $promocion = DB::table('promociones')
+        $promocion = DB::table('productos')
                         ->select('fotos', 'titulo', 'descripcion', 'precio', 'marca')
                         ->where('id', $request->id)
                         ->first();

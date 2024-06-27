@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::connection('mysql')->getConnection()->statement('
-            CREATE PROCEDURE sp_set_promociones(IN `v_id` BIGINT(20)
+            CREATE PROCEDURE sp_set_productos(IN `v_id` BIGINT(20)
                                                               , IN `v_fotos` VARCHAR(200)
                                                               , IN `v_titulo` VARCHAR(210)
                                                               , IN `v_descripcion` VARCHAR(220)
@@ -29,7 +29,7 @@ return new class extends Migration
             BEGIN
                 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-                UPDATE promociones 
+                UPDATE productos 
                   SET fotos   = v_fotos
                     , titulo   = v_titulo
                     , descripcion   = v_descripcion
@@ -52,7 +52,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql')->getConnection()->statement('DROP PROCEDURE IF EXISTS sp_set_update_promociones');
+        Schema::connection('mysql')->getConnection()->statement('DROP PROCEDURE IF EXISTS sp_set_update_productos');
 
     }
 };

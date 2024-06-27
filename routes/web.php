@@ -18,9 +18,12 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+use App\Http\Controllers\PromocionesController;
+Route::get('promociones', [PromocionesController::class, 'index'])->middleware('auth') ;
+
 use App\Http\Controllers\DashboardController;
 Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth') ;
-Route::post('/promociones/fetch', [DashboardController::class, 'fetch']);
+Route::post('/productos/fetch', [DashboardController::class, 'fetch']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -60,25 +63,25 @@ Route::get('/conekta-key', [ClienteConektaController::class, 'getConektaKey']);
 Route::get('fnGetCustomerPaymentSources', [ClienteConektaController::class, 'fnGetCustomerPaymentSources'])->middleware('auth') ;
 
 
-use App\Http\Controllers\PromocionesController;
-Route::get('promociones', [PromocionesController::class, 'index'])->middleware('auth') ;
-Route::post('set_promociones', [PromocionesController::class, 'set_promociones']);
-Route::post('set_import_promociones', [PromocionesController::class, 'set_import_promociones']);
-Route::post('get_promociones_by_id', [PromocionesController::class, 'get_promociones_by_id']);
-Route::post('delete_promociones', [PromocionesController::class, 'delete_promociones']);
-Route::post('undo_delete_promociones', [PromocionesController::class, 'undo_delete_promociones']);
-Route::get('get_promociones_datatable', [PromocionesController::class, 'get_promociones_datatable']);
-Route::post('truncate_promociones', [PromocionesController::class, 'truncate_promociones']);
-Route::post('form_importar_promociones', [PromocionesController::class, 'form_importar_promociones']);
-Route::get('export_excel_promociones', [PromocionesController::class, 'export_excel_promociones']);
-Route::post('get_cat_promociones', [PromocionesController::class, 'get_cat_promociones']);
-Route::post('get_promociones_by_list', [PromocionesController::class, 'get_promociones_by_list']);
-Route::get('get_promociones_diez', [PromocionesController::class, 'get_promociones_diez']);
-Route::get('descargar_plantilla_promociones', [PromocionesController::class, 'descargar_plantilla_promociones']);
-Route::get('validar_existencia_promociones', [PromocionesController::class, 'validar_existencia_promociones']);
-Route::post('/set_python', [PromocionesController::class, 'runPythonScript'])->name('set_python');
-Route::post('ajax_remove_file', [PromocionesController::class, 'ajax_remove_file']);
-Route::post('ajax_sort_files', [PromocionesController::class, 'ajax_sort_files']);
+use App\Http\Controllers\ProductosController;
+Route::get('productos', [ProductosController::class, 'index'])->middleware('auth') ;
+Route::post('set_productos', [ProductosController::class, 'set_productos']);
+Route::post('set_import_productos', [ProductosController::class, 'set_import_productos']);
+Route::post('get_productos_by_id', [ProductosController::class, 'get_productos_by_id']);
+Route::post('delete_productos', [ProductosController::class, 'delete_productos']);
+Route::post('undo_delete_productos', [ProductosController::class, 'undo_delete_productos']);
+Route::get('get_productos_datatable', [ProductosController::class, 'get_productos_datatable']);
+Route::post('truncate_productos', [ProductosController::class, 'truncate_productos']);
+Route::post('form_importar_productos', [ProductosController::class, 'form_importar_productos']);
+Route::get('export_excel_productos', [ProductosController::class, 'export_excel_productos']);
+Route::post('get_cat_productos', [ProductosController::class, 'get_cat_productos']);
+Route::post('get_productos_by_list', [ProductosController::class, 'get_productos_by_list']);
+Route::get('get_productos_diez', [ProductosController::class, 'get_productos_diez']);
+Route::get('descargar_plantilla_productos', [ProductosController::class, 'descargar_plantilla_productos']);
+Route::get('validar_existencia_productos', [ProductosController::class, 'validar_existencia_productos']);
+Route::post('/set_python', [ProductosController::class, 'runPythonScript'])->name('set_python');
+Route::post('ajax_remove_file', [ProductosController::class, 'ajax_remove_file']);
+Route::post('ajax_sort_files', [ProductosController::class, 'ajax_sort_files']);
 
 use App\Http\Controllers\DetalleController;
 Route::get('detalle', [DetalleController::class, 'index'])->middleware('auth') ;

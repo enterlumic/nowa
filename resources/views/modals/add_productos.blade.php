@@ -1,15 +1,15 @@
 @php
     // Esta función no se ocupa solo lo uso como atajo
     // en sublime con F12 puedes llegar a esta vista
-    function add_promociones(){}
+    function add_productos(){}
 @endphp
 
-<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modalFormIUpromociones" tabindex="-1" aria-labelledby="add_new_promocionesLabel">
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modalFormIUproductos" tabindex="-1" aria-labelledby="add_new_productosLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form class="form-material form-action-post" action="#form_promociones" id="form_promociones" method="post">
+            <form class="form-material form-action-post" action="#form_productos" id="form_productos" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="add_new_promocionesLabel">Agregar Nueva Promoción</h5>
+                    <h5 class="modal-title" id="add_new_productosLabel">Agregar Nueva Promoción</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
@@ -66,4 +66,4 @@
         </div>
     </div>
 </div>
-<!-- /.modalFormIUpromociones -->
+<!-- /.modalFormIUproductos -->

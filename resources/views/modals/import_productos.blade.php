@@ -2,14 +2,14 @@
     // Esta funcion no se ocupa solo lo ocupo como atajo
     // en sublime con F12 puedes llegar a esta vista
 
-    function import_promociones(){}
+    function import_productos(){}
 @endphp
 
-<div id="modalImportFormpromociones" class="modal fade" tabindex="-1" aria-labelledby="modalImportFormpromocionesLabel" aria-hidden="true" style="display: none;">
+<div id="modalImportFormproductos" class="modal fade" tabindex="-1" aria-labelledby="modalImportFormproductosLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalImportFormpromocionesLabel">Cargar datos</h5>
+                <h5 class="modal-title" id="modalImportFormproductosLabel">Cargar datos</h5>
                 <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="card card-body">
@@ -32,12 +32,12 @@
                 <div class="tab-content p-3">
                     <div class="tab-pane active" id="tab-importar-excel" role="tabpanel">
                         <div class="live-preview row">
-                           <a href="descargar_plantilla_promociones" class="btn btn-soft-success">
+                           <a href="descargar_plantilla_productos" class="btn btn-soft-success">
                                 <i class="typcn typcn-download"></i> 
                                 Descargar plantilla
                             </a>
                         </div>
-                        <form action="form_importar_promociones" id="FormImportarpromociones" name="FormImportarpromociones" >
+                        <form action="form_importar_productos" id="FormImportarproductos" name="FormImportarproductos" >
                             <input type="file" accept=".xlsx, .ods" name="files" data-fileuploader-limit="1" data-fileuploader-extensions="xlsx, ods">
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
@@ -46,7 +46,7 @@
                         </form>
                     </div>
                     <div class="tab-pane" id="tab-copiar-pegar" role="tabpanel">
-                        <form action="#form_import_promociones" id="form_import_promociones" method="post" class="form-material form-action-post justify-content-center" >
+                        <form action="#form_import_productos" id="form_import_productos" method="post" class="form-material form-action-post justify-content-center" >
                             <div class="modal-body">
                                 <textarea class="form-control" id="vc_importar" name="vc_importar" rows="10" placeholder="Registro por cada salto de linea"></textarea>
                             </div>
@@ -63,4 +63,4 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- /.modalImportFormpromociones -->
+<!-- /.modalImportFormproductos -->

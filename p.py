@@ -76,7 +76,7 @@ cursor = conn.cursor()
 
 # Insertar los datos en la tabla
 cursor.execute('''
-    INSERT INTO promociones (fotos, titulo, descripcion, precio, target)
+    INSERT INTO productos (fotos, titulo, descripcion, precio, target)
     VALUES (%s, %s, %s, %s, %s)
 ''', ( imagenes_urls, titulo, descripcion, precio, url))
 

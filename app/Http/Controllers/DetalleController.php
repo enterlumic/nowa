@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Lib\LibCore;
-use App\Models\promociones;
+use App\Models\productos;
 use Session;
 
 class DetalleController extends Controller
@@ -55,12 +55,13 @@ class DetalleController extends Controller
 
         $promocion_id = Crypt::decrypt($request->id);
         $fotos = DB::table('promocion_fotos')
-            ->select('size', 'foto_url')
+            ->select('order', 'size', 'foto_url')
             ->where('promocion_id', $promocion_id)
             ->whereIn('size', ['original', 'small'])
+            ->orderBy('order', 'asc')
             ->get();
 
-        $promocion = DB::table('promociones')
+        $promocion = DB::table('productos')
             ->select('id', 'titulo', 'descripcion', 'precio', 'marca', 'tiempo_trabajador')
             ->where('id', $promocion_id)
             ->first();
@@ -72,7 +73,7 @@ class DetalleController extends Controller
     {
         $id = Crypt::decrypt($id);
 
-        $producto = promociones::find($id);
+        $producto = productos::find($id);
 
         if ($producto) {
             $producto->fotos_array = explode("\n", trim($producto->fotos));

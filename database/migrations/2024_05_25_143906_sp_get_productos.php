@@ -15,7 +15,7 @@ return new class extends Migration
     {
 
         Schema::connection('mysql')->getConnection()->statement('
-            CREATE PROCEDURE sp_get_promociones(   b_filtro_like bool,
+            CREATE PROCEDURE sp_get_productos(   b_filtro_like bool,
                                                     vc_string_filtro varchar(100),
                                                     buscar_titulo varchar(100),
                                                     buscar_descripcion varchar(100),
@@ -50,7 +50,7 @@ return new class extends Migration
                                       END;
 
                 SET @_QUERY = CONCAT("SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
-                                      FROM promociones p
+                                      FROM productos p
                                       LEFT OUTER JOIN promocion_fotos pf ON pf.promocion_id = p.id AND pf.size = \'small\' AND pf.`order` = 0
                                       WHERE p.b_status > 0 ");
 
@@ -90,7 +90,7 @@ return new class extends Migration
                 EXECUTE QRY;
                 DEALLOCATE PREPARE QRY;
 
-                SELECT COUNT(*) INTO v_registro_total FROM promociones WHERE b_status > 0;
+                SELECT COUNT(*) INTO v_registro_total FROM productos WHERE b_status > 0;
             END
         ');
     }
@@ -101,7 +101,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql')->getConnection()->statement('DROP PROCEDURE IF EXISTS sp_get_promociones');
+        Schema::connection('mysql')->getConnection()->statement('DROP PROCEDURE IF EXISTS sp_get_productos');
 
     }
 };

@@ -502,12 +502,28 @@
                             <li><a class="dropdown-item d-flex border-bottom" href="mail.html"><i class="far fa-envelope  fs-16 me-2 op-7"></i>Inbox <span class="badge bg-success-transparent ms-auto">25</span></a></li>
                             <li><a class="dropdown-item d-flex border-bottom border-block-end" href="chat.html"><i class="far fa-comment-dots fs-16 me-2 op-7"></i>Messages</a></li>
                             <li><a class="dropdown-item d-flex border-bottom" href="mail-settings.html"><i class="far fa-sun fs-16 me-2 op-7"></i>Settings</a></li>
-                            <li><a class="dropdown-item d-flex" href="{{ route('logout') }}"><i class="far fa-arrow-alt-circle-left fs-16 me-2 op-7"></i>Salir</a></li>
+                            <li><a class="dropdown-item d-flex" id="Logout" href="javascript:void(0);"><i class="far fa-arrow-alt-circle-left fs-16 me-2 op-7"></i>Salir</a></li>
                         </ul>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
+                        <script type="text/javascript">
+                            $(document).on("click" , "#Logout", function(){
+                                $.ajax({
+                                    url:"logout",
+                                    cache: false,
+                                    processData: false,
+                                    contentType: false,
+                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                    type: 'POST',
+                                    success: function(response)
+                                    {
+                                        window.location.href = "login";
+                                    },
+                                    error: function(response)
+                                    {
+                                        console.log(0);
+                                    }
+                                });
+                            });                            
+                        </script>
                     </div>  
                     <!-- End::header-element -->
 

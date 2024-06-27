@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('foto_url');
             $table->timestamps();
 
-            // $table->foreign('promocion_id')->references('id')->on('promociones')->onDelete('cascade');
+            // $table->foreign('promocion_id')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 

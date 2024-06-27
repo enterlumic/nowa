@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\dashboard;
-use App\Models\promociones;
+use App\Models\productos;
 use App\Lib\LibCore;
 use Session;
 
@@ -54,15 +54,7 @@ class DashboardController extends Controller
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_dashboard' , 'vc_info' => "index - dashboard" ] );
 
-        $promociones = DB::select("
-            SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
-            FROM promociones p
-            JOIN promocion_fotos pf ON pf.promocion_id = p.id AND pf.size = 'medium' AND pf.`order` = 0
-            WHERE p.b_status > 0
-            LIMIT 0, 10
-        ");
-
-        return view('dashboard', compact('promociones'));
+        return view('dashboard');
     }
 
     public function fetch(Request $request)
@@ -73,17 +65,17 @@ class DashboardController extends Controller
             $offset = ($page - 1) * $perPage;
             $layout = $request->input('layout', 'grid');
 
-            $promociones = DB::select("
+            $productos = DB::select("
                 SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
-                FROM promociones p
+                FROM productos p
                 JOIN promocion_fotos pf ON pf.promocion_id = p.id AND pf.size = 'small' AND pf.`order` = 0
                 WHERE p.b_status > 0
                 LIMIT $offset, $perPage
             ");
 
-            $view = $layout == 'list' ? 'promociones.partials.promociones-list' : 'promociones.partials.promociones-grid';
+            $view = $layout == 'list' ? 'productos.partials.productos-list' : 'productos.partials.productos-grid';
 
-            return view($view, compact('promociones'))->render();
+            return view($view, compact('productos'))->render();
         }
     }
 

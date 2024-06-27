@@ -18,7 +18,7 @@
                                                     @foreach ($fotos as $foto)
                                                         @if ($foto->size == 'small')
                                                             <li data-bs-target="#Slider" data-bs-slide-to="{{ $thumbIndex }}" class="thumb {{ $thumbIndex == 0 ? 'active' : '' }} my-sm-2 m-2 mx-sm-0">
-                                                                <img src="{{ asset('uploads/promociones/'.$foto->foto_url) }}" alt="img" class="img-thumbnail">
+                                                                <img src="{{ asset('uploads/productos/'.$foto->foto_url) }}" alt="img" class="img-thumbnail">
                                                             </li>
                                                             @php
                                                                 $thumbIndex++;
@@ -41,7 +41,7 @@
                                                     @if ($foto->size == 'original')
                                                         <div class="carousel-item carousel-item-hover {{ $slideIndex == 0 ? 'active' : '' }}">
                                                             <div class="img-container">
-                                                                <img src="{{ asset('uploads/promociones/'.$foto->foto_url) }}" alt="img" class="img-fluid mx-auto d-block img-custom-size" id="mainImage">
+                                                                <img src="{{ asset('uploads/productos/'.$foto->foto_url) }}" alt="img" class="img-fluid mx-auto d-block img-custom-size" style="max-width: 613px; max-height: 613px;">
                                                             </div>
                                                             <div class="text-center mt-5 mb-5 btn-list">
                                                             </div>

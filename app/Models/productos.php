@@ -4,10 +4,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class promociones extends Model
+class productos extends Model
 {
     use HasFactory;
-    public $table = "promociones";
+    public $table = "productos";
     // protected $connection = 'other_bd'; // Descomentar esta linea y agregar la bd que se requiere...
     protected $fillable =   [     'id'
                                 , 'fotos'

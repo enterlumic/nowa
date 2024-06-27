@@ -13,7 +13,7 @@ import os
 from PIL import Image
 from datetime import datetime
 
-default_download_folder = "/var/www/html/nowa/public/assets/images/promociones"
+default_download_folder = "/var/www/html/nowa/public/assets/images/productos"
 
 def run_script():
     url = url_entry.get()
@@ -94,7 +94,7 @@ def run_script():
         )
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO promociones (fotos, titulo, descripcion, precio, target)
+            INSERT INTO productos (fotos, titulo, descripcion, precio, target)
             VALUES (%s, %s, %s, %s, %s)
         ''', (imagenes_nombres_str, titulo, descripcion, precio, url))
         conn.commit()
