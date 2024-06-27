@@ -1,4 +1,4 @@
-    <x-app-layout>
+<x-app-layout>
     <!-- breadcrumb -->
     <div class="breadcrumb-header justify-content-between">
         <div class="left-content">
@@ -34,6 +34,29 @@
         <div class="col-lg-8 col-xl-9">
             <div class="card">
                 <div class="card-body">
+                        
+                    <form class="form-material form-action-post" action="set_empresa_ubicacion" method="post" id="form_empresa">
+
+                        <div class="mb-4 main-content-label">Ubicación de la Empresa</div>
+
+                        <div class="col-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input id="ubicacion" name="ubicacion" value="{{ $ubicacion ?? '' }}" class="form-control inputs" type="text">
+                                </div>
+                            </div>
+                            <input type="hidden" name="longitud" value="{{ $longitud ?? '' }}" id="longitud">
+                            <input type="hidden" name="latitud" value="{{ $latitud ?? '' }}" id="latitud">
+                            <div class="location-map" id="location-map">
+                                <div style="width: 100%; height: 400px;" id="map_canvas"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer justify-content-end">
+                            <div><button type="submit" class="btn btn-success btn-action-form">Guardar</button></div>
+                        </div>
+
+                    </form>
 
                 </div>
             </div>
@@ -43,5 +66,6 @@
     <!-- /row -->
 </x-app-layout>
 
-{{-- Empresa lo necesario  --}}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdSvVepDl30nFw15uaj_BaWQeDOR5Hfj8&libraries=places"></script>
 <script src="assets/js/core_js/empresa.js?{{ rand() }}"></script>
+

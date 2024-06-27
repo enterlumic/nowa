@@ -74,10 +74,18 @@ class EmpresaController extends Controller
     public function empresa_ubicacion(Request $request)
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'empresa_ubicacion' , 'vc_info' => "empresa_ubicacion" ] );
+        
+        // Obtener el user_id del usuario autenticado
+        $userId = Auth::user()->id;
 
+        // Buscar la empresa por user_id
+        $empresa = Empresa::where('user_id', $userId)->first();
+        
+        $ubicacion = $empresa->ubicacion ?? null;
+        $latitud = $empresa->latitud ?? null;
+        $longitud = $empresa->longitud ?? null;
 
-        return view('empresa.empresa_ubicacion');
-        // return view('check_out', compact('promociones'));
+        return view('empresa.empresa_ubicacion', compact('ubicacion', 'latitud', 'longitud'));
 
     }
 
@@ -167,25 +175,12 @@ class EmpresaController extends Controller
     */
     public function set_empresa(Request $request)
     {
-        if(!\Schema::hasTable('empresa')){
-            Notification::route('mail', ['odin0464@gmail.com'])->notify(
-                new FnempresaSendMail(
-                    'Notificación no existe tabla empresa'
-                    , __DIR__ ." \ n"
-                )
-            );
-            return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla empresa"));
-        }
-
         $data = [
             'user_id' => Auth::user()->id,
             'nombre' => $request->nombre ?? "",
             'descripcion' => $request->descripcion ?? "",
             'telefono' => $request->telefono ?? "",
             'whatsapp' => $request->whatsapp ?? "",
-            'ubicacion' => $request->ubicacion ?? "",
-            'longitud' => $request->longitud ?? "",
-            'latitud' => $request->latitud ?? "",
         ];
 
         $updateData = [
@@ -193,6 +188,40 @@ class EmpresaController extends Controller
             'descripcion' => $request->descripcion ?? "",
             'telefono' => $request->telefono ?? "",
             'whatsapp' => $request->whatsapp ?? "",
+        ];
+
+        // Usar updateOrInsert para realizar el upsert
+        $result = DB::table('empresa')->updateOrInsert(
+            ['user_id' => Auth::user()->id], // Condición para el upsert
+            $updateData // Datos para insertar o actualizar
+        );
+
+        if ($result) {
+            return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
+        } else {
+            return json_encode(array("b_status"=> true, "vc_message" => "Error al realizar la operación..."));
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Agrega o modificar ubicación
+    |--------------------------------------------------------------------------
+    | 
+    | Modifica el registro solo si manda el parametro '$request->id'
+    | @return json
+    |
+    */
+    public function set_empresa_ubicacion(Request $request)
+    {
+        $data = [
+            'user_id' => Auth::user()->id,
+            'ubicacion' => $request->ubicacion ?? "",
+            'longitud' => $request->longitud ?? "",
+            'latitud' => $request->latitud ?? "",
+        ];
+
+        $updateData = [
             'ubicacion' => $request->ubicacion ?? "",
             'longitud' => $request->longitud ?? "",
             'latitud' => $request->latitud ?? "",

@@ -150,6 +150,7 @@ use App\Http\Controllers\EmpresaController;
 Route::get('empresa', [EmpresaController::class, 'index'])->middleware('auth') ;
 Route::get('empresa_ubicacion', [EmpresaController::class, 'empresa_ubicacion'])->middleware('auth') ;
 Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);
+Route::post('set_empresa_ubicacion', [EmpresaController::class, 'set_empresa_ubicacion']);
 Route::post('set_import_empresa', [EmpresaController::class, 'set_import_empresa']);
 Route::post('get_empresa_by_id', [EmpresaController::class, 'get_empresa_by_id']);
 Route::post('delete_empresa', [EmpresaController::class, 'delete_empresa']);
