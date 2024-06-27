@@ -149,8 +149,10 @@ Route::get('validar_existencia_logss', [LogssController::class, 'validar_existen
 use App\Http\Controllers\EmpresaController;
 Route::get('empresa', [EmpresaController::class, 'index'])->middleware('auth') ;
 Route::get('empresa_ubicacion', [EmpresaController::class, 'empresa_ubicacion'])->middleware('auth') ;
+Route::get('empresa_horario', [EmpresaController::class, 'empresa_horario'])->middleware('auth') ;
 Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);
 Route::post('set_empresa_ubicacion', [EmpresaController::class, 'set_empresa_ubicacion']);
+Route::post('set_empresa_horarios', [EmpresaController::class, 'set_empresa_horarios']);
 Route::post('set_import_empresa', [EmpresaController::class, 'set_import_empresa']);
 Route::post('get_empresa_by_id', [EmpresaController::class, 'get_empresa_by_id']);
 Route::post('delete_empresa', [EmpresaController::class, 'delete_empresa']);
@@ -167,3 +169,6 @@ Route::get('get_empresa_diez', [EmpresaController::class, 'get_empresa_diez']);
 Route::get('descargar_plantilla_empresa', [EmpresaController::class, 'descargar_plantilla_empresa']);
 Route::get('validar_existencia_empresa', [EmpresaController::class, 'validar_existencia_empresa']);
 
+use App\Http\Controllers\HorarioController;
+
+Route::post('/empresa/horarios', [HorarioController::class, 'store'])->name('horarios.store');

@@ -9,6 +9,7 @@ let empresa = {
 
     fn_set_empresa: function () {
         $("#form_empresa").validate({
+            ignore: ":disabled", // Ignorar elementos deshabilitados
             submitHandler: function (form) {
                 let get_form = document.getElementById("form_empresa");
                 let postData = new FormData(get_form);
@@ -26,6 +27,7 @@ let empresa = {
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type: 'POST',
                     success: function (response) {
+                        console.log("response", response);
                         $loading.waitMe('hide');
 
                         let json ='';

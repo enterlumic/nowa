@@ -91,6 +91,29 @@ class EmpresaController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | Mostrar horario
+    |--------------------------------------------------------------------------
+    |
+    */
+    public function empresa_horario(Request $request)
+    {
+        $this->LibCore->setSkynet( ['vc_evento'=> 'empresa_horario' , 'vc_info' => "empresa_horario" ] );
+        
+        // Obtener el user_id del usuario autenticado
+        $userId = Auth::user()->id;
+
+        // Recuperar los horarios del usuario
+        $horarios = DB::table('horarios')
+            ->where('user_id', $userId)
+            ->get()
+            ->keyBy('dia');
+
+        return view('empresa.empresa_horario', compact('horarios'));
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Datatable registro especial como se requiere en js
     |--------------------------------------------------------------------------
     | 
@@ -238,6 +261,65 @@ class EmpresaController extends Controller
         } else {
             return json_encode(array("b_status"=> true, "vc_message" => "Error al realizar la operación..."));
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Horarios
+    |--------------------------------------------------------------------------
+    | 
+    | Modifica el registro solo si manda el parametro '$request->id'
+    | @return json
+    |
+    */
+    public function set_empresa_horarios(Request $request)
+    {
+        // dd($request->all());
+
+        $userId = auth()->user()->id;
+
+        // Actualiza los horarios aplico esto por efecto visual
+        // aplico disabled
+        DB::table('horarios')
+            ->where('user_id', $userId)
+            ->update([
+                'cerrada' => 1,
+            ]);
+
+        // Iterar sobre los días para actualizar o insertar los horarios
+            // dd($request->abre_a);
+        foreach ($request->abre_a as $dia => $abre) {
+            $cierra = $request->cierra_a[$dia];
+            $cerrada = isset($request->cerrada[$dia]);
+
+            // Verificar si ya existe un registro para este día y usuario
+            $existingHorario = DB::table('horarios')
+                ->where('dia', $dia)
+                ->where('user_id', $userId)
+                ->first();
+
+            if ($existingHorario) {
+                // Actualizar el horario existente
+                DB::table('horarios')
+                    ->where('id', $existingHorario->id)
+                    ->update([
+                        'abre_a' => $abre,
+                        'cierra_a' => $cierra,
+                        'cerrada' => $cerrada,
+                    ]);
+            } else {
+                // Insertar un nuevo horario
+                DB::table('horarios')->insert([
+                    'dia' => $dia,
+                    'user_id' => $userId,
+                    'abre_a' => $abre,
+                    'cierra_a' => $cierra,
+                    'cerrada' => $cerrada,
+                ]);
+            }
+        }
+
+        return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
     }
 
     /*
