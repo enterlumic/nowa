@@ -51,7 +51,7 @@ return new class extends Migration
 
                 SET @_QUERY = CONCAT("SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
                                       FROM productos p
-                                      LEFT OUTER JOIN promocion_fotos pf ON pf.promocion_id = p.id AND pf.size = \'small\' AND pf.`order` = 0
+                                      LEFT OUTER JOIN productos_fotos pf ON pf.promocion_id = p.id AND pf.size = \'small\' AND pf.`order` = 0
                                       WHERE p.b_status > 0 ");
 
                 IF(b_filtro_like = true) THEN

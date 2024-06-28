@@ -232,7 +232,7 @@ class ProductosController extends Controller
                     ]
                 ];
 
-                DB::table('promocion_fotos')->insert($data);
+                DB::table('productos_fotos')->insert($data);
 
                 $storedFiles[] = $uploadDirectory . $fileName;
 
@@ -267,7 +267,7 @@ class ProductosController extends Controller
 
                     $order_n ++ ;
 
-                    DB::table('promocion_fotos')->insert($data);
+                    DB::table('productos_fotos')->insert($data);
 
                     $storedFiles[] = $uploadDirectory . $resizedFileName;
                 }
@@ -487,7 +487,7 @@ class ProductosController extends Controller
         $uploadDir = public_path('uploads/productos/');
         $relativeUploadDir = 'uploads/productos/'; // Ruta relativa para usar en la URL
         // Realizar la cosulta a la base de datos
-        $fotos = DB::table('promocion_fotos')
+        $fotos = DB::table('productos_fotos')
             ->select('id', 'size', 'foto_url')
             ->where('size', 'original')
             ->where('promocion_id', $promocionId)
@@ -763,7 +763,7 @@ class ProductosController extends Controller
     {
         $id=$request->id;
 
-        $promocionFotos = DB::table('promocion_fotos')
+        $promocionFotos = DB::table('productos_fotos')
                            ->select('foto_url')
                            ->where('promocion_id', $id)
                            ->get();
@@ -782,7 +782,7 @@ class ProductosController extends Controller
         productos::where('id', $id)->update(['b_status' => 0]);
 
         // Borro registros no tiene caso (borro imagenes para liberar espacio)
-        DB::table('promocion_fotos')
+        DB::table('productos_fotos')
             ->where('promocion_id', $id)
             ->delete();
 
@@ -853,8 +853,8 @@ class ProductosController extends Controller
     public function ajax_remove_file(Request $request){
       
         // Ejecutar la consulta
-        $resultados = DB::table('promocion_fotos as pf')
-            ->leftJoin('promocion_fotos as pf2', 'pf2.conjunto', '=', 'pf.conjunto')
+        $resultados = DB::table('productos_fotos as pf')
+            ->leftJoin('productos_fotos as pf2', 'pf2.conjunto', '=', 'pf.conjunto')
             ->where('pf.foto_url', $request->file)
             ->select('pf2.conjunto', 'pf2.foto_url')
             ->get();
@@ -870,7 +870,7 @@ class ProductosController extends Controller
                 unlink( public_path($uploadDirectory . $resultado->foto_url) );
 
                 // Eliminar registro
-                DB::table('promocion_fotos')
+                DB::table('productos_fotos')
                 ->where('conjunto', $resultado->conjunto)
                 ->delete();
 
@@ -898,8 +898,8 @@ class ProductosController extends Controller
             $imagen= $value['name'];
             $index= $value['index'];
 
-            $resultados = DB::table('promocion_fotos as pf')
-                ->leftJoin('promocion_fotos as pf2', 'pf2.conjunto', '=', 'pf.conjunto')
+            $resultados = DB::table('productos_fotos as pf')
+                ->leftJoin('productos_fotos as pf2', 'pf2.conjunto', '=', 'pf.conjunto')
                 ->where('pf.foto_url', $imagen)
                 ->select('pf2.conjunto', 'pf2.foto_url')
                 ->get();
@@ -910,7 +910,7 @@ class ProductosController extends Controller
                 // Iterar sobre los resultados
                 foreach ($resultados as $resultado) {
 
-                    $updated = DB::table('promocion_fotos')
+                    $updated = DB::table('productos_fotos')
                         ->where('conjunto', $resultado->conjunto)
                         ->update(['order' => $index]);
 

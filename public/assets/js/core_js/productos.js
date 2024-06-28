@@ -114,7 +114,7 @@ let productos = {
 
                         return '<div class="media">\
                                     <div class="card-aside-img">\
-                                        <img src="uploads/productos/'+row.foto+'" alt="img" >\
+                                        <img src="uploads/productos/'+row.foto+'" alt="img" style="max-width: 100%; height: auto;">\
                                     </div>\
                                     <div class="media-body">\
                                         <div class="card-item-desc mt-0">\

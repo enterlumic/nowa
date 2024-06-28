@@ -54,7 +54,7 @@ class DetalleController extends Controller
         $this->LibCore->setSkynet(['vc_evento' => 'index_detalle', 'vc_info' => "index - detalle"]);
 
         $promocion_id = Crypt::decrypt($request->id);
-        $fotos = DB::table('promocion_fotos')
+        $fotos = DB::table('productos_fotos')
             ->select('order', 'size', 'foto_url')
             ->where('promocion_id', $promocion_id)
             ->whereIn('size', ['original', 'small'])

@@ -23,7 +23,6 @@
         <div class="col-lg-8 col-xl-9">
             <div class="card">
                 <div class="card-body">
-
                     <form class="form-material form-action-post" action="set_empresa_horarios" id="form_empresa" method="POST">
                         <table class="table">
                             <thead>
@@ -56,7 +55,6 @@
                         </table>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
-
                 </div>
             </div>
         </div>

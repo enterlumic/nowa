@@ -58,7 +58,7 @@ class CheckOutController extends Controller
 
         // Recuperar los datos de la tabla productos
         $productos = DB::table('productos as p')
-            ->join('promocion_fotos as pf', function ($join) {
+            ->join('productos_fotos as pf', function ($join) {
                 $join->on('pf.promocion_id', '=', 'p.id')
                      ->where('pf.size', '=', 'small')
                      ->where('pf.order', '=', 0);
@@ -67,6 +67,7 @@ class CheckOutController extends Controller
             ->orderBy('pf.order', 'asc')
             ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
             ->get();
+
         // Pasar los datos a la vista
         return view('check_out', compact('productos'));
 
@@ -134,56 +135,6 @@ class CheckOutController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Validar existencia antes de crear un nuevo registro
-    |--------------------------------------------------------------------------
-    | 
-    | @return json
-    |
-    */
-    public function validar_existencia_check_out(Request $request)
-    {
-        if ( isset($request->id) && $request->id > 0){
-            $data= checkOut::select('vCampo1_check_out')
-            ->where('vCampo1_check_out' ,'=', trim($request->vCampo1_check_out))
-            ->where('id' ,'<>', $request->id)
-            ->where('b_status' ,'>', 0)
-            ->get();
-        }else{
-            $data= checkOut::select('vCampo1_check_out')
-            ->where('vCampo1_check_out' ,'=', trim($request->vCampo1_check_out))
-            ->get();
-        }
-
-        if ( $data->count() > 0 ){
-            return json_encode(array("b_status"=> true, "data" => $data));
-        }else{
-            return json_encode(array("b_status"=> false, "data" => 'sin resultados'));
-        }
-    }
-
-      public function getServerSidecheck_out(Request $request)
-    {
-        $buscarPor = $request->input('search', ''); 
-
-        $results = DB::table('check_out')
-            ->Where('id', ' > ', 0)
-            ->OrWhere('vCampo1_check_out', 'LIKE', '%' . $buscarPor . '%')
-            ->select('id'
-                , DB::raw('CONCAT(id, " ", vCampo1_check_out, " ", vCampo2_check_out ) as vCampo1_check_out')
-            )
-            ->limit(10)
-            ->get();
-
-        // Formatea los resultados para el selectpicker
-        $options = $results->map(function ($item) {
-            return ['id' => $item->id, 'vCampo1_check_out' =>Str::headline($item->vCampo1_check_out) ];
-        });
-
-        return response()->json($options);
-    } 
-
-    /*
-    |--------------------------------------------------------------------------
     | Obtener un registro por id
     |--------------------------------------------------------------------------
     | 
@@ -227,49 +178,6 @@ class CheckOutController extends Controller
         });
 
         return $results;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Eliminar registro por id
-    |--------------------------------------------------------------------------
-    | 
-    | @return id
-    |
-    */
-    public function delete_check_out(Request $request)
-    {
-        $id=$request->id;
-        checkOut::where('id', $id)->update(['b_status' => 0]);
-        return $id;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Desahacer el registro que se elimino
-    |--------------------------------------------------------------------------
-    | 
-    | @return id
-    |
-    */
-    public function undo_delete_check_out(Request $request)
-    {
-        $id=$request->id;
-        checkOut::where('id', $id)->update(['b_status' => 1]);        
-        return $id;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Truncar toda la tabla util para hacer pruebas
-    |--------------------------------------------------------------------------
-    | 
-    | @return id
-    |
-    */
-    public function truncate_check_out()
-    {
-        checkOut::where('b_status', 1)->update(['b_status' => 0]);        
     }
 
     public function processPayment(Request $request)
@@ -333,7 +241,6 @@ class CheckOutController extends Controller
             return response()->json(['success' => false, 'message' => 'Error al procesar el pago.'], 500);
         }
     }
-
 
     /*
     |--------------------------------------------------------------------------

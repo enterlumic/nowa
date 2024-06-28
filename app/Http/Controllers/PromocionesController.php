@@ -55,7 +55,7 @@ class PromocionesController extends Controller
         $productos = DB::select("
             SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
             FROM productos p
-            JOIN promocion_fotos pf ON pf.promocion_id = p.id AND pf.size = 'medium' AND pf.`order` = 0
+            JOIN productos_fotos pf ON pf.promocion_id = p.id AND pf.size = 'medium' AND pf.`order` = 0
             WHERE p.b_status > 0 ORDER BY p.id DESC
             LIMIT 0, 100
         ");
@@ -74,7 +74,7 @@ class PromocionesController extends Controller
             $productos = DB::select("
                 SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
                 FROM productos p
-                JOIN promocion_fotos pf ON pf.promocion_id = p.id AND pf.size = 'small' AND pf.`order` = 0
+                JOIN productos_fotos pf ON pf.promocion_id = p.id AND pf.size = 'small' AND pf.`order` = 0
                 WHERE p.b_status > 0
                 LIMIT $offset, $perPage
             ");
