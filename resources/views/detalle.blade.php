@@ -65,7 +65,7 @@
                             </div>
                             <h6 class="price">Precio: <span class="h3 ms-2">${{ $promocion->precio }}</span></h6>
                             <div class="text-center mt-4 btn-list">
-                                <a href="product-cart.html" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"> </i> Añadir al carrito</a>
+                                <a href="javascript:void(0);" id="agregar-carrito" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"> </i> Añadir al carrito</a>
                                 <a href="check_out?id={{$_REQUEST['id']}}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"> </i> Comprar ahora</a>
                             </div>
                         </div>

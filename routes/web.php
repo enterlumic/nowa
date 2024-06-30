@@ -175,3 +175,22 @@ Route::get('validar_existencia_empresa', [EmpresaController::class, 'validar_exi
 use App\Http\Controllers\HorarioController;
 
 Route::post('/empresa/horarios', [HorarioController::class, 'store'])->name('horarios.store');
+
+use App\Http\Controllers\CarritoController;
+Route::get('carrito', [CarritoController::class, 'index'])->middleware('auth') ;
+Route::post('set_carrito', [CarritoController::class, 'set_carrito']);
+Route::post('set_import_carrito', [CarritoController::class, 'set_import_carrito']);
+Route::post('get_carrito_by_id', [CarritoController::class, 'get_carrito_by_id']);
+Route::post('delete_carrito', [CarritoController::class, 'delete_carrito']);
+Route::post('undo_delete_carrito', [CarritoController::class, 'undo_delete_carrito']);
+Route::get('get_carrito_datatable', [CarritoController::class, 'get_carrito_datatable']);
+Route::post('truncate_carrito', [CarritoController::class, 'truncate_carrito']);
+Route::post('truncate_sps_carrito', [CarritoController::class, 'truncate_sps_carrito']);
+Route::post('form_importar_carrito', [CarritoController::class, 'form_importar_carrito']);
+Route::get('export_excel_carrito', [CarritoController::class, 'export_excel_carrito']);
+Route::post('get_cat_carrito', [CarritoController::class, 'get_cat_carrito']);
+Route::post('get_carrito_by_list', [CarritoController::class, 'get_carrito_by_list']);
+Route::get('get_carrito_diez', [CarritoController::class, 'get_carrito_diez']);
+Route::get('descargar_plantilla_carrito', [CarritoController::class, 'descargar_plantilla_carrito']);
+Route::get('validar_existencia_carrito', [CarritoController::class, 'validar_existencia_carrito']);
+
