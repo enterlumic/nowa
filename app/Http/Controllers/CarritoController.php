@@ -130,32 +130,38 @@ class CarritoController extends Controller
     */
     public function set_carrito(Request $request)
     {
-        if(!\Schema::hasTable('carrito')){
-            Notification::route('mail', ['odin0464@gmail.com'])->notify(
-                new FncarritoSendMail(
-                    'Notificación no existe tabla carrito'
-                    , __DIR__ ." \ n"
-                )
-            );
-            return json_encode(array("b_status"=> false, "vc_message" => "No se encontro la tabla carrito"));
+        $userId = $request->user()->id;
+        $idProducto = Crypt::decrypt($request->id);
+        $cantidad = $request->cantidad ?? 1;  // Usar la cantidad del request o 1 si no se proporciona
+
+        // Buscar en la base de datos si ya existe un registro para este usuario y producto
+        $carrito = DB::table('carrito')
+                     ->where('user_id', $userId)
+                     ->where('producto_id', $idProducto)
+                     ->first();
+
+        if ($carrito) {
+            // Si el producto ya existe en el carrito, incrementar la cantidad
+            DB::table('carrito')
+              ->where('user_id', $userId)
+              ->where('producto_id', $idProducto)
+              ->update([
+                  'cantidad' => $carrito->cantidad + $cantidad,  // Incrementar la cantidad existente
+                  'agregado_en' => now(),  // Opcional: actualizar la fecha de 'agregado_en'
+              ]);
+        } else {
+            // Si el producto no existe en el carrito, insertar un nuevo registro
+            DB::table('carrito')->insert([
+                'user_id' => $userId,
+                'producto_id' => $idProducto,
+                'cantidad' => $cantidad,
+                'agregado_en' => now(),
+            ]);
         }
 
-        $data=[ 'user_id' => isset($request->user_id)? $request->user_id:"",
-                'producto_id' => isset($request->producto_id)? $request->producto_id: "",
-                'cantidad' => isset($request->cantidad)? $request->cantidad: "",
-                'agregado_en' => isset($request->agregado_en)? $request->agregado_en: "",
-                'estado' => isset($request->estado)? $request->estado: "",
-        ];
-
-        // Si ya existe solo se actualiza el registro
-        if (isset($request->id)){
-            DB::table('carrito')->where('id', $request->id)->update($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Actualizado correctamente..."));
-        }else{ // Nuevo registro
-            DB::table('carrito')->insert($data);
-            return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
-        }
+        return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
     }
+
 
     /*
     |--------------------------------------------------------------------------

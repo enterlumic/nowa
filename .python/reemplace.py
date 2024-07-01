@@ -38,7 +38,7 @@ def process():
         messagebox.showerror("Error", "Todos los campos son obligatorios")
         return
 
-    rename_files_and_directories(path, oldword, newword)
+    # rename_files_and_directories(path, oldword, newword)
     replace_content_in_files(path, oldword, newword)
     messagebox.showinfo("Éxito", "Proceso completado")
 

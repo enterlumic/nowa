@@ -110,58 +110,25 @@ let detalle = {
     },
 
     fn_set_detalle: function () {
-        $("#form_detalle").validate({
-            submitHandler: function (form) {
-                let get_form = document.getElementById("form_detalle");
-                let postData = new FormData(get_form);
 
-                let element_by_id= 'form_detalle';
-                let message=  'Cargando...' ;
-                let $loading= LibreriaGeneral.f_cargando(element_by_id, message);
+        $('#agregar-carrito').click(function(){
+    
+            var dataId = $(this).data('id');
+            console.log("dataId", dataId);
 
-                $.ajax({
-                    url: "set_detalle",
-                    data: postData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type: 'POST',
-                    success: function (response) {
+            $.ajax({
+                url: "set_carrito",
+                data: {id: dataId},
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                type: 'POST',
+                success: function (response) {
+                    console.log("response", response);
 
-                        $loading.waitMe('hide');
-
-                        let json ='';
-                        try {
-                            json = JSON.parse(response);
-                        } catch (e) {
-                            alert(response);
-                            return;
-                        }
-
-                        if (json["b_status"]) {
-                            $('#get_detalle_datatable').DataTable().ajax.reload();
-                            document.getElementById("form_detalle").reset();
-                            $('#modalFormIUdetalle').modal('hide');
-                        } else {
-                            alert(json);
-                        }
-                    },
-                    error: function (response) {
-                        $loading.waitMe('hide');
-                    }
-                });
-            }
-            , rules: {
-              vCampo1_detalle: {
-                required: true
-              }
-            }
-            , messages: {
-                vCampo1_detalle: {
-                    minlength: "El vCampo1_detalle es requerido"
+                },
+                error: function (response) {
+                    $loading.waitMe('hide');
                 }
-              }
+            });            
         });
     },
 
