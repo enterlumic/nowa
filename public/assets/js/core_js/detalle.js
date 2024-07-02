@@ -114,21 +114,22 @@ let detalle = {
         $('#agregar-carrito').click(function(){
     
             var dataId = $(this).data('id');
-            console.log("dataId", dataId);
+            var cantidad = $(this).data('cantidad');
 
             $.ajax({
                 url: "set_carrito",
-                data: {id: dataId},
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type: 'POST',
                 success: function (response) {
-                    console.log("response", response);
-
+                    if (response.success) {
+                        window.location.href = '/carrito_agregado';  // Redirige a la página del carrito
+                    }
                 },
                 error: function (response) {
-                    $loading.waitMe('hide');
+                    console.log('Error:', response);
+                    alert('Error al agregar el producto al carrito.');
                 }
-            });            
+            });
         });
     },
 

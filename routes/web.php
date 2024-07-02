@@ -178,6 +178,7 @@ Route::post('/empresa/horarios', [HorarioController::class, 'store'])->name('hor
 
 use App\Http\Controllers\CarritoController;
 Route::get('carrito', [CarritoController::class, 'index'])->middleware('auth') ;
+Route::post('carrito_agregado', [CarritoController::class, 'carrito_agregado']) ;
 Route::post('set_carrito', [CarritoController::class, 'set_carrito']);
 Route::post('set_import_carrito', [CarritoController::class, 'set_import_carrito']);
 Route::post('get_carrito_by_id', [CarritoController::class, 'get_carrito_by_id']);

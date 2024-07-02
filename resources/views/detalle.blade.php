@@ -65,7 +65,7 @@
                             </div>
                             <h6 class="price">Precio: <span class="h3 ms-2">${{ $promocion->precio }}</span></h6>
                             <div class="text-center mt-4 btn-list">
-                                <a href="javascript:void(0);" id="agregar-carrito" data-id="{{$_REQUEST['id']}}" class="btn ripple btn-primary me-2"><i class="fe fe-shopping-cart"> </i> Añadir al carrito</a>
+                                <a href="javascript:void(0);" class="btn ripple btn-primary me-2 add-to-cart-button" data-product-id="{{$_REQUEST['id']}}"><i class="fe fe-shopping-cart"> </i> Añadir al carrito</a>
                                 <a href="check_out?id={{$_REQUEST['id']}}" class="btn ripple btn-secondary"><i class="fe fe-credit-card"> </i> Comprar ahora</a>
                             </div>
                         </div>
@@ -124,6 +124,50 @@
 </style>
 <script src="assets/js/core_js/detalle.js?{{ rand() }}"></script>
 <script type="text/javascript">
+
+$(document).on('click', '.add-to-cart-button', function() {
+    var button = $(this);
+    button.attr('disabled', true).text('Agregando...');
+
+    var productId = button.data('productId');
+    var postData = {
+        product_id: productId,
+        quantity: 1,
+    };
+
+    $.ajax({
+        url: "/carrito_agregado",
+        data: postData,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: 'POST',
+        success: function (response) {
+            button.attr('disabled', false).text('Agregar al Carrito');
+            if (response.b_status) {
+
+                $('#cart-data').text(`Artículos (${response.cartTotal})`);
+                $('#cart-icon-badge').text(`${response.cartTotal}`);
+
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Producto añadido al carrito con éxito',
+                    icon: 'success',
+                    timer: 3000
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: response.message || 'No se pudo añadir el producto al carrito',
+                    icon: 'error'
+                });
+            }
+        },
+        error: function () {
+            button.attr('disabled', false).text('Agregar al Carrito');
+            alert('Error en la solicitud');
+        }
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     var thumbs = document.querySelectorAll('.thumb');
     var carouselElement = document.getElementById('Slider');

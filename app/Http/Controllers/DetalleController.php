@@ -53,6 +53,7 @@ class DetalleController extends Controller
     {
         $this->LibCore->setSkynet(['vc_evento' => 'index_detalle', 'vc_info' => "index - detalle"]);
 
+        $userId = $request->user()->id;
         $promocion_id = Crypt::decrypt($request->id);
         $fotos = DB::table('productos_fotos')
             ->select('order', 'size', 'foto_url')
@@ -66,7 +67,12 @@ class DetalleController extends Controller
             ->where('id', $promocion_id)
             ->first();
 
-        return view('detalle', ['fotos' => $fotos, 'promocion' => $promocion]);
+        $cantidad = DB::table('carrito')
+            ->where('producto_id', $promocion_id)
+            ->where('user_id', $userId)
+            ->value('cantidad');
+
+        return view('detalle', ['fotos' => $fotos, 'promocion' => $promocion, 'cantidad' => $cantidad]);
     }
 
     public function get_data_by_id($id)

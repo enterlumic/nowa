@@ -56,12 +56,73 @@
                                     <span class="input-group">
                                         <input type="text" class="form-control" placeholder="Search..." aria-label="Search input" aria-describedby="button-addon2">
                                         <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
+                                        <!-- <a href="#" id="button-addon2" class="btn btn-primary">Search</a> -->
                                     </span>
                                 </span>
                             </li>
                         </ul>
                 
                         <!-- End::header-link -->
+                    </div>
+                    <!-- End::header-element -->
+
+                    <!-- Start::header-element -->
+                    <div class="header-element country-selector">
+                        <!-- Start::header-link|dropdown-toggle -->
+                        <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+                            <img src="../assets/images/flags/us_flag.jpg" alt="img" class="rounded-circle">
+                        </a>
+                        <!-- End::header-link|dropdown-toggle -->
+                        <ul class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                    <span class="avatar avatar-xs lh-1 me-2">
+                                        <img src="../assets/images/flags/us_flag.jpg" alt="img">
+                                    </span>
+                                    English
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                    <span class="avatar avatar-xs lh-1 me-2">
+                                        <img src="../assets/images/flags/spain_flag.jpg" alt="img" >
+                                    </span>
+                                    Spanish
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                    <span class="avatar avatar-xs lh-1 me-2">
+                                        <img src="../assets/images/flags/french_flag.jpg" alt="img" >
+                                    </span>
+                                    French
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                    <span class="avatar avatar-xs lh-1 me-2">
+                                        <img src="../assets/images/flags/germany_flag.jpg" alt="img" >
+                                    </span>
+                                    German
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                    <span class="avatar avatar-xs lh-1 me-2">
+                                        <img src="../assets/images/flags/italy_flag.jpg" alt="img" >
+                                    </span>
+                                    Italian
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);">
+                                    <span class="avatar avatar-xs lh-1 me-2">
+                                        <img src="../assets/images/flags/russia_flag.jpg" alt="img" >
+                                    </span>
+                                    Russian
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                     <!-- End::header-element -->
 
@@ -111,6 +172,70 @@
                                                 <div class="mb-0">
                                                     <a class="text-muted fs-13" href="product-cart.html">Lence Camera</a>
                                                     <div class="fw-semibold text-dark fs-12">1* $189.00</div>
+                                                </div>
+                                                <div>
+                                                    <a href="javascript:void(0);" class="header-cart-remove float-end dropdown-item-close me-2"><i class="fe fe-trash-2 text-danger"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item">
+                                    <div class="d-flex align-items-start cart-dropdown-item">
+                                        <img src="../assets/images/ecommerce/16.jpg" alt="img" class="avatar avatar-rounded br-5 me-3">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center justify-content-between mb-0">
+                                                <div class="mb-0">
+                                                    <a class="text-muted fs-13" href="product-cart.html">White Earbuds</a>
+                                                    <div class="fw-semibold text-dark fs-12">3* $59.00</div>
+                                                </div>
+                                                <div>
+                                                    <a href="javascript:void(0);" class="header-cart-remove float-end dropdown-item-close me-2"><i class="fe fe-trash-2 text-danger"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item">
+                                    <div class="d-flex align-items-start cart-dropdown-item">
+                                        <img src="../assets/images/ecommerce/12.jpg" alt="img" class="avatar avatar-rounded br-5 me-3">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center justify-content-between mb-0">
+                                                <div class="mb-0">
+                                                    <a class="text-muted fs-13" href="product-cart.html">Branded Black Headeset</a>
+                                                    <div class="fw-semibold text-dark fs-12">2* $39.99</div>
+                                                </div>
+                                                <div>
+                                                    <a href="javascript:void(0);" class="header-cart-remove float-end dropdown-item-close me-2"><i class="fe fe-trash-2 text-danger"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item">
+                                    <div class="d-flex align-items-start cart-dropdown-item">
+                                        <img src="../assets/images/ecommerce/6.jpg" alt="img" class="avatar avatar-rounded br-5 me-3">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center justify-content-between mb-0">
+                                                <div class="mb-0">
+                                                    <a class="text-muted fs-13" href="product-cart.html">Glass Decor Item</a>
+                                                    <div class="fw-semibold text-dark fs-12">5* $5.99</div>
+                                                </div>
+                                                <div>
+                                                    <a href="javascript:void(0);" class="header-cart-remove float-end dropdown-item-close me-2"><i class="fe fe-trash-2 text-danger"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item">
+                                    <div class="d-flex align-items-start cart-dropdown-item">
+                                        <img src="../assets/images/ecommerce/4.jpg" alt="img" class="avatar avatar-rounded br-5 me-3">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center justify-content-between mb-0">
+                                                <div class="mb-0">
+                                                    <a class="text-muted fs-13" href="product-cart.html">Pink Teddy Bear</a>
+                                                    <div class="fw-semibold text-dark fs-12">1* $10.00</div>
                                                 </div>
                                                 <div>
                                                     <a href="javascript:void(0);" class="header-cart-remove float-end dropdown-item-close me-2"><i class="fe fe-trash-2 text-danger"></i></a>
@@ -177,6 +302,86 @@
                                          </div>
                                     </div>
                                 </li>
+                                <li class="dropdown-item p-3">
+                                    <div class="d-flex align-items-start">
+                                         <div class="pe-3">
+                                            <span class="avatar bg-purple rounded-3"><i class="fab fa-delicious text-fixed-white fs-18"></i></span>
+                                         </div>
+                                         <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 fw-semibold"><a href="notification.html">Updates available</a></p>
+                                                <span class="text-muted fw-normal fs-12 header-notification-text">2 days ago</span>
+                                            </div>
+                                            <div>
+                                                <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i class="ti ti-x fs-16"></i></a>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item p-3">
+                                    <div class="d-flex align-items-start">
+                                         <div class="pe-3">
+                                             <span class="avatar bg-success rounded-3"><i class="fa fa-cart-plus text-fixed-white fs-18"></i></span>
+                                         </div>
+                                         <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 fw-semibold"><a href="notification.html">New order received</a></p>
+                                                <span class="text-muted fw-normal fs-12 header-notification-text">1 hour ago</span>
+                                            </div>
+                                            <div>
+                                                <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i class="ti ti-x fs-16"></i></a>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item p-3">
+                                    <div class="d-flex align-items-start">
+                                         <div class="pe-3">
+                                            <span class="avatar bg-warning rounded-3"><i class="far fa-envelope-open text-fixed-white fs-18"></i></span>
+                                         </div>
+                                         <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 fw-semibold"><a href="notification.html">New review received </a></p>
+                                                <span class="text-muted fw-normal fs-12 header-notification-text">1 day ago</span>
+                                            </div>
+                                            <div>
+                                                <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i class="ti ti-x fs-16"></i></a>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item p-3">
+                                    <div class="d-flex align-items-start">
+                                         <div class="pe-3">
+                                            <span class="avatar bg-danger rounded-3"><i class="fab fa-wpforms text-fixed-white fs-18"></i></span>
+                                         </div>
+                                         <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 fw-semibold"><a href="notification.html">22 verified registrations </a></p>
+                                                <span class="text-muted fw-normal fs-12 header-notification-text">2 hours ago</span>
+                                            </div>
+                                            <div>
+                                                <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i class="ti ti-x fs-16"></i></a>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item p-3">
+                                    <div class="d-flex align-items-start">
+                                         <div class="pe-3">
+                                            <span class="avatar bg-success rounded-3"><i class="far fa-check-square text-fixed-white fs-18"></i></span>
+                                         </div>
+                                         <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 fw-semibold"><a href="notification.html">Project approved </a></p>
+                                                <span class="text-muted fw-normal fs-12 header-notification-text">4 hours ago</span>
+                                            </div>
+                                            <div>
+                                                <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i class="ti ti-x fs-16"></i></a>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </li>
                             </ul>
                             <div class="p-2 empty-header-item1 border-top">
                                 <div class="d-grid">
@@ -189,6 +394,125 @@
                                         <i class="ri-notification-off-line fs-2"></i>
                                     </span>
                                     <h6 class="fw-semibold mt-3">No New Notifications</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End::main-header-dropdown -->
+                    </div>
+                    <!-- End::header-element -->
+
+                    <!-- Start::header-element -->
+                    <div class="header-element header-shortcuts-dropdown d-md-block d-none">
+                        <!-- Start::header-link|dropdown-toggle -->
+                        <a href="javascript:void(0);" class="header-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="notificationDropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+                        </a>
+                        <!-- End::header-link|dropdown-toggle -->
+                        <!-- Start::main-header-dropdown -->
+                        <div class="main-header-dropdown header-shortcuts-dropdown dropdown-menu pb-0 dropdown-menu-end" aria-labelledby="notificationDropdown">
+                            <div class="p-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p class="mb-0 fs-17 fw-semibold">Related Apps</p>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider mb-0"></div>
+                            <div class="main-header-shortcuts p-2" id="header-shortcut-scroll">
+                               <div class="row g-2">
+                                   <div class="col-4">
+                                       <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/figma.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Figma</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/microsoft-powerpoint.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Power Point</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/microsoft-word.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">MS Word</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/calender.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Calendar</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/sketch.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Sketch</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/google-docs.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Docs</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/google.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Google</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/translate.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Translate</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                                   <div class="col-4">
+                                        <a href="javascript:void(0);">
+                                            <div class="text-center p-3 related-app">
+                                                <span class="avatar avatar-sm avatar-rounded">
+                                                    <img src="../assets/images/apps/google-sheets.png" alt="">
+                                                </span>
+                                                <span class="d-block fs-12">Sheets</span>
+                                            </div>
+                                        </a>
+                                   </div>
+                               </div>
+                            </div>
+                            <div class="p-3 border-top">
+                                <div class="d-grid">
+                                    <a href="javascript:void(0);" class="btn btn-primary">View All</a>
                                 </div>
                             </div>
                         </div>
@@ -233,7 +557,7 @@
                         </a>
                         <!-- End::header-link|dropdown-toggle -->
                         <ul class="main-header-dropdown dropdown-menu pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end" aria-labelledby="mainHeaderProfile">
-                            <li><a class="dropdown-item d-flex border-bottom" href="profile"><i class="far fa-user-circle fs-16 me-2 op-7"></i>Profile</a></li>
+                            <li><a class="dropdown-item d-flex border-bottom" href="profile.html"><i class="far fa-user-circle fs-16 me-2 op-7"></i>Profile</a></li>
                             <li><a class="dropdown-item d-flex border-bottom" href="chat.html"><i class="far fa-smile fs-16 me-2 op-7"></i>Chat</a></li>
                             <li><a class="dropdown-item d-flex border-bottom" href="mail.html"><i class="far fa-envelope  fs-16 me-2 op-7"></i>Inbox <span class="badge bg-success-transparent ms-auto">25</span></a></li>
                             <li><a class="dropdown-item d-flex border-bottom border-block-end" href="chat.html"><i class="far fa-comment-dots fs-16 me-2 op-7"></i>Messages</a></li>
@@ -266,7 +590,7 @@
                     <!-- Start::header-element -->
                     <div class="header-element">
                         <!-- Start::header-link|switcher-icon -->
-                        <a href="#" class="header-link switcher-icon d-none admin-gnu" data-bs-toggle="offcanvas" data-bs-target="#switcher-canvas">
+                        <a href="#" class="header-link switcher-icon" data-bs-toggle="offcanvas" data-bs-target="#switcher-canvas">
                             <svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" width="24" height="24" viewBox="0 0 24 24"><path d="M12 16c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm0-6c1.084 0 2 .916 2 2s-.916 2-2 2-2-.916-2-2 .916-2 2-2z"/><path d="m2.845 16.136 1 1.73c.531.917 1.809 1.261 2.73.73l.529-.306A8.1 8.1 0 0 0 9 19.402V20c0 1.103.897 2 2 2h2c1.103 0 2-.897 2-2v-.598a8.132 8.132 0 0 0 1.896-1.111l.529.306c.923.53 2.198.188 2.731-.731l.999-1.729a2.001 2.001 0 0 0-.731-2.732l-.505-.292a7.718 7.718 0 0 0 0-2.224l.505-.292a2.002 2.002 0 0 0 .731-2.732l-.999-1.729c-.531-.92-1.808-1.265-2.731-.732l-.529.306A8.1 8.1 0 0 0 15 4.598V4c0-1.103-.897-2-2-2h-2c-1.103 0-2 .897-2 2v.598a8.132 8.132 0 0 0-1.896 1.111l-.529-.306c-.924-.531-2.2-.187-2.731.732l-.999 1.729a2.001 2.001 0 0 0 .731 2.732l.505.292a7.683 7.683 0 0 0 0 2.223l-.505.292a2.003 2.003 0 0 0-.731 2.733zm3.326-2.758A5.703 5.703 0 0 1 6 12c0-.462.058-.926.17-1.378a.999.999 0 0 0-.47-1.108l-1.123-.65.998-1.729 1.145.662a.997.997 0 0 0 1.188-.142 6.071 6.071 0 0 1 2.384-1.399A1 1 0 0 0 11 5.3V4h2v1.3a1 1 0 0 0 .708.956 6.083 6.083 0 0 1 2.384 1.399.999.999 0 0 0 1.188.142l1.144-.661 1 1.729-1.124.649a1 1 0 0 0-.47 1.108c.112.452.17.916.17 1.378 0 .461-.058.925-.171 1.378a1 1 0 0 0 .471 1.108l1.123.649-.998 1.729-1.145-.661a.996.996 0 0 0-1.188.142 6.071 6.071 0 0 1-2.384 1.399A1 1 0 0 0 13 18.7l.002 1.3H11v-1.3a1 1 0 0 0-.708-.956 6.083 6.083 0 0 1-2.384-1.399.992.992 0 0 0-1.188-.141l-1.144.662-1-1.729 1.124-.651a1 1 0 0 0 .471-1.108z"/></svg>
                         </a>
                         <!-- End::header-link|switcher-icon -->

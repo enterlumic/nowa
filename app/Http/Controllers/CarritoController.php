@@ -55,6 +55,67 @@ class CarritoController extends Controller
         return view('carrito');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Inicial
+    |--------------------------------------------------------------------------
+    |
+    | Carga solo vista con HTML
+    | Todo es controlado por JS carrito.js
+    |
+    */
+    public function carrito_agregado(Request $request)
+    {
+        try {
+            $userId = $request->user()->id;
+            $idProducto = Crypt::decrypt($request->product_id); // Asegúrate que el nombre del campo sea el correcto
+
+            $cantidadRequest = $request->input('quantity', 1); // Obtiene la cantidad del request, con un valor predeterminado de 1
+
+            $carritoBD = DB::table('carrito')
+                ->where('user_id', $userId)
+                ->where('producto_id', $idProducto)
+                ->first();
+
+            if ($carritoBD) {
+                // Si el producto ya existe en el carrito, incrementar la cantidad
+                DB::table('carrito')
+                    ->where('user_id', $userId)
+                    ->where('producto_id', $idProducto)
+                    ->update([
+                        'cantidad' => $carritoBD->cantidad + $cantidadRequest,
+                        'agregado_en' => now(),
+                    ]);
+            } else {
+                // Si el producto no existe en el carrito, insertar un nuevo registro
+                DB::table('carrito')->insert([
+                    'user_id' => $userId,
+                    'producto_id' => $idProducto,
+                    'cantidad' => $cantidadRequest,
+                    'agregado_en' => now(),
+                ]);
+            }
+
+            // Calcular el nuevo total del carrito
+            $nuevoTotalCarrito = DB::table('carrito')
+                ->where('user_id', $userId)
+                ->sum('cantidad');
+
+            return response()->json([
+                'b_status' => true, 
+                'message' => 'Producto añadido al carrito', 
+                'cartTotal' => $nuevoTotalCarrito  // Envía el total actualizado del carrito
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'b_status' => false, 
+                'message' => 'Error al añadir producto al carrito', 
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -159,7 +220,14 @@ class CarritoController extends Controller
             ]);
         }
 
-        return json_encode(array("b_status"=> true, "vc_message" => "Agregado correctamente..."));
+        $token = Str::random(40);
+        session(['add_to_cart_token' => $token]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Producto agregado al carrito correctamente.',
+            'token' => $token
+        ]);
     }
 
 
