@@ -99,7 +99,7 @@ class CarritoController extends Controller
             // Calcular el nuevo total del carrito
             $nuevoTotalCarrito = DB::table('carrito')
                 ->where('user_id', $userId)
-                ->sum('cantidad');
+                ->count();
 
             return response()->json([
                 'b_status' => true, 

@@ -13,10 +13,13 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             if (auth()->check()) {
                 $userId = auth()->id();
+
                 $cartCount = DB::table('carrito')
                                 ->where('user_id', $userId)
-                                ->sum('cantidad');
+                                ->count();
+
                 $view->with('cartCount', $cartCount);
+
             }
         });
     }
