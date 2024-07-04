@@ -79,6 +79,7 @@ Route::post('get_productos_by_list', [ProductosController::class, 'get_productos
 Route::get('get_productos_diez', [ProductosController::class, 'get_productos_diez']);
 Route::get('descargar_plantilla_productos', [ProductosController::class, 'descargar_plantilla_productos']);
 Route::get('validar_existencia_productos', [ProductosController::class, 'validar_existencia_productos']);
+Route::get('product-cart', [ProductosController::class, 'productCart']);
 Route::post('/set_python', [ProductosController::class, 'runPythonScript'])->name('set_python');
 Route::post('ajax_remove_file', [ProductosController::class, 'ajax_remove_file']);
 Route::post('ajax_sort_files', [ProductosController::class, 'ajax_sort_files']);

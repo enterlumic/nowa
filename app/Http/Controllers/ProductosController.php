@@ -307,6 +307,21 @@ class ProductosController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | Validar existencia antes de crear un nuevo registro
+    |--------------------------------------------------------------------------
+    | 
+    | @return json
+    |
+    */
+    public function productCart(Request $request)
+    {
+        $productos = Productos::where('b_status', '>', 0)->orderBy('id', 'desc')->get();
+
+        return view('productos.partials.product-cart', compact('productos'));        
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Importar pensado para cat, simple
     |--------------------------------------------------------------------------
     |
