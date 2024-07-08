@@ -315,9 +315,56 @@ class ProductosController extends Controller
     */
     public function productCart(Request $request)
     {
-        $productos = Productos::where('b_status', '>', 0)->orderBy('id', 'desc')->get();
+        
+        $baseURL = url('/uploads/productos'); // Asegúrate de que esta URL coincida con tu configuración
 
-        return view('productos.partials.product-cart', compact('productos'));        
+        // Realiza la consulta utilizando Query Builder
+        $productos = DB::table('carrito as c')
+            ->leftJoin('productos as p', 'c.producto_id', '=', 'p.id')
+            ->leftJoin('productos_fotos as pf', function($join) {
+                $join->on('pf.promocion_id', '=', 'p.id')
+                     ->where('pf.order', '=', 0)
+                     ->where('pf.size', '=', 'small');
+            })
+            ->select('p.titulo', 'c.cantidad', 'p.precio', DB::raw("CONCAT('$baseURL/', pf.foto_url) as foto_url"))
+            ->where('p.b_status', '>', 0)
+            ->orderBy('p.id', 'desc')
+            ->get();
+
+        $carrito =  Crypt::encrypt('carrito');
+
+        // Retorna la vista con los productos obtenidos
+        return view('productos.partials.product-cart', compact('productos', 'carrito'));
+
+    }
+
+
+    public function joder(Request $request)
+    {
+        $baseURL = url('/uploads/productos');
+
+        $productos = DB::table('carrito as c')
+            ->leftJoin('productos as p', 'c.producto_id', '=', 'p.id')
+            ->leftJoin('productos_fotos as pf', function($join) {
+                $join->on('pf.promocion_id', '=', 'p.id')
+                     ->where('pf.order', '=', 0)
+                     ->where('pf.size', '=', 'small');
+            })
+            ->select('c.id', 'p.titulo', 'c.cantidad', 'p.precio', DB::raw("CONCAT('$baseURL/', pf.foto_url) as foto_url"))
+            ->where('p.b_status', '>', 0)
+            ->orderBy('p.id', 'desc')
+            ->get();
+
+        return response()->json($productos);
+    }
+
+    public function updateQuantity(Request $request)
+    {
+        DB::table('carrito')
+            ->where('id', $request->id)
+            ->update([
+                'cantidad' => $request->cantidad
+            ]);
     }
 
     /*

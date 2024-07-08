@@ -68,4 +68,12 @@
     <!-- .div-modals -->
 </x-app-layout>
 
+<!-- Quill Editor JS -->
+<script src="assets/libs/quill/quill.min.js"></script>
+
+<!-- Internal Quill JS -->
+<script src="assets/js/quill-editor.js"></script>
+
 <script src="assets/js/core_js/productos.js?{{ rand() }}"></script>
+
+

@@ -3,9 +3,11 @@
     // en sublime con F12 puedes llegar a esta vista
     function add_productos(){}
 @endphp
+<link rel="stylesheet" href="assets/libs/quill/quill.snow.css">
+<link rel="stylesheet" href="assets/libs/quill/quill.bubble.css">
 
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modalFormIUproductos" tabindex="-1" aria-labelledby="add_new_productosLabel">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <form class="form-material form-action-post" action="#form_productos" id="form_productos" method="post">
                 <div class="modal-header">
@@ -21,6 +23,17 @@
                         <div class="col-sm-12">
                             <label for="descripcion" class="form-label">Descripción</label>
                             <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Escribe la descripción"></textarea>
+                            <div id="editor">
+                                <h4><b class="ql-size-large">Quill Snow</b> is a free, open source <a href="https://github.com/quilljs/quill/" target="_blank">Quill Editor</a> built for the modern web. With its <a href="https://quilljs.com/docs/modules/" target="_blank">modular architecture</a> and expressive API, it is completely customizable to fit any need.</h4>
+                                <p><br></p>
+                                <ol>
+                                    <li class="ql-size-normal">Write text select and edit with multiple options.</li>
+                                    <li class="">This is quill snow editor.</li>
+                                    <li class="">Easy to customize and flexible.</li>
+                                </ol>
+                                <p><br></p>
+                                <h4>Quill officially supports a standard toolbar theme <a href="https://github.com/quilljs/quill/" target="_blank">"Snow"</a> and a floating tooltip theme <a href="https://github.com/quilljs/quill/" target="_blank">"Bubble"</a></h4>
+                            </div>                            
                         </div>
                         <div class="col-sm-12 d-none tipo-ya-existe">
                             <span class="badge bg-danger text-uppercase">Este registro ya existe</span>

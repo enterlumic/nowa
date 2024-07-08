@@ -56,17 +56,35 @@ class CheckOutController extends Controller
     {
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_check_out' , 'vc_info' => "index - check_out" ] );
 
-        // Recuperar los datos de la tabla productos
-        $productos = DB::table('productos as p')
-            ->join('productos_fotos as pf', function ($join) {
-                $join->on('pf.promocion_id', '=', 'p.id')
-                     ->where('pf.size', '=', 'small')
-                     ->where('pf.order', '=', 0);
-            })
-            ->where('p.b_status', '>', 0)
-            ->orderBy('pf.order', 'asc')
-            ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
-            ->get();
+        $id= Crypt::decrypt($_REQUEST['id']);
+        $user_id= Auth::user()->id;
+
+        if (isset($_REQUEST['id']) && $id == 'carrito'){
+
+            $productos = DB::table('carrito as c')
+                ->join('productos as p', 'p.id', '=', 'c.producto_id')
+                ->join('productos_fotos as pf', 'pf.promocion_id', '=', 'p.id')
+                ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
+                ->where('c.user_id', '=', $user_id)
+                ->where('pf.size', '=', 'small')
+                ->where('pf.order', '=', 0)
+                ->get();
+        }else{
+
+            // Recuperar los datos de la tabla productos
+            $productos = DB::table('productos as p')
+                ->join('productos_fotos as pf', function ($join) {
+                    $join->on('pf.promocion_id', '=', 'p.id')
+                         ->where('pf.size', '=', 'small')
+                         ->where('pf.order', '=', 0);
+                })
+                ->where('p.b_status', '>', 0)
+                ->where('p.id', '=', $id)
+                ->orderBy('pf.order', 'asc')
+                ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
+                ->get();
+
+        }
 
         // Pasar los datos a la vista
         return view('check_out', compact('productos'));
