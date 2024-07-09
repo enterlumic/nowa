@@ -1,7 +1,6 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, simpledialog, scrolledtext
 import os
-from tkinter import filedialog, messagebox, simpledialog
 
 def rename_files_and_directories(path, oldword, newword):
     for root, dirs, files in os.walk(path, topdown=True):
@@ -59,13 +58,23 @@ def find_files_and_directories_to_rename(path, oldword):
 
 def find_files_to_replace_content(path, oldword):
     affected_files = []
+    # Extensiones de archivo para excluir
+    excluded_extensions = {'.png', '.jpg', '.jpeg', '.gif', '.bmp'}
     for root, dirs, files in os.walk(path, topdown=True):
+        # Excluir directorios específicos como antes
         dirs[:] = [d for d in dirs if d not in ['storage', 'vendor', '.git']]
         for name in files:
+            # Comprobar la extensión del archivo
+            if any(name.lower().endswith(ext) for ext in excluded_extensions):
+                continue  # Saltar el procesamiento de imágenes
             file_path = os.path.join(root, name)
-            with open(file_path, 'r', encoding='utf-8') as file:
-                if oldword in file.read():
-                    affected_files.append(file_path)
+            try:
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    if oldword in file.read():
+                        affected_files.append(file_path)
+            except UnicodeDecodeError:
+                # Manejar el error de decodificación si se encuentra un archivo no excluido
+                print(f"Skipping file due to decode error: {file_path}")
     return affected_files
 
 def confirm_and_process_files(path, oldword, newword):
@@ -73,15 +82,29 @@ def confirm_and_process_files(path, oldword, newword):
     rename_list = find_files_and_directories_to_rename(path, oldword)
     replace_list = find_files_to_replace_content(path, oldword)
 
-    # Show confirmation dialog with list of affected files
-    message = "The following files/directories will be affected:\n\n"
-    message += "\n".join(rename_list + replace_list)
-    message += "\n\nDo you want to proceed?"
-    response = messagebox.askyesno("Confirm Changes", message)
-    if response:
-        rename_files_and_directories(path, oldword, newword, rename_list)
-        replace_content_in_files(path, oldword, newword, replace_list)
-        messagebox.showinfo("Success", "Files have been successfully updated.")
+    # Create a top-level window for the confirmation dialog
+    confirm_window = tk.Toplevel()
+    confirm_window.title("Confirm Changes")
+
+    # Display affected files in a scrolled text widget
+    scroll_txt = scrolledtext.ScrolledText(confirm_window, width=100, height=20)
+    scroll_txt.pack(padx=10, pady=10)
+    scroll_txt.insert(tk.INSERT, "The following files/directories will be affected:\n\n")
+    scroll_txt.insert(tk.INSERT, "\n".join(rename_list + replace_list))
+    scroll_txt.configure(state='disabled')  # Make the text widget read-only
+
+    # Add buttons for user action
+    btn_frame = tk.Frame(confirm_window)
+    btn_frame.pack(pady=10)
+    tk.Button(btn_frame, text="Yes", command=lambda: proceed_with_changes(path, oldword, newword, rename_list, replace_list, confirm_window)).pack(side=tk.LEFT, padx=10)
+    tk.Button(btn_frame, text="No", command=confirm_window.destroy).pack(side=tk.LEFT)
+
+def proceed_with_changes(path, oldword, newword, rename_list, replace_list, window):
+    # Process renaming and content replacement
+    rename_files_and_directories(path, oldword, newword, rename_list)
+    replace_content_in_files(path, oldword, newword, replace_list)
+    messagebox.showinfo("Success", "Files have been successfully updated.")
+    window.destroy()
 
 def rename_files_and_directories(path, oldword, newword, files):
     for file in files:
@@ -112,7 +135,7 @@ root.title("Renombrar y Reemplazar")
 tk.Label(root, text="Ruta del Proyecto:").grid(row=0, column=0, padx=10, pady=5)
 path_entry = tk.Entry(root, width=50)
 path_entry.grid(row=0, column=1, padx=10, pady=5)
-path_entry.insert(0, "/var/www/html/")  # Añadir ruta por defecto
+path_entry.insert(0, "/var/www/html/nowa")  # Añadir ruta por defecto
 tk.Button(root, text="Seleccionar", command=select_path).grid(row=0, column=2, padx=10, pady=5)
 
 tk.Label(root, text="Palabra Antigua:").grid(row=1, column=0, padx=10, pady=5)
