@@ -63,7 +63,7 @@ class CheckOutController extends Controller
 
             $productos = DB::table('carrito as c')
                 ->join('productos as p', 'p.id', '=', 'c.producto_id')
-                ->join('productos_fotos as pf', 'pf.promocion_id', '=', 'p.id')
+                ->join('productos_fotos as pf', 'pf.producto_id', '=', 'p.id')
                 ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
                 ->where('c.user_id', '=', $user_id)
                 ->where('pf.size', '=', 'small')
@@ -74,7 +74,7 @@ class CheckOutController extends Controller
             // Recuperar los datos de la tabla productos
             $productos = DB::table('productos as p')
                 ->join('productos_fotos as pf', function ($join) {
-                    $join->on('pf.promocion_id', '=', 'p.id')
+                    $join->on('pf.producto_id', '=', 'p.id')
                          ->where('pf.size', '=', 'small')
                          ->where('pf.order', '=', 0);
                 })

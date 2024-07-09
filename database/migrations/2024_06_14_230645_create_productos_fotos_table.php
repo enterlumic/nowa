@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('productos_fotos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('promocion_id');
+            $table->unsignedBigInteger('producto_id');
             $table->integer('order')->default(0);
             $table->string('conjunto')->nullable();
             $table->string('size')->nullable();
             $table->text('foto_url');
             $table->timestamps();
 
-            // $table->foreign('promocion_id')->references('id')->on('productos')->onDelete('cascade');
+            // $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 

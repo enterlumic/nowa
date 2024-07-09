@@ -222,7 +222,7 @@ class ProductosController extends Controller
                 // Original
                 $data = [
                     [
-                        'promocion_id' => $promocionId,
+                        'producto_id' => $promocionId,
                         'conjunto' => $conjunto,
                         'order' => $_index,
                         'size' => 'original',
@@ -255,7 +255,7 @@ class ProductosController extends Controller
 
                     $data = [
                         [
-                            'promocion_id' => $promocionId,
+                            'producto_id' => $promocionId,
                             'conjunto' => $conjunto,
                             'order' => $_index,
                             'size' => $sizeName,
@@ -322,7 +322,7 @@ class ProductosController extends Controller
         $productos = DB::table('carrito as c')
             ->leftJoin('productos as p', 'c.producto_id', '=', 'p.id')
             ->leftJoin('productos_fotos as pf', function($join) {
-                $join->on('pf.promocion_id', '=', 'p.id')
+                $join->on('pf.producto_id', '=', 'p.id')
                      ->where('pf.order', '=', 0)
                      ->where('pf.size', '=', 'small');
             })
@@ -346,7 +346,7 @@ class ProductosController extends Controller
         $productos = DB::table('carrito as c')
             ->leftJoin('productos as p', 'c.producto_id', '=', 'p.id')
             ->leftJoin('productos_fotos as pf', function($join) {
-                $join->on('pf.promocion_id', '=', 'p.id')
+                $join->on('pf.producto_id', '=', 'p.id')
                      ->where('pf.order', '=', 0)
                      ->where('pf.size', '=', 'small');
             })
@@ -552,7 +552,7 @@ class ProductosController extends Controller
         $fotos = DB::table('productos_fotos')
             ->select('id', 'size', 'foto_url')
             ->where('size', 'original')
-            ->where('promocion_id', $promocionId)
+            ->where('producto_id', $promocionId)
             ->orderBy('order', 'ASC')
             ->get();
 
@@ -827,7 +827,7 @@ class ProductosController extends Controller
 
         $promocionFotos = DB::table('productos_fotos')
                            ->select('foto_url')
-                           ->where('promocion_id', $id)
+                           ->where('producto_id', $id)
                            ->get();
 
         if (!$promocionFotos->isEmpty()){
@@ -845,7 +845,7 @@ class ProductosController extends Controller
 
         // Borro registros no tiene caso (borro imagenes para liberar espacio)
         DB::table('productos_fotos')
-            ->where('promocion_id', $id)
+            ->where('producto_id', $id)
             ->delete();
 
         return $id;

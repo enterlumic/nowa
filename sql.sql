@@ -17,4 +17,4 @@ use nowa;
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 
 
-select `p`.`id`, `p`.`titulo`, `pf`.`foto_url`, `p`.`precio`, `p`.`marca` from `productos` as `p` inner join `productos_fotos` as `pf` on `pf`.`promocion_id` = `p`.`id` and `pf`.`size` = 'small' and `pf`.`order` = 0 where `p`.`b_status` > 0 and `p`.`id` = 16 order by `pf`.`order` asc
+drop table productos_fotos;
