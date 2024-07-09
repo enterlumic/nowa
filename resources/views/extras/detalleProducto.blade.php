@@ -28,9 +28,11 @@
                                         </td>
                                         <td>
                                             <h5 class="fs-14"><a href="javascript:void(0);" class="text-body">{{ $promocion->titulo }}</a></h5>
-                                            <p class="text-muted mb-0">${{ number_format($promocion->precio, 2) }} x 1</p>
+                                            <p class="text-muted mb-0">${{ number_format($promocion->precio, 2) }} x {{ $promocion->cantidad }}</p>
                                         </td>
-                                        <td class="text-end">${{ number_format($promocion->precio, 2) }}</td>
+                                        <td class="text-end">
+                                            ${{ number_format($promocion->precio * $promocion->cantidad, 2) }}
+                                        </td>
                                     </tr>
                                 @endforeach
                                 <tr class="table-active">
