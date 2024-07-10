@@ -94,9 +94,9 @@ def run_script():
         )
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO productos (fotos, titulo, descripcion, precio, target)
-            VALUES (%s, %s, %s, %s, %s)
-        ''', (imagenes_nombres_str, titulo, descripcion, precio, url))
+            INSERT INTO productos ( titulo, descripcion, precio, target)
+            VALUES ( %s, %s, %s, %s)
+        ''', ( titulo, descripcion, precio, url))
         conn.commit()
         cursor.close()
         conn.close()
