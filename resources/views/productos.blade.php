@@ -72,8 +72,36 @@
 <script src="assets/libs/quill/quill.min.js"></script>
 
 <!-- Internal Quill JS -->
-<script src="assets/js/quill-editor.js"></script>
+{{-- <script src="assets/js/quill-editor.js"></script> --}}
 
 <script src="assets/js/core_js/productos.js?{{ rand() }}"></script>
 
+<style type="text/css">
+.table-responsive {
+    overflow-x: auto; /* Permite el desplazamiento horizontal si es necesario */
+}
 
+.table {
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho del contenedor */
+    table-layout: auto; /* Permite que las columnas se ajusten automáticamente */
+}
+
+.table th, .table td {
+    overflow: hidden; /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Añade puntos suspensivos al texto que se desborda */
+    white-space: normal; /* Permite que el texto se envuelva */
+}
+
+.table th.text-start {
+    width: 300px; /* Ajusta este valor según tus necesidades */
+}
+
+.w-150 {
+    width:150px; /* Ajusta este valor según tus necesidades */
+}
+
+.media-body .card-item-desc {
+    white-space: normal; /* Permite que el texto se envuelva */
+}
+
+</style>

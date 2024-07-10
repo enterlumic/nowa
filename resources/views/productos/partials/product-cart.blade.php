@@ -152,5 +152,4 @@ $(document).ready(function() {
     white-space: normal; /* Permite que el texto se envuelva */
 }
 
-
 </style>

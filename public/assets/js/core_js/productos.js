@@ -114,7 +114,7 @@ let productos = {
 
                         return '<div class="media">\
                                     <div class="card-aside-img">\
-                                        <img src="uploads/productos/'+row.foto+'" alt="img" style="max-width: 100%; height: auto;">\
+                                                                <img src="assets/libs/slick-slider/slick/ajax-loader.gif" data-src="uploads/productos/'+row.foto+'" alt="Imagen de Producto" class="lazyload" style="max-width: 100%; height: auto;">\
                                     </div>\
                                     <div class="media-body">\
                                         <div class="card-item-desc mt-0">\
@@ -147,80 +147,6 @@ let productos = {
                 }
             ]
         });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .titulo', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.titulo);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .descripcion', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.descripcion);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .precio', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.precio);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .marca', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.marca);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .review', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.review);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .cantidad', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.cantidad);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .color', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.color);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .precio_anterior', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.precio_anterior);
-        });
-
-        $('#get_productos_datatable tbody').on('click', 'tr .target', function () {
-            // Obtener los datos de la fila en la que se hizo clic
-            let data = table.row(this).data();
-
-            // Copiar el valor del email al portapapeles
-            productos.fn_copyToClipboardproductos(data.target);
-        });
-        // FIN Evento de clic en las filas de la tabla
-        //////////////////////////////////////////////////////////////////////
 
        // Aplicar la búsqueda
         $("#get_productos_datatable thead tr:eq(1) th").each(function (i) {
