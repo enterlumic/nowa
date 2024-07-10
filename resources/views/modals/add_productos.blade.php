@@ -9,7 +9,7 @@
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modalFormIUproductos" tabindex="-1"
     aria-labelledby="exampleModalScrollable" data-bs-keyboard="false"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <form class="form-material form-action-post" action="#form_productos" id="form_productos" method="post">
                 <div class="modal-header">
@@ -69,3 +69,20 @@
     </div>
 </div>
 <!-- /.modalFormIUproductos -->
+
+<script type="text/javascript">
+    document.getElementById('fotosUpload').addEventListener('change', function(event) {
+        const fileUploaderContainer = document.getElementById('fileUploaderContainer');
+        fileUploaderContainer.innerHTML = ''; // Limpiar vistas previas existentes
+        Array.from(event.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '100px'; // Tamaño de la vista previa
+                fileUploaderContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });    
+</script>
