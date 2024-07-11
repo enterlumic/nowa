@@ -313,6 +313,9 @@ let productos = {
                 });
             }
             , rules: {
+              titulo: {
+                required: true
+              },
               fotos: {
                 required: true
               }
@@ -502,7 +505,7 @@ let productos = {
     fn_AgregarNuevoproductos: function () {
         $(document).on("click", "#add_new_productos", function () {
             document.getElementById("form_productos").reset();            
-            $("#modalFormIUproductos .modal-title").html("Nuevo");
+            $("#modalFormIUproductos .modal-title").html("Agregar Un Nuevo Producto");
         });
     },
 
@@ -591,7 +594,7 @@ let productos = {
 
             $("#form_productos").prepend('<input type="hidden" name="id" id="id" value=" '+ id +' ">');
 
-            $("#modalFormIUproductos .modal-title").html("Editar");
+            $("#modalFormIUproductos .modal-title").html("Editar Producto");
 
         });
     },
