@@ -64,7 +64,7 @@ class CheckOutController extends Controller
             $productos = DB::table('carrito as c')
                 ->join('productos as p', 'p.id', '=', 'c.producto_id')
                 ->join('productos_fotos as pf', 'pf.producto_id', '=', 'p.id')
-                ->select('p.id', 'c.cantidad', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
+                ->select('p.id', 'c.cantidad', 'p.titulo', 'p.tiempo_trabajador', 'pf.foto_url', 'p.precio', 'p.marca')
                 ->where('c.user_id', '=', $user_id)
                 ->where('pf.size', '=', 'small')
                 ->where('pf.order', '=', 0)
@@ -81,7 +81,7 @@ class CheckOutController extends Controller
                 ->where('p.b_status', '>', 0)
                 ->where('p.id', '=', $id)
                 ->orderBy('pf.order', 'asc')
-                ->select('p.id', 'p.titulo', 'pf.foto_url', 'p.precio', 'p.marca')
+                ->select('p.id', DB::raw( '1 AS cantidad' ), 'p.titulo', 'p.tiempo_trabajador', 'pf.foto_url', 'p.precio', 'p.marca')
                 ->get();
 
         }

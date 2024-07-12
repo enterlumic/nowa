@@ -42,7 +42,7 @@
                                                 <th >Color</th>
                                                 <th >Precio_Anterior</th>
                                                 <th >Target</th>
-                                                <th style="width: 9%">Acción</th>
+                                                <th style="width: 10%">Acción</th>
                                             </tr>
                                         </thead>
                                     </table>

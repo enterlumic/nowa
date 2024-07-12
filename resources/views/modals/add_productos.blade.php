@@ -9,7 +9,7 @@
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modalFormIUproductos" tabindex="-1"
     aria-labelledby="exampleModalScrollable" data-bs-keyboard="false"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable...">
+    <div class="modal-dialog modal-dialog modal-xl">
         <div class="modal-content">
             <form class="form-material form-action-post" action="#form_productos" id="form_productos" method="post">
                 <div class="modal-header">
@@ -20,16 +20,12 @@
                 </div>
                     <div class="modal-body">
 
-
                         <div class="row">
                             <div class="col-xxl-6">
                                 <div class="card custom-card">
                                     <div class="card-header justify-content-between">
                                         <div class="card-title">
                                             Datos del producto
-                                        </div>
-                                        <div class="prism-toggle">
-                                            <button class="btn btn-sm btn-primary-light">Show Code<i class="ri-code-line ms-2 d-inline-block align-middle"></i></button>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -45,22 +41,50 @@
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Precio de Refacción</label>
                                                 <div class="row">
-                                                    <div class="col-xl-12 mb-3">
-                                                        <input type="text" class="form-control" id="precio_anterior" name="precio_anterior" placeholder="Precio de las refacciones">
+                                                    <div class="input-group mb-3">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="text" class="form-control number-format" id="precio_refaccion" name="precio_refaccion" placeholder="1,000">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
+                                                <label class="form-label">Precio a cobrar</label>
                                                 <div class="row">
-                                                    <div class="col-xl-12 mb-3">
-                                                        <label class="form-label">Precio Mano de Obra</label>
-                                                        <input type="text" class="form-control" id="precio" name="precio" placeholder="Precio a cobrar?">
+                                                    <div class="input-group mb-3">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="text" class="form-control number-format2" id="precio" name="precio" placeholder="1,000">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                                <label for="titulo" class="form-label">Tiempo necesario para terminar el trabajo</label>
-                                                <input type="text" class="form-control" id="tiempo_trabajador" name="tiempo_trabajador" placeholder="Escribe el tiempo estimado">
+
+                                                <label for="tiempo_trabajador" class="form-label">Duración Estimada (horas)</label>
+
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text"><i class="bi bi-clock"></i></span>
+                                                    <select class="form-select" id="tiempo_trabajador" name="tiempo_trabajador">
+                                                        <option selected value="">Selecciona...</option>
+                                                        <option value="1 hora">1 hora</option>
+                                                        <option value="2 horas">2 horas</option>
+                                                        <option value="3 horas">3 horas</option>
+                                                        <option value="4 horas">4 horas</option>
+                                                        <option value="5 horas">5 horas</option>
+                                                        <option value="6 horas">6 horas</option>
+                                                        <option value="7 horas">7 horas</option>
+                                                        <option value="8 horas">8 horas (1 día)</option>
+                                                        <!-- Continuar añadiendo opciones hasta 16 horas -->
+                                                        <option value="16 horas (2 días)">16 horas (2 días)</option>
+                                                        <!-- Continuar añadiendo opciones hasta 24 horas -->
+                                                        <option value="24 24 horas (3 días)">24 horas (3 días)</option>
+                                                        <!-- Continuar añadiendo opciones hasta 32 horas -->
+                                                        <option value="32 horas (4 días)">32 horas (4 días)</option>
+                                                        <!-- Continuar añadiendo opciones hasta 40 horas -->
+                                                        <option value="40 horas (5 días)">40 horas (5 días)</option>
+                                                        <!-- Finalmente, agregar opción para 48 horas -->
+                                                        <option value="48 horas (6 días)">48 horas (6 días)</option>
+                                                    </select>
+                                                </div>
+                                                <span id="error-hora"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -72,17 +96,25 @@
                                         <div class="card-title">
                                             Multimedia
                                         </div>
-                                        <div class="prism-toggle">
-                                            <button class="btn btn-sm btn-primary-light">Show Code<i class="ri-code-line ms-2 d-inline-block align-middle"></i></button>
-                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="col-md-12">
                                             <label class="form-label">Fotos</label>
-                                            <textarea class="form-control d-none" id="fotos" name="fotos" placeholder="Escribe cada URL de foto en una nueva línea"></textarea>
                                             <div id="fileUploaderContainer">
                                                 <input type="file" name="fotosUpload" id="fotosUpload">
                                             </div>
+
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+
                                         </div>                                            
                                     </div>
                                     <div class="card-footer d-none border-top-0">
@@ -94,15 +126,16 @@
 
                     </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary btn-action-form">Guardar</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-info btn-action-form" id="submit-set-product">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- /.modalFormIUproductos -->
-
+{{--  --}}
+    {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> --}}
 
     <style>
         .modal-body {
@@ -126,4 +159,61 @@
             margin-right: 10px;
             margin-bottom: 10px;
         }
+
+
+        #tiempo_trabajador option[value="8"],
+        #tiempo_trabajador option[value="16"],
+        #tiempo_trabajador option[value="24"],
+        #tiempo_trabajador option[value="32"],
+        #tiempo_trabajador option[value="40"],
+        #tiempo_trabajador option[value="48"] {
+            font-weight: bold;
+            color: #007bff; /* Color azul de Bootstrap para destacar */
+        }        
     </style>
+
+
+
+<!-- Cleave.js -->
+<script src="assets/libs/cleave.js/cleave.min.js"></script>
+<script type="text/javascript">
+    
+    var n1 = new Cleave('#precio_refaccion', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'lakh'
+    });    
+    var n1 = new Cleave('#precio', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'lakh'
+    });
+
+    // Enfocar el campo de título
+    Mousetrap.bind('alt+t', function() {
+        document.getElementById('titulo').focus();
+        return false;
+    });
+
+    // Enfocar el campo de descripción
+    Mousetrap.bind('alt+d', function() {
+        document.getElementById('descripcion').focus();
+        return false;
+    });
+
+    // Enfocar el campo de descripción
+    Mousetrap.bind('alt+p', function() {
+        document.getElementById('precio').focus();
+        return false;
+    });
+
+    // Guardar el formulario con Control + s
+    Mousetrap.bind('ctrl+s', function(e) {
+        e.preventDefault(); // Prevenir la acción predeterminada de guardar la página
+        document.getElementById('submit-set-product').click();
+    });
+
+    // Cerrar el formulario con Esc
+    Mousetrap.bind('esc', function() {
+        $('#modalFormIUproductos').modal('hide'); // Asumiendo que estás usando Bootstrap Modal
+    });
+</script>
+

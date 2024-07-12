@@ -39,7 +39,7 @@ let productos = {
                     d.buscar_review = $('#buscar_review').val();
                     d.buscar_cantidad = $('#buscar_cantidad').val();
                     d.buscar_color = $('#buscar_color').val();
-                    d.buscar_precio_anterior = $('#buscar_precio_anterior').val();
+                    d.buscar_precio_refaccion = $('#buscar_precio_refaccion').val();
                     d.buscar_target = $('#buscar_target').val();
                     // Añade aquí más datos de búsqueda si es necesario
                 },
@@ -103,7 +103,7 @@ let productos = {
                 { "data": "review", class: "review", visible: false },
                 { "data": "cantidad", class: "cantidad", visible: false },
                 { "data": "color", class: "color", visible: false },
-                { "data": "precio_anterior", class: "precio_anterior", visible: false },
+                { "data": "precio_refaccion", class: "precio_refaccion", visible: false },
                 { "data": "target", class: "target", visible: false },
             ],
 
@@ -114,7 +114,7 @@ let productos = {
 
                         return '<div class="media">\
                                     <div class="card-aside-img">\
-                                                                <img src="assets/libs/slick-slider/slick/ajax-loader.gif" data-src="uploads/productos/'+row.foto+'" alt="Imagen de Producto" class="lazyload" style="max-width: 100%; height: auto;">\
+                                        <img src="assets/libs/slick-slider/slick/ajax-loader.gif" data-src="uploads/productos/'+row.foto+'" alt="Imagen de Producto" class="lazyload" style="max-width: 100%; height: auto;">\
                                     </div>\
                                     <div class="media-body">\
                                         <div class="card-item-desc mt-0">\
@@ -270,6 +270,7 @@ let productos = {
     },
 
     fn_set_productos: function () {
+
         $("#form_productos").validate({
             submitHandler: function (form) {
                 let get_form = document.getElementById("form_productos");
@@ -311,20 +312,66 @@ let productos = {
                         $loading.waitMe('hide');
                     }
                 });
-            }
-            , rules: {
-              titulo: {
-                required: true
-              },
-              fotos: {
-                required: true
-              }
-            }
-            , messages: {
-                fotos: {
-                    minlength: "El fotos es requerido"
+            },
+
+            rules: {
+                titulo: {
+                    required: true,
+                    minlength: 3
+                },
+                descripcion: {
+                    required: true,
+                    minlength: 5
+                },
+                precio_refaccion: {
+                    required: true,
+                },
+                precio: {
+                    required: true,
+                },
+                tiempo_trabajador: {
+                    required: true,
+                },
+                fotosUpload: {
+                    required: true // Asegúrate de que este campo esté manejando correctamente los archivos en el formulario
                 }
-              }
+            },
+            messages: {
+                titulo: {
+                    required: "El título es requerido.",
+                    minlength: "El título debe tener al menos 3 caracteres."
+                },
+                descripcion: {
+                    required: "La descripción es requerida.",
+                    minlength: "La descripción debe tener al menos 5 caracteres."
+                },
+                precio_refaccion: {
+                    required: "El precio de refacción es requerido.",
+                    number: "Este campo debe ser un número válido.",
+                    min: "El precio debe ser al menos 1."
+                },
+                precio: {
+                    required: "El precio a cobrar es requerido.",
+                    number: "Este campo debe ser un número válido.",
+                    min: "El precio debe ser al menos 1."
+                },
+                tiempo_trabajador: {
+                    required: "La duración estimada es requerida.",
+                    digits: "Selecciona una hora.",
+                    min: "La duración debe ser al menos 1 hora."
+                },
+                fotosUpload: {
+                    required: "Por favor, añada al menos una foto del producto."
+                }
+            },
+            errorPlacement: function(error, element) {
+              
+                if ( element.attr("name") == 'tiempo_trabajador' ){
+                    $('#error-hora').html(error);
+                }else{
+                    error.insertAfter(element)
+                }
+            },
         });
     },
 
@@ -610,7 +657,7 @@ let productos = {
         }
 
         // Limpiar el contenedor del fileuploader
-        $('#fileUploaderContainer').html('<input type="file" name="fotosUpload">');
+        $('#fileUploaderContainer').html('<input type="file" name="fotosUpload" id="fotosUpload">');
 
         var preloadedFilesParsed = [];
 

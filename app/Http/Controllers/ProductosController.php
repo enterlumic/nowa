@@ -82,7 +82,7 @@ class ProductosController extends Controller
             || ( isset($request->buscar_review) && !empty($request->buscar_review) )
             || ( isset($request->buscar_cantidad) && !empty($request->buscar_cantidad) )
             || ( isset($request->buscar_color) && !empty($request->buscar_color) )
-            || ( isset($request->buscar_precio_anterior) && !empty($request->buscar_precio_anterior) )
+            || ( isset($request->buscar_precio_refaccion) && !empty($request->buscar_precio_refaccion) )
             || ( isset($request->buscar_target) && !empty($request->buscar_target) )
         ){
             $buscar= 0;
@@ -98,7 +98,7 @@ class ProductosController extends Controller
         $buscar_review= isset($request->buscar_review) ? $request->buscar_review :'';
         $buscar_cantidad= isset($request->buscar_cantidad) ? $request->buscar_cantidad :'';
         $buscar_color= isset($request->buscar_color) ? $request->buscar_color :'';
-        $buscar_precio_anterior= isset($request->buscar_precio_anterior) ? $request->buscar_precio_anterior :'';
+        $buscar_precio_refaccion= isset($request->buscar_precio_refaccion) ? $request->buscar_precio_refaccion :'';
         $buscar_target= isset($request->buscar_target) ? $request->buscar_target :'';
         $request->start = isset($request->start) ? $request->start : intval(0);
         $request->length= isset( $request->length) ? $request->length : intval(10);
@@ -116,7 +116,7 @@ class ProductosController extends Controller
             , "'.$buscar_review.'"
             , "'.$buscar_cantidad.'"
             , "'.$buscar_color.'"
-            , "'.$buscar_precio_anterior.'"
+            , "'.$buscar_precio_refaccion.'"
             , "'.$buscar_target.'"
             ,  '.$request->start.'
             ,  '.$request->length.'
@@ -166,7 +166,7 @@ class ProductosController extends Controller
             'review' => isset($request->review) ? $request->review : "",
             'cantidad' => intval($request->cantidad),
             'color' => isset($request->color) ? $request->color : "",
-            'precio_anterior' => isset($request->precio_anterior) ? $request->precio_anterior : "",
+            'precio_refaccion' => isset($request->precio_refaccion) ? $request->precio_refaccion : "",
             'target' => isset($request->target) ? $request->target : "",
             'tiempo_trabajador' => isset($request->tiempo_trabajador) ? $request->tiempo_trabajador : 0,
         ];
@@ -463,7 +463,7 @@ class ProductosController extends Controller
                                         ,"review"  =>  isset($t[5]) ? $t[5] : ''
                                         ,"cantidad"  =>  isset($t[6]) ? $t[6] : ''
                                         ,"color"  =>  isset($t[7]) ? $t[7] : ''
-                                        ,"precio_anterior"  =>  isset($t[8]) ? $t[8] : ''
+                                        ,"precio_refaccion"  =>  isset($t[8]) ? $t[8] : ''
                                         ,"target"  =>  isset($t[9]) ? $t[9] : ''
                 );
             }
@@ -537,7 +537,7 @@ class ProductosController extends Controller
                                     , 'review'
                                     , 'cantidad'
                                     , 'color'
-                                    , 'precio_anterior'
+                                    , 'precio_refaccion'
                                     , 'tiempo_trabajador'
                                     , 'target'
         )->where('id', $request->id)->get();
@@ -712,7 +712,7 @@ class ProductosController extends Controller
                                     , "review"
                                     , "cantidad"
                                     , "color"
-                                    , "precio_anterior"
+                                    , "precio_refaccion"
                                     , "target"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
@@ -728,7 +728,7 @@ class ProductosController extends Controller
                                 , $value->review
                                 , $value->cantidad
                                 , $value->color
-                                , $value->precio_anterior
+                                , $value->precio_refaccion
                                 , $value->target
                 );
             }
@@ -760,7 +760,7 @@ class ProductosController extends Controller
                                     , "review"
                                     , "cantidad"
                                     , "color"
-                                    , "precio_anterior"
+                                    , "precio_refaccion"
                                     , "target"
         )->where('b_status', 1)->orderBy('id', 'desc')->get();
         $total= $data->count();
@@ -776,7 +776,7 @@ class ProductosController extends Controller
                                     , $value->review
                                     , $value->cantidad
                                     , $value->color
-                                    , $value->precio_anterior
+                                    , $value->precio_refaccion
                                     , $value->target
                 );
             }

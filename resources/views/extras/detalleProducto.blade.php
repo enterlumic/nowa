@@ -27,8 +27,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <h5 class="fs-14"><a href="javascript:void(0);" class="text-body">{{ $promocion->titulo }}</a></h5>
+                                            <h5 class="fs-14"><a href="javascript:void(0);" >{{ $promocion->titulo }}</a></h5>
                                             <p class="text-muted mb-0">${{ number_format($promocion->precio, 2) }} x {{ $promocion->cantidad }}</p>
+                                            <p class="text-muted mb-0">{{ $promocion->tiempo_trabajador > 0 ? 'Tiempo estimado: ' . $promocion->tiempo_trabajador : '' }}</p>
                                         </td>
                                         <td class="text-end">
                                             ${{ number_format($promocion->precio * $promocion->cantidad, 2) }}
@@ -38,7 +39,7 @@
                                 <tr class="table-active">
                                     <th colspan="2">Total (MXN) :</th>
                                     <td class="text-end">
-                                        <span class="fw-semibold">${{ number_format($productos->sum('precio'), 2) }}</span>
+                                        <b>${{ number_format($productos->sum('precio'), 2) }}</b>
                                     </td>
                                 </tr>
                             </tbody>

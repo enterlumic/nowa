@@ -14,7 +14,7 @@
                 </div>
                 <div class="text-center pt-2">
                     <h3 class="h6 mb-2 mt-4 text-uppercase">{{ Str::limit($promocion->titulo, 70) }}</h3>
-                    <h4 class="h5 mb-0 mt-1 text-center fw-bold fs-22">${{ $promocion->precio }} <span class="text-secondary fw-normal fs-13 ms-1 prev-price text-decoration-line-through">${{ $promocion->precio_anterior }}</span></h4>
+                    <h4 class="h5 mb-0 mt-1 text-center fw-bold fs-22">${{ $promocion->precio }} <span class="text-secondary fw-normal fs-13 ms-1 prev-price text-decoration-line-through">${{ $promocion->precio_refaccion }}</span></h4>
                 </div>
             </div>
         </div>

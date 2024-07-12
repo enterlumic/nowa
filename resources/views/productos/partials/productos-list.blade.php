@@ -15,7 +15,7 @@
                         <h5 class="card-title">{{ Str::limit($promocion->titulo, 70) }}</h5>
                         <p class="card-text">{{ $promocion->descripcion }}</p>
                         <p class="card-text"><small class="text-muted">${{ $promocion->precio }}</small></p>
-                        <p class="card-text"><small class="text-muted">Antes: ${{ $promocion->precio_anterior }}</small></p>
+                        <p class="card-text"><small class="text-muted">Antes: ${{ $promocion->precio_refaccion }}</small></p>
                     </div>
                 </div>
             </div>

@@ -50,6 +50,10 @@
         <script src="assets/js/core_js/flatpickr.min.js?{{ rand() }}"></script>
         <script src="assets/js/core_js/es.js"></script>
         <link href="assets/js/core_js/flatpickr.css" rel="stylesheet" type="text/css" >
+
+        <!--  Mousetrap -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.6.5/mousetrap.min.js"></script>
+
         <!-- Noty -->
         <script src="assets/js/core_js/noty.min.js"></script>
         <link rel="stylesheet" href="//cdn.rawgit.com/needim/noty/77268c46/lib/noty.css">

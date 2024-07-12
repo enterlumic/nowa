@@ -18,7 +18,7 @@ class productos extends Model
                                 , 'review'
                                 , 'cantidad'
                                 , 'color'
-                                , 'precio_anterior'
+                                , 'precio_refaccion'
                                 , 'target'
                                 , 'b_status'
                             ];

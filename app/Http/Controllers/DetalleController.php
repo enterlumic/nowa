@@ -89,7 +89,7 @@ class DetalleController extends Controller
             $producto->descripcion = $producto->descripcion;
             $producto->precio = $producto->precio;
             $producto->color = $producto->color;
-            $producto->precio_anterior = $producto->precio_anterior;
+            $producto->precio_refaccion = $producto->precio_refaccion;
             $producto->target = $producto->target;
             
             return response()->json($producto);

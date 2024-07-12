@@ -53,7 +53,7 @@ class PromocionesController extends Controller
         $this->LibCore->setSkynet( ['vc_evento'=> 'index_Mostrar' , 'vc_info' => "index - Mostrar" ] );
 
         $productos = DB::select("
-            SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
+            SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_refaccion, target
             FROM productos p
             JOIN productos_fotos pf ON pf.producto_id = p.id AND pf.size = 'medium' AND pf.`order` = 0
             WHERE p.b_status > 0 ORDER BY p.id DESC
@@ -72,7 +72,7 @@ class PromocionesController extends Controller
             $layout = $request->input('layout', 'grid');
 
             $productos = DB::select("
-                SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
+                SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_refaccion, target
                 FROM productos p
                 JOIN productos_fotos pf ON pf.producto_id = p.id AND pf.size = 'small' AND pf.`order` = 0
                 WHERE p.b_status > 0

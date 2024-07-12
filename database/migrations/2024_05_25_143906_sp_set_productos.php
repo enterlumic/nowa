@@ -23,7 +23,7 @@ return new class extends Migration
                                                               , IN `v_review` VARCHAR(250)
                                                               , IN `v_cantidad` VARCHAR(260)
                                                               , IN `v_color` VARCHAR(270)
-                                                              , IN `v_precio_anterior` VARCHAR(280)
+                                                              , IN `v_precio_refaccion` VARCHAR(280)
                                                               , IN `v_target` VARCHAR(290)
                                                               , OUT `v_i_response` INTEGER)
             BEGIN
@@ -38,7 +38,7 @@ return new class extends Migration
                     , review   = v_review
                     , cantidad   = v_cantidad
                     , color   = v_color
-                    , precio_anterior   = v_precio_anterior
+                    , precio_refaccion   = v_precio_refaccion
                     , target   = v_target
                 WHERE id= v_id ;
                 SET v_i_response := LAST_INSERT_ID();            

@@ -1,8 +1,5 @@
-https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css
-https://fonts.googleapis.com/icon?family=Material+Icons
-http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
-https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap
-https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
-https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap
-https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js
-https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js
+/var/www/html/nowa/database/migrations/2024_05_25_143906_create_table_productos.php
+/var/www/html/nowa/database/migrations/2024_05_25_143906_sp_set_productos.php
+/var/www/html/nowa/database/migrations/2024_05_25_143906_sp_get_productos.php
+
+

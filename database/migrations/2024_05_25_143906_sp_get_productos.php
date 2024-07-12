@@ -24,7 +24,7 @@ return new class extends Migration
                                                     buscar_review varchar(100),
                                                     buscar_cantidad varchar(100),
                                                     buscar_color varchar(100),
-                                                    buscar_precio_anterior varchar(100),
+                                                    buscar_precio_refaccion varchar(100),
                                                     buscar_target varchar(100),
                                                     i_limit_init int,
                                                     i_limit_end int,
@@ -44,12 +44,12 @@ return new class extends Migration
                                         WHEN i_colum_order = 5 THEN CONCAT(" ORDER BY review ", vc_order_direct)
                                         WHEN i_colum_order = 6 THEN CONCAT(" ORDER BY cantidad ", vc_order_direct)
                                         WHEN i_colum_order = 7 THEN CONCAT(" ORDER BY color ", vc_order_direct)
-                                        WHEN i_colum_order = 8 THEN CONCAT(" ORDER BY precio_anterior ", vc_order_direct)
+                                        WHEN i_colum_order = 8 THEN CONCAT(" ORDER BY precio_refaccion ", vc_order_direct)
                                         WHEN i_colum_order = 9 THEN CONCAT(" ORDER BY target ", vc_order_direct)
                                         ELSE ""
                                       END;
 
-                SET @_QUERY = CONCAT("SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_anterior, target
+                SET @_QUERY = CONCAT("SELECT p.id, titulo, foto_url AS foto, descripcion, precio, marca, review, cantidad, color, precio_refaccion, target
                                       FROM productos p
                                       LEFT OUTER JOIN productos_fotos pf ON pf.producto_id = p.id AND pf.size = \'small\' AND pf.`order` = 0
                                       WHERE p.b_status > 0 ");
@@ -62,7 +62,7 @@ return new class extends Migration
                     SET @_QUERY = CONCAT(@_QUERY, " OR review LIKE \'%", TRIM(vc_string_filtro), "%\'");
                     SET @_QUERY = CONCAT(@_QUERY, " OR cantidad LIKE \'%", TRIM(vc_string_filtro), "%\'");
                     SET @_QUERY = CONCAT(@_QUERY, " OR color LIKE \'%", TRIM(vc_string_filtro), "%\'");
-                    SET @_QUERY = CONCAT(@_QUERY, " OR precio_anterior LIKE \'%", TRIM(vc_string_filtro), "%\'");
+                    SET @_QUERY = CONCAT(@_QUERY, " OR precio_refaccion LIKE \'%", TRIM(vc_string_filtro), "%\'");
                     SET @_QUERY = CONCAT(@_QUERY, " OR target LIKE \'%", TRIM(vc_string_filtro), "%\')");
                 END IF;
 
@@ -74,7 +74,7 @@ return new class extends Migration
                     SET @_QUERY = CONCAT(@_QUERY, " AND review LIKE \'%", TRIM(buscar_review), "%\'");
                     SET @_QUERY = CONCAT(@_QUERY, " AND cantidad LIKE \'%", TRIM(buscar_cantidad), "%\'");
                     SET @_QUERY = CONCAT(@_QUERY, " AND color LIKE \'%", TRIM(buscar_color), "%\'");
-                    SET @_QUERY = CONCAT(@_QUERY, " AND precio_anterior LIKE \'%", TRIM(buscar_precio_anterior), "%\'");
+                    SET @_QUERY = CONCAT(@_QUERY, " AND precio_refaccion LIKE \'%", TRIM(buscar_precio_refaccion), "%\'");
                     SET @_QUERY = CONCAT(@_QUERY, " AND target LIKE \'%", TRIM(buscar_target), "%\')");
                 END IF;
 
