@@ -320,13 +320,18 @@ class ProductosController extends Controller
 
         // Realiza la consulta utilizando Query Builder
         $productos = DB::table('carrito as c')
-            ->leftJoin('productos as p', 'c.producto_id', '=', 'p.id')
-            ->leftJoin('productos_fotos as pf', function($join) {
+            ->join('productos as p', 'c.producto_id', '=', 'p.id')
+            ->join('productos_fotos as pf', function($join) {
                 $join->on('pf.producto_id', '=', 'p.id')
                      ->where('pf.order', '=', 0)
                      ->where('pf.size', '=', 'small');
             })
-            ->select('p.titulo', 'c.cantidad', 'p.precio', DB::raw("CONCAT('$baseURL/', pf.foto_url) as foto_url"))
+            ->select(
+                'p.titulo', 
+                'c.cantidad', 
+                DB::raw("CAST(REPLACE(p.precio, ',', '') AS UNSIGNED) as precio"), 
+                DB::raw("CONCAT('$baseURL/', pf.foto_url) as foto_url")
+            )
             ->where('p.b_status', '>', 0)
             ->orderBy('p.id', 'desc')
             ->get();
@@ -350,7 +355,7 @@ class ProductosController extends Controller
                      ->where('pf.order', '=', 0)
                      ->where('pf.size', '=', 'small');
             })
-            ->select('c.id', 'p.titulo', 'c.cantidad', 'p.precio', DB::raw("CONCAT('$baseURL/', pf.foto_url) as foto_url"))
+            ->select('c.id', 'p.titulo', 'c.cantidad', DB::raw("CAST(REPLACE(p.precio, ',', '') AS UNSIGNED) as precio"), DB::raw("CONCAT('$baseURL/', pf.foto_url) as foto_url"))
             ->where('p.b_status', '>', 0)
             ->orderBy('p.id', 'desc')
             ->get();

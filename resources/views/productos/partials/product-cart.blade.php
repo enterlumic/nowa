@@ -44,7 +44,7 @@
                     <div class="px-4">
                         <dl class="dlist-align">
                             <dt>Total:</dt>
-                            <dd class="text-end ms-auto fs-20"><strong>$252.97</strong></dd>
+                            <dd class="text-end ms-auto fs-20"><strong>$ {{  $productos[0]->precio }}</strong></dd>
                         </dl>
                     </div>
                 </div>
