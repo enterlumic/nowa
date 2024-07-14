@@ -68,6 +68,7 @@ Route::get('productos', [ProductosController::class, 'index'])->middleware('auth
 Route::post('set_productos', [ProductosController::class, 'set_productos']);
 Route::post('set_import_productos', [ProductosController::class, 'set_import_productos']);
 Route::post('updateQuantity', [ProductosController::class, 'updateQuantity']);
+Route::post('deleteProductoCarrito', [ProductosController::class, 'deleteProductoCarrito']);
 Route::post('get_productos_by_id', [ProductosController::class, 'get_productos_by_id']);
 Route::post('delete_productos', [ProductosController::class, 'delete_productos']);
 Route::post('undo_delete_productos', [ProductosController::class, 'undo_delete_productos']);
@@ -80,8 +81,8 @@ Route::post('get_productos_by_list', [ProductosController::class, 'get_productos
 Route::get('get_productos_diez', [ProductosController::class, 'get_productos_diez']);
 Route::get('descargar_plantilla_productos', [ProductosController::class, 'descargar_plantilla_productos']);
 Route::get('validar_existencia_productos', [ProductosController::class, 'validar_existencia_productos']);
-Route::get('product-cart', [ProductosController::class, 'productCart']);
-Route::get('joder', [ProductosController::class, 'joder']);
+Route::get('carritoProdutos', [ProductosController::class, 'productCart']);
+Route::get('getCarritoProductos', [ProductosController::class, 'getCarritoProductos']);
 Route::post('/set_python', [ProductosController::class, 'runPythonScript'])->name('set_python');
 Route::post('ajax_remove_file', [ProductosController::class, 'ajax_remove_file']);
 Route::post('ajax_sort_files', [ProductosController::class, 'ajax_sort_files']);

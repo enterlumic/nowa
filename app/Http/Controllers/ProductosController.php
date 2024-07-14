@@ -339,12 +339,12 @@ class ProductosController extends Controller
         $carrito =  Crypt::encrypt('carrito');
 
         // Retorna la vista con los productos obtenidos
-        return view('productos.partials.product-cart', compact('productos', 'carrito'));
+        return view('productos.partials.carritoProdutos', compact('productos', 'carrito'));
 
     }
 
 
-    public function joder(Request $request)
+    public function getCarritoProductos(Request $request)
     {
         $baseURL = url('/uploads/productos');
 
@@ -370,6 +370,18 @@ class ProductosController extends Controller
             ->update([
                 'cantidad' => $request->cantidad
             ]);
+
+
+    }
+
+    public function deleteProductoCarrito(Request $request)
+    {
+
+        $id = $request->input('id');  // Asegúrate de validar y sanear este input adecuadamente
+
+        DB::table('carrito')->where('id', $id)->delete();
+
+        return response()->json(['success' => 'Producto eliminado correctamente']);        
     }
 
     /*

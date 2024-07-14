@@ -149,7 +149,7 @@
                     <!-- Start::header-element -->
                     <div class="header-element cart-dropdown">
                         <!-- Start::header-link|dropdown-toggle -->
-                        <a href="product-cart" class="header-link dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown-">
+                        <a href="carritoProdutos" class="header-link dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown-">
                             <svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" width="24" height="24" viewBox="0 0 24 24"><path d="M21.822 7.431A1 1 0 0 0 21 7H7.333L6.179 4.23A1.994 1.994 0 0 0 4.333 3H2v2h2.333l4.744 11.385A1 1 0 0 0 10 17h8c.417 0 .79-.259.937-.648l3-8a1 1 0 0 0-.115-.921zM17.307 15h-6.64l-2.5-6h11.39l-2.25 6z"/><circle cx="10.5" cy="19.5" r="1.5"/><circle cx="17.5" cy="19.5" r="1.5"/></svg>
                             <span class="badge bg-warning rounded-pill header-icon-badge" id="cart-icon-badge">{{ $cartCount ?? 0 }}</span>
                         </a>
@@ -170,7 +170,7 @@
                                         <div class="flex-grow-1">
                                             <div class="d-flex align-items-center justify-content-between mb-0">
                                                 <div class="mb-0">
-                                                    <a class="text-muted fs-13" href="product-cart.html">Lence Camera</a>
+                                                    <a class="text-muted fs-13" href="carritoProdutos.html">Lence Camera</a>
                                                     <div class="fw-semibold text-dark fs-12">1* $189.00</div>
                                                 </div>
                                                 <div>
@@ -186,7 +186,7 @@
                                         <div class="flex-grow-1">
                                             <div class="d-flex align-items-center justify-content-between mb-0">
                                                 <div class="mb-0">
-                                                    <a class="text-muted fs-13" href="product-cart.html">White Earbuds</a>
+                                                    <a class="text-muted fs-13" href="carritoProdutos.html">White Earbuds</a>
                                                     <div class="fw-semibold text-dark fs-12">3* $59.00</div>
                                                 </div>
                                                 <div>
@@ -202,7 +202,7 @@
                                         <div class="flex-grow-1">
                                             <div class="d-flex align-items-center justify-content-between mb-0">
                                                 <div class="mb-0">
-                                                    <a class="text-muted fs-13" href="product-cart.html">Branded Black Headeset</a>
+                                                    <a class="text-muted fs-13" href="carritoProdutos.html">Branded Black Headeset</a>
                                                     <div class="fw-semibold text-dark fs-12">2* $39.99</div>
                                                 </div>
                                                 <div>
@@ -218,7 +218,7 @@
                                         <div class="flex-grow-1">
                                             <div class="d-flex align-items-center justify-content-between mb-0">
                                                 <div class="mb-0">
-                                                    <a class="text-muted fs-13" href="product-cart.html">Glass Decor Item</a>
+                                                    <a class="text-muted fs-13" href="carritoProdutos.html">Glass Decor Item</a>
                                                     <div class="fw-semibold text-dark fs-12">5* $5.99</div>
                                                 </div>
                                                 <div>
@@ -234,7 +234,7 @@
                                         <div class="flex-grow-1">
                                             <div class="d-flex align-items-center justify-content-between mb-0">
                                                 <div class="mb-0">
-                                                    <a class="text-muted fs-13" href="product-cart.html">Pink Teddy Bear</a>
+                                                    <a class="text-muted fs-13" href="carritoProdutos.html">Pink Teddy Bear</a>
                                                     <div class="fw-semibold text-dark fs-12">1* $10.00</div>
                                                 </div>
                                                 <div>

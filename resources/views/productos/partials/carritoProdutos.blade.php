@@ -44,13 +44,13 @@
                     <div class="px-4">
                         <dl class="dlist-align">
                             <dt>Total:</dt>
-                            <dd class="text-end ms-auto fs-20"><strong>$ {{  $productos[0]->precio }}</strong></dd>
+                            <dd class="text-end ms-auto fs-20"><strong id="precio_nuevo"> </strong></dd>
                         </dl>
                     </div>
                 </div>
-                    <div class="card-footer">
-                        <div class="column"><a class="btn btn-warning" href="check_out?id={{ $carrito }}"> <span class="text-dark">Proceder al pago   </span></a></div>
-                    </div>
+                <div class="card-footer">
+                    <div class="column"><a class="btn btn-warning" href="check_out?id={{ $carrito }}"> <span class="text-dark">Proceder al pago   </span></a></div>
+                </div>
             </div>
         </div>
     </div>
@@ -58,14 +58,12 @@
 
 </x-app-layout>
 
+<!-- Color Picker Css -->
+<link rel="stylesheet" href="assets/libs/flatpickr/flatpickr.min.css">
+<link rel="stylesheet" href="assets/libs/@simonwep/pickr/themes/nano.min.css">
 
-    <!-- Color Picker Css -->
-    <link rel="stylesheet" href="assets/libs/flatpickr/flatpickr.min.css">
-    <link rel="stylesheet" href="assets/libs/@simonwep/pickr/themes/nano.min.css">
-
-    <!-- Choices Css -->
-    <link rel="stylesheet" href="assets/libs/choices.js/public/assets/styles/choices.min.css">
-
+<!-- Choices Css -->
+<link rel="stylesheet" href="assets/libs/choices.js/public/assets/styles/choices.min.css">
 
 <!-- Handle-counter js -->
 <script src="assets/js/handlecounter.js"></script>
@@ -73,38 +71,55 @@
 <script type="text/javascript">
     
 $(document).ready(function() {
-    // Cargar los datos y construir la tabla
+
     $.ajax({
-        url: '/joder', // Modifica esto con la ruta correcta
+        url: '/getCarritoProductos',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
             var tableRow = '';
+            var totalPrecio = 0;
+
             $.each(data, function(index, producto) {
+                var precioFormateado = parseFloat(producto.precio).toLocaleString('es-MX', {
+                    style: 'currency',
+                    currency: 'MXN',
+                    minimumFractionDigits: 2
+                });
+                var subtotal = producto.precio * producto.cantidad;
+                totalPrecio += subtotal;
+
                 tableRow += '<tr>';
                 tableRow += '<td><div class="media"><div class="card-aside-img"><img src="' + producto.foto_url + '" class="h-60 w-60" style="max-width: 100%; height: auto;"></div><div class="media-body"><div class="card-item-desc mt-0"><h6 class="fw-semibold mt-0 text-uppercase">' + producto.titulo + '</h6></div></div></div></td>';
-
                 tableRow += '<td class="text-center"><div class="handle-counter input-group border rounded flex-nowrap">';
-                tableRow += '<select class="form-control form-control-sm quantity-select" aria-label="quantity" data-id="' + producto.id + '">';
+                tableRow += '<select class="form-control form-control-sm quantity-select" aria-label="quantity" data-id="' + producto.id + '" data-precio="' + producto.precio + '">';
                 for (let i = 1; i <= 10; i++) {
                     let selected = producto.cantidad === i ? ' selected' : '';
                     tableRow += '<option value="' + i + '"' + selected + '>' + i + '</option>';
                 }
                 tableRow += '</select></div></td>';
-
-                tableRow += '<td class="text-center text-lg text-medium fw-bold fs-15">$' + producto.precio + '</td>';
-                tableRow += '<td class="text-center"><a class="btn btn-sm btn-danger-light" href="javascript:void(0);"><i class="fe fe-trash"></i></a></td>';
+                tableRow += '<td class="text-center text-lg text-medium fw-bold fs-15">' + precioFormateado + '</td>';
+                tableRow += '<td class="text-center"><a class="btn btn-sm btn-danger-light" href="javascript:void(0);" data-id="' + producto.id + '"><i class="fe fe-trash"></i></a></td>';
                 tableRow += '</tr>';
             });
+
             $('#content-carrito').html(tableRow);
+            $('#precio_nuevo').text(parseFloat(totalPrecio.toFixed(2)).toLocaleString('es-MX', {
+                style: 'currency',
+                currency: 'MXN',
+                minimumFractionDigits: 2
+            }));
         }
     });
 
     $('#content-carrito').on('change', '.quantity-select', function() {
         var id = $(this).data('id');
         var newQuantity = $(this).val();
+        var precio = $(this).data('precio');
+        var newSubtotal = precio * newQuantity;
+
         $.ajax({
-            url: '/updateQuantity', // Ruta del servidor para actualizar la cantidad
+            url: '/updateQuantity',
             type: 'POST',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: {
@@ -112,7 +127,18 @@ $(document).ready(function() {
                 cantidad: newQuantity
             },
             success: function(response) {
-                console.log('Cantidad actualizada correctamente');
+                // Recalcular y mostrar el nuevo total
+                var total = 0;
+                $('.quantity-select').each(function() {
+                    var cantidad = $(this).val();
+                    var precio = $(this).data('precio');
+                    total += cantidad * precio;
+                });
+                $('#precio_nuevo').text(parseFloat(total.toFixed(2)).toLocaleString('es-MX', {
+                    style: 'currency',
+                    currency: 'MXN',
+                    minimumFractionDigits: 2
+                }));
             },
             error: function() {
                 alert('Error al actualizar la cantidad');
@@ -120,36 +146,43 @@ $(document).ready(function() {
         });
     });
 
+    // Agregar manejador de evento click para eliminar producto
+    $('#content-carrito').on('click', '.btn-danger-light', function() {
+        var id = $(this).data('id'); // Obtiene el ID del producto
+
+        if(confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+            $.ajax({
+                url: '/deleteProductoCarrito', // Asegúrate de que esta URL es correcta
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: { id: id },
+                success: function(response) {
+                    // Elimina la fila del producto del DOM
+                    $('a[data-id="' + id + '"]').closest('tr').remove();
+                    // Actualiza el precio total
+                    actualizarTotal();
+                },
+                error: function() {
+                    alert('Error al eliminar el producto');
+                }
+            });
+        }
+    });
+
+    function actualizarTotal() {
+        var total = 0;
+        $('.quantity-select').each(function() {
+            var cantidad = $(this).val();
+            var precio = $(this).data('precio');
+            total += cantidad * precio;
+        });
+        $('#precio_nuevo').text('$' + parseFloat(total.toFixed(2)).toLocaleString('es-MX', {
+            style: 'currency',
+            currency: 'MXN',
+            minimumFractionDigits: 2
+        }));
+    }
+
 });
 
 </script>
-
-<style type="text/css">
-.table-responsive {
-    overflow-x: auto; /* Permite el desplazamiento horizontal si es necesario */
-}
-
-.table {
-    width: 100%; /* Asegura que la tabla ocupe todo el ancho del contenedor */
-    table-layout: auto; /* Permite que las columnas se ajusten automáticamente */
-}
-
-.table th, .table td {
-    overflow: hidden; /* Oculta el desbordamiento */
-    text-overflow: ellipsis; /* Añade puntos suspensivos al texto que se desborda */
-    white-space: normal; /* Permite que el texto se envuelva */
-}
-
-.table th.text-start {
-    width: 300px; /* Ajusta este valor según tus necesidades */
-}
-
-.w-150 {
-    width:150px; /* Ajusta este valor según tus necesidades */
-}
-
-.media-body .card-item-desc {
-    white-space: normal; /* Permite que el texto se envuelva */
-}
-
-</style>

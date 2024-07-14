@@ -19,6 +19,7 @@
         <link id="style" href="assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
         <!-- Style Css -->
         <link href="assets/css/styles.min.css" rel="stylesheet" >
+        <link href="assets/css/table.css" rel="stylesheet" >
         <link href="assets/css/smart_wizard_all.min.css" rel="stylesheet" >
         <!-- Icons Css -->
         <link href="assets/css/icons.css" rel="stylesheet" >

@@ -97,8 +97,12 @@ class CarritoController extends Controller
             }
 
             // Calcular el nuevo total del carrito
-            $nuevoTotalCarrito = DB::table('carrito')
-                ->where('user_id', $userId)
+            $nuevoTotalCarrito = DB::table('carrito as c')
+                ->join('productos as p', function($join) {
+                    $join->on('p.id', '=', 'c.producto_id')
+                         ->where('p.b_status', '>', 0);
+                })
+                ->where('c.user_id', $userId)
                 ->count();
 
             return response()->json([
