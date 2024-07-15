@@ -114,6 +114,20 @@ class EmpresaController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | Mostrar empleados
+    |--------------------------------------------------------------------------
+    |
+    */
+    public function empresa_empleados(Request $request)
+    {
+        $this->LibCore->setSkynet( ['vc_evento'=> 'empresa_horario' , 'vc_info' => "empresa_horario" ] );
+
+        return view('empresa.empresa_empleados');
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Datatable registro especial como se requiere en js
     |--------------------------------------------------------------------------
     | 

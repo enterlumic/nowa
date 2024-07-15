@@ -21,6 +21,7 @@
                     <div class="modal-body">
 
                         <div class="row">
+
                             <div class="col-xxl-6">
                                 <div class="card custom-card">
                                     <div class="card-header justify-content-between">
@@ -90,6 +91,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-xxl-6">
                                 <div class="card custom-card">
                                     <div class="card-header justify-content-between">
@@ -122,6 +124,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -134,8 +137,6 @@
     </div>
 </div>
 <!-- /.modalFormIUproductos -->
-{{--  --}}
-    {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> --}}
 
     <style>
         .modal-body {
@@ -160,7 +161,6 @@
             margin-bottom: 10px;
         }
 
-
         #tiempo_trabajador option[value="8"],
         #tiempo_trabajador option[value="16"],
         #tiempo_trabajador option[value="24"],
@@ -172,16 +172,12 @@
         }        
     </style>
 
-
-
-<!-- Cleave.js -->
-<script src="assets/libs/cleave.js/cleave.min.js"></script>
 <script type="text/javascript">
     
     var n1 = new Cleave('#precio_refaccion', {
         numeral: true,
         numeralThousandsGroupStyle: 'lakh'
-    });    
+    });
     var n1 = new Cleave('#precio', {
         numeral: true,
         numeralThousandsGroupStyle: 'lakh'

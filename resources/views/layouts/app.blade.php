@@ -45,6 +45,9 @@
         <script src="assets/js/core_js/jquery-3.6.0.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
+        <!-- Cleave.js -->
+        <script src="assets/libs/cleave.js/cleave.min.js"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" crossorigin="anonymous"></script>
 
         <!-- flatpickr js -->

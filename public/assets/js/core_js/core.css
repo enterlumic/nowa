@@ -96,3 +96,23 @@ div.dataTables_wrapper {
 .fileuploader-theme-dropin{
     text-align: center !important;
 }
+
+.flatpickr-wrapper {
+    max-width: 79%; /* Elimina cualquier restricción de ancho máximo si existe */
+    width: auto; /* Ajusta el ancho al contenido */
+    left: 0; /* Ajusta según la posición exacta dentro del modal */
+    right: auto; /* Asegura que no se empuje hacia la derecha */
+    transform: translateX(0%); /* Ajusta este valor para alinear horizontalmente */
+    z-index: 1100 !important;
+}
+
+@media (max-width: 768px) {
+    .flatpickr-calendar {
+        width: 100%; /* Ocupa todo el ancho disponible en pantallas pequeñas */
+    }
+}
+@media (min-width: 992px) {
+    .flatpickr-wrapper {
+        width: 90%; /* Ocupa todo el ancho disponible en pantallas pequeñas */
+    }
+}

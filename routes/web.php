@@ -157,6 +157,7 @@ use App\Http\Controllers\EmpresaController;
 Route::get('empresa', [EmpresaController::class, 'index'])->middleware('auth') ;
 Route::get('empresa_ubicacion', [EmpresaController::class, 'empresa_ubicacion'])->middleware('auth') ;
 Route::get('empresa_horario', [EmpresaController::class, 'empresa_horario'])->middleware('auth') ;
+Route::get('empresa_empleados', [EmpresaController::class, 'empresa_empleados'])->middleware('auth') ;
 Route::post('set_empresa', [EmpresaController::class, 'set_empresa']);
 Route::post('set_empresa_ubicacion', [EmpresaController::class, 'set_empresa_ubicacion']);
 Route::post('set_empresa_horarios', [EmpresaController::class, 'set_empresa_horarios']);
@@ -198,4 +199,22 @@ Route::post('get_carrito_by_list', [CarritoController::class, 'get_carrito_by_li
 Route::get('get_carrito_diez', [CarritoController::class, 'get_carrito_diez']);
 Route::get('descargar_plantilla_carrito', [CarritoController::class, 'descargar_plantilla_carrito']);
 Route::get('validar_existencia_carrito', [CarritoController::class, 'validar_existencia_carrito']);
+
+use App\Http\Controllers\EmpleadosController;
+Route::get('empleados', [EmpleadosController::class, 'index'])->middleware('auth') ;
+Route::post('set_empleados', [EmpleadosController::class, 'set_empleados']);
+Route::post('set_import_empleados', [EmpleadosController::class, 'set_import_empleados']);
+Route::post('get_empleados_by_id', [EmpleadosController::class, 'get_empleados_by_id']);
+Route::post('delete_empleados', [EmpleadosController::class, 'delete_empleados']);
+Route::post('undo_delete_empleados', [EmpleadosController::class, 'undo_delete_empleados']);
+Route::get('get_empleados_datatable', [EmpleadosController::class, 'get_empleados_datatable']);
+Route::post('truncate_empleados', [EmpleadosController::class, 'truncate_empleados']);
+Route::post('truncate_sps_empleados', [EmpleadosController::class, 'truncate_sps_empleados']);
+Route::post('form_importar_empleados', [EmpleadosController::class, 'form_importar_empleados']);
+Route::get('export_excel_empleados', [EmpleadosController::class, 'export_excel_empleados']);
+Route::post('get_cat_empleados', [EmpleadosController::class, 'get_cat_empleados']);
+Route::post('get_empleados_by_list', [EmpleadosController::class, 'get_empleados_by_list']);
+Route::get('get_empleados_diez', [EmpleadosController::class, 'get_empleados_diez']);
+Route::get('descargar_plantilla_empleados', [EmpleadosController::class, 'descargar_plantilla_empleados']);
+Route::get('validar_existencia_empleados', [EmpleadosController::class, 'validar_existencia_empleados']);
 
