@@ -100,25 +100,259 @@ let checkOut = {
     fn_fnCreateOrder: function () {
 
         // https://techlaboratory.net/jquery-smartwizard
+        function getTwoDaysLater() {
+            var today = new Date();
+            var twoDaysLater = new Date(today);
+            twoDaysLater.setDate(today.getDate() + 0);
+            return twoDaysLater.toISOString().split('T')[0]; // Convertir a formato YYYY-MM-DD
+        }
 
+        var calendarInitialized = false;
+        var calendar;
+        var selectedLabel = null;  // Keep track of the previously selected label
+
+        var selectedDate = null;
+
+        // Configuración dinámica para mostrar o no los sábados y domingos
+        var mostrarSabados = true; // Cambia esto a false para ocultar los sábados
+        var mostrarDomingos = false; // Cambia esto a false para ocultar los domingos
+
+        // Configuración de Toastr para evitar mensajes duplicados
+        toastr.options = {
+            "preventDuplicates": true
+        };
+
+        // Configurar hiddenDays según la visibilidad de sábados y domingos
+        var hiddenDays = [];
+        if (!mostrarSabados) hiddenDays.push(6); // 6 representa el sábado
+        if (!mostrarDomingos) hiddenDays.push(0); // 0 representa el domingo
+
+        function initializeCalendar() {
+            var calendarEl = document.getElementById('agendar_cita_automotriz');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es', // Cambia el idioma a español
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
+                validRange: {
+                    start: getTwoDaysLater() // Fecha de inicio válida: dos días después de hoy
+                },
+                hiddenDays: hiddenDays, // Ocultar días específicos
+                height: 'auto', // Ajustar la altura automáticamente
+                contentHeight: 500, // Ajustar la altura del contenido
+                aspectRatio: 1.35, // Reducir la relación de aspecto
+                events: [
+                    {
+                        title: 'Evento 1',
+                        start: '2024-07-20'
+                    },
+                    {
+                        title: 'Lleno',
+                        start: '2024-07-31',
+                        allDay: true,
+                        display: 'background',
+                        backgroundColor: 'red',
+                        textColor: 'white',
+                        description: 'Lleno',
+                        classNames: ['Lleno']
+                    }
+                ],
+                eventClick: function(info) {
+                    console.log("1", info);
+
+                    var events = calendar.getEvents();
+
+                    if (info.event.title === 'Lleno') {
+                        var formattedDate = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' }).format(new Date(info.event.startStr));
+                        toastr.error(`No se puede seleccionar el ${formattedDate}.`, 'Error');
+                        return;
+                    }
+
+                    selectedDate = info.event.start.toISOString().split('T')[0];
+
+                    selectedDate = info.event.start.toISOString().split('T')[0];
+                    var offcanvasElement = document.getElementById('offcanvasEvento');
+                    var offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+                    offcanvas.show();
+
+                },
+                dateClick: function(info) {
+                    console.log("2", info);
+
+                    // Uso de la función
+                    var exists = checkCookie("nombreUsuario");
+
+                    if(exists && selectedLabel){
+                        selectedLabel.classList.remove('bg-danger', 'text-white');
+                        selectedLabel.querySelector('input').disabled = false;
+                        selectedLabel.innerHTML = selectedLabel.innerHTML.replace(' (Ocupado)', '');
+
+                        // Eliminar eventos excepto los que tienen la clase 'Lleno'
+                        calendar.getEvents().forEach(function(event) {
+                                console.log("event.classNames", event.classNames);
+                            if (!event.classNames.includes('Lleno')) {
+                                event.remove();
+                            }
+                        });
+
+                        console.log(exists ? "La cookie existe." : "La cookie no existe.");
+                    }
+
+
+                    // Verificar si hay un evento de "Lleno" en la fecha seleccionada
+                    var events = calendar.getEvents();
+                    var formattedDate = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' }).format(new Date(info.dateStr));
+                    var isDateFull = events.some(event => event.startStr === info.dateStr && event.title === 'Lleno');
+
+                    document.getElementById('eventDetails').innerText = formattedDate;
+
+                    if (isDateFull) {
+                        toastr.error(`No se puede seleccionar el ${formattedDate}.`);
+                        return;
+                    }
+
+
+                    // Si se selecciona una nueva fecha, restablecer el calendario y el formulario
+                    if (selectedDate && selectedDate !== info.dateStr) {
+                        // document.getElementById('agendarCitaForm').reset();
+                    }
+
+                    selectedDate = info.dateStr;
+                    var offcanvasElement = document.getElementById('offcanvasEvento');
+                    var offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+                    offcanvas.show();
+                }
+            });
+            calendar.render();
+            calendarInitialized = true;
+
+            // Manejar el clic del botón de enviar
+            document.getElementById('submitCitaForm').addEventListener('click', function() {
+                var form = document.getElementById('agendarCitaForm');
+                var formData = new FormData(form);
+                var hora = formData.get('hora');
+                var titulo = 'Cita';
+
+                console.log('Formulario enviado:', Object.fromEntries(formData.entries()));
+
+                // document.cookie = "nombreUsuario=Juan; expires=Thu, 18 Dec 2023 12:00:00 UTC; path=/";
+                
+                document.cookie = "nombreUsuario=Juan";
+
+
+                if (selectedDate && hora) {
+                    // Agregar evento al calendario
+                    calendar.addEvent({
+                        title: titulo,
+                        start: selectedDate + 'T' + hora,
+                        allDay: false
+                    });
+
+                    // Limpiar la clase de la selección anterior
+                    if (selectedLabel) {
+                        selectedLabel.classList.remove('bg-danger', 'text-white');
+                        selectedLabel.querySelector('input').disabled = false;
+                        selectedLabel.innerHTML = selectedLabel.innerHTML.replace(' (Ocupado)', '');
+                    }
+
+                    // Aplicar la clase 'bg-danger' a la nueva hora seleccionada
+                    selectedLabel = document.querySelector(`input[name="hora"][value="${hora}"]`).parentElement;
+                    selectedLabel.classList.add('bg-danger', 'text-white');
+                    selectedLabel.querySelector('input').disabled = true;
+                    selectedLabel.append(' (Ocupado)');
+
+
+
+                    // Calcular la diferencia en días
+                    var today = new Date();
+                    var targetDate = new Date(selectedDate);
+                    var differenceInTime = targetDate.getTime() - today.getTime();
+                    var differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+                    // Formatear la diferencia en días
+                    var daysText;
+                    if (differenceInDays === 0) {
+                        daysText = "mañana";
+                    } else if (differenceInDays === 1) {
+                        daysText = "1 día restante";
+                    } else {
+                        daysText = `${differenceInDays} días restantes`;
+                    }
+
+                    // Formatear fecha y hora para el mensaje de confirmación
+                    var formattedDate = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' }).format(targetDate);
+                    var formattedTime = new Intl.DateTimeFormat('es-ES', { timeStyle: 'short' }).format(new Date(`1970-01-01T${hora}:00`));
+                    var formattedDateTime = `<strong style="color: green;">${formattedDate} a las ${formattedTime}</strong> (${daysText})`;
+
+
+                    // Mostrar el modal de confirmación
+                    showConfirmationModal(`Cita agendada exitosamente para el ${formattedDateTime}.<br>Tiene 10 minutos para realizar el pago, de lo contrario, la cita será liberada para otro usuario.`);
+
+
+                    // Cerrar el OffCanvas
+                    var offcanvasElement = document.getElementById('offcanvasEvento');
+                    var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                    offcanvas.hide();
+                } else {
+                    toastr.error('Por favor, seleccione una fecha y una hora.', 'Error');
+                }
+
+                function showConfirmationModal(message) {
+                    var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                    document.querySelector('#confirmationModal .modal-body').innerHTML = message;
+                    confirmationModal.show();
+                }
+            });          
+        }
+
+        function checkCookie(name) {
+            // Añadimos el signo igual porque las cookies están en formato nombre=valor
+            var cookieName = name + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i].trim();
+                if (c.indexOf(cookieName) == 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Inicializar SmartWizard
         $('#smartwizardCheckOut').smartWizard({
             selected: 0,
             theme: 'dots',
             justified: true,
             toolbar: {
-                showNextButton: true, // show/hide a Next button
-                showPreviousButton: true, // show/hide a Previous button
+                showNextButton: true, // mostrar/ocultar el botón Siguiente
+                showPreviousButton: true, // mostrar/ocultar el botón Atrás
                 position: 'bottom', // none|top|bottom|both
-                extraHtml: `<button type="submit" class="btn btn-success sw-btn d-none" id="comprar-checkout" >Comprar</button>`
+                extraHtml: `<button type="submit" class="btn btn-success sw-btn d-none" id="comprar-checkout">Comprar</button>`
             },
-            lang: { // Language variables for button
+            lang: { // Variables de idioma para el botón
                 next: 'Siguiente',
                 previous: 'Atras'
             },
             keyboard: {
-                keyNavigation: false, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
-                keyLeft: [37], // Left key code
-                keyRight: [39] // Right key code
+                keyNavigation: false, // Habilitar/Deshabilitar la navegación con el teclado (las teclas izquierda y derecha se usan si están habilitadas)
+                keyLeft: [37], // Código de la tecla izquierda
+                keyRight: [39] // Código de la tecla derecha
+            }
+        });
+
+        // Inicializar FullCalendar cuando se carga la página
+        initializeCalendar();
+
+        // Manejar el evento de cambio de paso en SmartWizard
+        $('#smartwizardCheckOut').on("showStep", function(e, anchorObject, stepNumber, stepDirection, stepPosition) {
+            if (stepNumber === 0 && !calendarInitialized) { // Paso 1 y el calendario no está inicializado
+                initializeCalendar();
+            } else if (stepNumber === 0 && calendarInitialized) {
+                calendar.render(); // Renderizar nuevamente si el calendario ya está inicializado
             }
         });
 

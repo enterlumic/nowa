@@ -55,6 +55,12 @@
         <script src="assets/js/core_js/es.js"></script>
         <link href="assets/js/core_js/flatpickr.css" rel="stylesheet" type="text/css" >
 
+        <!-- Toastr CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+        <!-- Toastr JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
         <!--  Mousetrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.6.5/mousetrap.min.js"></script>
 

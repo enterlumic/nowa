@@ -32,66 +32,12 @@
                                 {{-- Inicio paso 1 Agendar cita --}}
                                 <div id="step-1" class="tab-pane" role="tabpanel">
                                     <div>
-                                        <h5 class="mb-1">Agendar cita</h5>
+                                        <h5 class="mb-1">Seleccione una fecha disponible</h5>
                                     </div>
                                     <div class="mt-4">
                                         <div class="row gy-3">
-                                            <div class="col-md-6">
-                                                <label for="appointmentDateTime" class="form-label">Seleccione una fecha</label>
-                                                <div id="errorSeleccionarFecha"></div>
-                                                <input type="date" id="appointmentDateTime" class="form-control d-none" name="appointmentDateTime" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="appointmentTimeGroup" class="form-label">Seleccione una hora</label>
-                                                <div id="errorSeleccionarHorario"></div>
-                                                <div id="appointmentTimeGroup" class="horarios">
-                                                    <ul class="badge-type-selection__list">
-                                                        <li class="badge-type-selection__list-item ui-list__item">
-                                                            <div>
-                                                                <label tabindex="0" class="ui-radio__label">
-                                                                    <div class="ui-radio-element">
-                                                                        <input type="radio" name="horario_dispobible[]" value="09-10" class="ui-radio__input d-none">
-                                                                        <div class="ui-radio__background">
-                                                                            <div class="ui-radio__outer-circle"></div>
-                                                                            <div class="ui-radio__inner-circle"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ui-radio__text">
-                                                                        <div class="badge-type__metadata">
-                                                                            <span class="badge-type-selection__list-title"> 09:00 - 10:00 AM </span>
-                                                                            <p class="badge-type-selection__list-text">
-                                                                                <span>Lunes</span>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="badge-type-selection__list-item ui-list__item">
-                                                            <div>
-                                                                <label tabindex="0" class="ui-radio__label">
-                                                                    <div class="ui-radio-element">
-                                                                        <input type="radio" name="horario_dispobible[]" value="10-11" class="ui-radio__input d-none">
-                                                                        <div class="ui-radio__background">
-                                                                            <div class="ui-radio__outer-circle"></div>
-                                                                            <div class="ui-radio__inner-circle"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ui-radio__text">
-                                                                        <div class="badge-type__metadata">
-                                                                            <span class="badge-type-selection__list-title"> 10:00 - 11:00 AM </span>
-                                                                            <p class="badge-type-selection__list-text">
-                                                                                <span>Lunes</span>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-
-                                                </div>
-                                            </div>
+                                            <div id="agendar_cita_automotriz"></div>
+                                            <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +117,70 @@
 
     @include('modals.add_cliente_conekta')
 
+    <!-- OffCanvas para Detalles del Evento -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEvento" aria-labelledby="offcanvasEventoLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasEventoLabel">Seleccione un horario disponible</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="eventDetails">Estos son los horarios disponibles...</p>
+
+            <form id="agendarCitaForm">
+                <div class="mb-3">
+                    <label for="hora" class="form-label">Hora</label>
+                    <div class="list-group" id="hora-list">
+                        <label class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="hora" value="08:00" required> 08:00 AM - 10:00 AM
+                        </label>
+                        <label class="list-group-item bg-danger text-white">
+                            <input class="form-check-input me-1" type="radio" name="hora" value="10:00" disabled> 10:00 AM - 12:00 PM (Ocupado)
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="hora" value="12:00" required> 12:00 PM - 02:00 PM
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="hora" value="14:00" required> 02:00 PM - 04:00 PM
+                        </label>
+                        <label class="list-group-item bg-danger text-white">
+                            <input class="form-check-input me-1" type="radio" name="hora" value="16:00" disabled> 04:00 PM - 06:00 PM (Ocupado)
+                        </label>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="submitCitaForm" data-bs-dismiss="offcanvas" aria-label="Close">Seleccionar Hora</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalLabel">Confirmación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- El mensaje se actualizará dinámicamente -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 </x-app-layout>
+
+<!-- Full Calendar CSS -->
+<link rel="stylesheet" href="../assets/libs/fullcalendar/main.min.css">
+
+<!-- Moment JS -->
+<script src="assets/libs/moment/moment.js"></script>
+
+<!-- Fullcalendar JS -->
+<script src="assets/libs/fullcalendar/main.min.js"></script>
 
 <!-- Include SmartWizard CSS -->
 <link href="assets/css/smart_wizard_theme_arrows.min.css" rel="stylesheet" type="text/css" />
@@ -189,12 +198,8 @@
 <link href="assets/css/smart_wizard.min.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/smart_wizard_theme_dots.min.css" rel="stylesheet" type="text/css" />
 
-
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-<!-- Flatpickr Locale ES -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
 <!-- Include Conekta -->
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
@@ -213,3 +218,29 @@
         return $logos[strtolower($brand)] ?? 'https://via.placeholder.com/30';
     }
 @endphp
+
+<style type="text/css">
+    .fc {
+        font-size: 12px; /* Reducir el tamaño de la fuente */
+    }
+
+    .fc-toolbar-title {
+        font-size: 16px; /* Reducir el tamaño de la fuente del título */
+    }
+
+    .fc-daygrid-day-number {
+        padding: 0.2em; /* Reducir el relleno de los números de los días */
+    }
+
+    .fc-daygrid-event {
+        margin: 1px; /* Reducir el margen de los eventos */
+    }
+        
+    .fc-event.Lleno {
+        background-color: red !important;
+        color: white !important;
+        border-color: red !important;
+        opacity: 0.7;
+    }
+
+</style>
